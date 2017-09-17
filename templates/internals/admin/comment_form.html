@@ -1,0 +1,76 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>No.{$freo.query.id}のコメントを編集</h2>
+		<!--{if $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>コメントを入力してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/comment_form?id={$freo.query.id}" method="post">
+			<fieldset>
+				<legend>登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="comment[id]" value="{$input.comment.id}" />
+				<input type="hidden" name="comment[user_id]" value="{$input.comment.user_id}" />
+				<dl>
+					<!--{if !$input.comment.user_id}-->
+					<dt>名前</dt>
+						<dd><input type="text" name="comment[name]" size="30" value="{$input.comment.name}" /></dd>
+					<dt>メールアドレス</dt>
+						<dd><input type="text" name="comment[mail]" size="30" value="{$input.comment.mail}" /></dd>
+					<dt>URL</dt>
+						<dd><input type="text" name="comment[url]" size="30" value="{$input.comment.url}" /></dd>
+					<!--{/if}-->
+					<dt>コメント</dt>
+						<dd><textarea name="comment[text]" cols="50" rows="10">{$input.comment.text}</textarea></dd>
+					<dt>閲覧制限</dt>
+						<dd>
+							<select name="comment[restriction]">
+								<option value="">全体に公開</option>
+								<!--{if $freo.user.id}--><option value="user"{if $input.comment.restriction == 'user'} selected="selected"{/if}>登録ユーザーに公開</option><!--{/if}-->
+								<option value="admin"{if $input.comment.restriction == 'admin'} selected="selected"{/if}>管理者に公開</option>
+							</select>
+						</dd>
+				</dl>
+				<p>
+					<input type="submit" name="preview" value="確認する" />
+					<input type="submit" value="登録する" />
+				</p>
+			</fieldset>
+		</form>
+		<!--{if $freo.query.id}-->
+		<!--{if $input.comment.approved == 'no'}-->
+		<h2>No.{$freo.query.id}のコメントを承認</h2>
+		<ul>
+			<li>このコメントは<em>未承認</em>です。</li>
+			<li>このコメントを承認するには、<em>承認ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/comment_approve" method="get" class="approve">
+			<fieldset>
+				<legend>コメント承認フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="id" value="{$freo.query.id}" />
+				<p><input type="submit" value="承認する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+		<h2>No.{$freo.query.id}のコメントを削除</h2>
+		<ul>
+			<li>このコメントを削除するには、<em>削除ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/comment_delete" method="get" class="delete">
+			<fieldset>
+				<legend>コメント削除フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="id" value="{$freo.query.id}" />
+				<p><input type="submit" value="削除する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+	</div>
+{include file='internals/admin/footer.html'}

@@ -1,0 +1,33 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">トラックバック登録</span></div>
+
+以下の内容で登録します。<br />
+<br />
+名前:{$trackback.name}<br />
+URL:{$trackback.url}<br />
+ﾀｲﾄﾙ:{$trackback.title}<br />
+<!--{if $trackback.text}-->
+本文:{$trackback.text|nl2br}<br />
+<!--{/if}-->
+
+<br />
+<form action="{$freo.core.http_file}/admin/trackback_form" method="get">
+<input type="hidden" name="session" value="1" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="戻る" />
+</div>
+</form>
+<form action="{$freo.core.http_file}/admin/trackback_preview?id={$freo.query.id}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

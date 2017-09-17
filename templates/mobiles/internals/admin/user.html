@@ -1,0 +1,32 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ユーザー管理</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $freo.query.exec}-->
+<div style="color:#00AA00;">
+<!--{if $freo.query.exec == 'insert'}-->
+ﾕｰｻﾞｰを新規に登録しました。
+<!--{elseif $freo.query.exec == 'approve'}-->
+ID.{$freo.query.id}のﾕｰｻﾞｰを承認しました。
+<!--{elseif $freo.query.exec == 'update'}-->
+ID.{$freo.query.id}のﾕｰｻﾞｰを編集しました。
+<!--{elseif $freo.query.exec == 'delete'}-->
+ID.{$freo.query.id}のﾕｰｻﾞｰを削除しました。
+<!--{/if}-->
+</div>
+<!--{/if}-->
+
+登録されたﾕｰｻﾞｰは以下のとおりです。<br />
+<a href="{$freo.core.https_file}/admin/user_form">ﾕｰｻﾞｰを登録する</a>。<br />
+
+<br />
+<!--{foreach from=$users|smarty:nodefaults item='user'}-->
+▼[{$user.id}]<!--{if $freo.user.id != $user.id}--><a href="{$freo.core.http_file}/admin/user_form?id={$user.id}"><!--{/if}-->{$user.name}<!--{if $freo.user.id != $user.id}--></a><!--{/if}-->(<!--{if $user.created|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$user.created|date_format:'%H:%M:%S'}<!--{else}-->{$user.created|date_format:'%Y/%m/%d'}<!--{/if}-->)<br />
+<!--{/foreach}-->
+
+{include file='mobiles/footer.html'}

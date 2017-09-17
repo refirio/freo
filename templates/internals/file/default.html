@@ -1,0 +1,11 @@
+{include file='header.html'}
+	<h2>{$smarty.get.path|basename|default:'メディア'}</h2>
+	<!--{if $restriction}-->
+	<p class="attention">このディレクトリには、閲覧制限が設定されています。</p>
+	<!--{/if}-->
+	<ul>
+		<!--{foreach from=$medias|smarty:nodefaults item='media'}-->
+		<li><a href="{$freo.core.http_file}/file/media/{$freo.query.path}{$media.name}">{$media.memo|default:$media.name}</a></li>
+		<!--{/foreach}-->
+	</ul>
+{include file='footer.html'}

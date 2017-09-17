@@ -1,0 +1,130 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>エントリー登録</h2>
+		<ul>
+			<li>以下の内容で登録します。</li>
+		</ul>
+		<dl>
+			<dt>タイトル</dt>
+				<dd>{$entry.title}</dd>
+			<!--{if $entry.text}-->
+			<dt>本文</dt>
+				<dd>{$entry.text|smarty:nodefaults}</dd>
+			<!--{/if}-->
+			<!--{foreach from=$freo.refer.options|smarty:nodefaults item='option'}-->
+			<!--{if $entry_associate.option[$option.id]}-->
+			<dt>{$option.name}</dt>
+				<dd>{$entry_associate.option[$option.id]|nl2br}</dd>
+			<!--{/if}-->
+			<!--{/foreach}-->
+		</dl>
+		<!--{if $entry.file or $entry.image or $entry.memo}-->
+		<h3>添付ファイル</h3>
+		<dl>
+			<!--{if $entry.file}-->
+			<dt>ファイル</dt>
+				<dd>{$entry.file}<!--{if $entry.file_remove}-->（削除）<!--{/if}--></dd>
+			<!--{/if}-->
+			<!--{if $entry.image}-->
+			<dt>ファイルのイメージ</dt>
+				<dd>{$entry.image}<!--{if $entry.image_remove}-->（削除）<!--{/if}--></dd>
+			<!--{/if}-->
+			<!--{if $entry.memo}-->
+			<dt>ファイルの説明</dt>
+				<dd>{$entry.memo}</dd>
+			<!--{/if}-->
+		</dl>
+		<!--{/if}-->
+		<h3>エントリー情報</h3>
+		<dl>
+			<dt>日時</dt>
+				<dd>{$entry.datetime|date_format:'%Y/%m/%d %H:%M:%S'}</dd>
+			<dt>エントリーの状態</dt>
+				<dd><!--{if $entry.status == 'publish'}-->公開<!--{elseif $entry.status == 'private'}-->未公開<!--{elseif $entry.status == 'future'}-->予約公開<!--{/if}--></dd>
+			<dt>エントリーの表示</dt>
+				<dd><!--{if $entry.display == 'publish'}-->初期画面に表示する<!--{elseif $entry.display == 'private'}-->初期画面に表示しない<!--{/if}--></dd>
+			<dt>コメントの受付</dt>
+				<dd><!--{if $entry.comment == 'open'}-->受け付ける<!--{elseif $entry.comment == 'closed'}-->受け付けない<!--{elseif $entry.comment == 'view'}-->表示のみ<!--{elseif $entry.comment == 'user'}-->登録ユーザーから受け付ける<!--{/if}--></dd>
+			<dt>トラックバックの受付</dt>
+				<dd><!--{if $entry.trackback == 'open'}-->受け付ける<!--{elseif $entry.trackback == 'closed'}-->受け付けない<!--{elseif $entry.trackback == 'view'}-->表示のみ<!--{/if}--></dd>
+			<!--{if $entry_associate.category}-->
+			<dt>カテゴリー</dt>
+				<dd class="list">
+					<ul>
+						{include file='internals/admin/entry_preview_category.html'}
+					</ul>
+				</dd>
+			<!--{/if}-->
+			<!--{if $entry.tag}-->
+			<dt>タグ</dt>
+				<dd>{$entry.tag}</dd>
+			<!--{/if}-->
+			<!--{if $entry.code}-->
+			<dt>コード</dt>
+				<dd>{$entry.code}</dd>
+			<!--{/if}-->
+			<!--{if $entry.close}-->
+			<dt>公開終了日時</dt>
+				<dd>{$entry.close|date_format:'%Y/%m/%d %H:%M:%S'}</dd>
+			<!--{/if}-->
+		</dl>
+		<!--{if $entry.trackback_url}-->
+		<h3>通知</h3>
+		<dl>
+			<dt>トラックバック送信先</dt>
+				<dd>{$entry.trackback_url|nl2br}</dd>
+		</dl>
+		<!--{/if}-->
+		<!--{if $entry.restriction}-->
+		<h3>閲覧制限</h3>
+		<dl>
+			<dt>制限</dt>
+				<dd><!--{if $entry.restriction == 'user'}-->ユーザー登録で制限<!--{elseif $entry.restriction == 'group'}-->グループで制限<!--{elseif $entry.restriction == 'password'}-->パスワードで制限<!--{else}-->制限なし<!--{/if}--></dd>
+			<!--{if $entry_associate.group}-->
+			<dt>グループで制限</dt>
+				<dd class="list">
+					<ul>
+						<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refers_group'}-->
+						<!--{if $entry_associate.group[$refers_group.id]}--><li>{$refers_group.name}</li><!--{/if}-->
+						<!--{/foreach}-->
+					</ul>
+				</dd>
+			<!--{/if}-->
+			<!--{if $entry.password}-->
+			<dt>パスワードで制限</dt>
+				<dd>{$entry.password}</dd>
+			<!--{/if}-->
+		</dl>
+		<!--{/if}-->
+		<!--{if $entry_associate.filter}-->
+		<h3>フィルター</h3>
+		<dl>
+			<dt>フィルターで制限</dt>
+				<dd class="list">
+					<ul>
+						<!--{foreach from=$freo.refer.filters|smarty:nodefaults item='refers_filter'}-->
+						<!--{if $entry_associate.filter[$refers_filter.id]}--><li>{$refers_filter.name}</li><!--{/if}-->
+						<!--{/foreach}-->
+					</ul>
+				</dd>
+		</dl>
+		<!--{/if}-->
+		<div id="action">
+			<form action="{$freo.core.http_file}/admin/entry_form" method="get">
+				<fieldset>
+					<legend>エントリー編集フォーム</legend>
+					<input type="hidden" name="session" value="1" />
+					<input type="hidden" name="id" value="{$freo.query.id}" />
+					<p><input type="submit" value="戻る" /></p>
+				</fieldset>
+			</form>
+			<form action="{$freo.core.http_file}/admin/entry_preview{if $freo.query.id}?id={$freo.query.id}{/if}" method="post">
+				<fieldset>
+					<legend>エントリー登録フォーム</legend>
+					<input type="hidden" name="freo[token]" value="{$token}" />
+					<p><input type="submit" value="登録する" /></p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+{include file='internals/admin/footer.html'}

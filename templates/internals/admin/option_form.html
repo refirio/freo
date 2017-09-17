@@ -1,0 +1,90 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2><!--{if $freo.query.id}-->ID.{$freo.query.id}のオプションを編集<!--{else}-->オプション登録<!--{/if}--></h2>
+		<!--{if $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>オプションを入力してください。</li>
+			<li><abbr class="attention" title="入力必須">*</abbr> の付いた項目は入力必須項目です。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/option_form{if $freo.query.id}?id={$freo.query.id}{/if}" method="post">
+			<fieldset>
+				<legend>オプション登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<!--{if $freo.query.id}-->
+				<input type="hidden" name="option[id]" value="{$input.option.id}" />
+				<!--{/if}-->
+				<dl>
+					<!--{if !$freo.query.id}-->
+					<dt>オプションID <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="option[id]" size="30" value="{$input.option.id}" /></dd>
+					<!--{/if}-->
+					<dt>オプション名 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="option[name]" size="50" value="{$input.option.name}" /></dd>
+					<dt>利用対象 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd>
+							<select name="option[target]">
+								<option value="">すべて</option>
+								<option value="entry"{if $input.option.target == 'entry'} selected="selected"{/if}>エントリー</option>
+								<option value="page"{if $input.option.target == 'page'} selected="selected"{/if}>ページ</option>
+							</select>
+						</dd>
+					<dt>種類 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd>
+							<select name="option[type]" id="option_type">
+								<option value="text"{if $input.option.type == 'text'} selected="selected"{/if}>一行入力</option>
+								<option value="textarea"{if $input.option.type == 'textarea'} selected="selected"{/if}>複数行入力</option>
+								<option value="select"{if $input.option.type == 'select'} selected="selected"{/if}>セレクトボックス</option>
+								<option value="radio"{if $input.option.type == 'radio'} selected="selected"{/if}>ラジオボタン</option>
+								<option value="checkbox"{if $input.option.type == 'checkbox'} selected="selected"{/if}>チェックボックス</option>
+								<option value="file"{if $input.option.type == 'file'} selected="selected"{/if}>アップロード</option>
+							</select>
+						</dd>
+					<dt>必須 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd>
+							<select name="option[required]">
+								<option value="yes"{if $input.option.required == 'yes'} selected="selected"{/if}>入力必須</option>
+								<option value="no"{if $input.option.required == 'no'} selected="selected"{/if}>任意</option>
+							</select>
+						</dd>
+					<dt>説明</dt>
+						<dd><textarea name="option[memo]" cols="50" rows="5">{$input.option.memo}</textarea></dd>
+					<dt>初期値</dt>
+						<dd><textarea name="option[text]" cols="50" rows="5">{$input.option.text}</textarea></dd>
+					<dt>並び順 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="option[sort]" size="5" value="{$input.option.sort}" /></dd>
+				</dl>
+				<dl id="option_validate">
+					<dt>検証</dt>
+						<dd>
+							<select name="option[validate]">
+								<option value="">なし</option>
+								<option value="numeric"{if $input.option.validate == 'numeric'} selected="selected"{/if}>数値のみ</option>
+								<option value="alphabet"{if $input.option.validate == 'alphabet'} selected="selected"{/if}>英数字のみ</option>
+							</select>
+						</dd>
+				</dl>
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+		<!--{if $freo.query.id}-->
+		<h2>ID.{$freo.query.id}のオプションを削除</h2>
+		<ul>
+			<li>このオプションを削除するには、<em>削除ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/option_delete" method="get" class="delete">
+			<fieldset>
+				<legend>オプション削除フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="id" value="{$freo.query.id}" />
+				<p><input type="submit" value="削除する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+	</div>
+{include file='internals/admin/footer.html'}

@@ -1,0 +1,73 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>設定管理</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{elseif $freo.query.exec == 'update'}-->
+		<ul class="complete">
+			<li>{$config_name}を編集しました。</li>
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>設定できる項目は以下のとおりです。</li>
+		</ul>
+		<h3>本体の設定</h3>
+		<ul>
+			<!--{foreach from=$internals|smarty:nodefaults item='internal'}-->
+			<li><a href="{$freo.core.http_file}/admin/config?type=internal&amp;file={$internal.id}">{$internal.name}</a></li>
+			<!--{foreachelse}-->
+			<li>設定項目はありません。</li>
+			<!--{/foreach}-->
+		</ul>
+		<h3>プラグインの設定</h3>
+		<ul>
+			<!--{foreach from=$plugins|smarty:nodefaults item='plugin'}-->
+			<li><a href="{$freo.core.http_file}/admin/config?type=plugin&amp;file={$plugin.id}">{$plugin.name}</a></li>
+			<!--{foreachelse}-->
+			<li>設定項目はありません。</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{if $freo.query.type and $freo.query.file}-->
+		<h2>{$config_name}</h2>
+		<ul>
+			<li>設定内容は以下のとおりです。</li>
+		</ul>
+		<div id="config">
+			<form action="{$freo.core.http_file}/admin/config?type={$freo.query.type}&amp;file={$freo.query.file}" method="post" class="config">
+				<fieldset>
+					<legend>設定フォーム</legend>
+					<input type="hidden" name="freo[token]" value="{$token}" />
+					<input type="hidden" name="config[type]" value="{$freo.query.type}" />
+					<input type="hidden" name="config[file]" value="{$freo.query.file}" />
+					<!--{foreach name='loop' from=$configs|smarty:nodefaults item='config'}-->
+					<!--{if $config.type == 'section'}-->
+					<!--{if !$smarty.foreach.loop.first}-->
+					</dl>
+					<!--{/if}-->
+					<h3>{$config.data}</h3>
+					<dl>
+					<!--{elseif $config.type == 'comment'}-->
+						<dt>{$config.data|smarty:nodefaults}</dt>
+					<!--{else}-->
+							<dd>{$config.data|smarty:nodefaults}</dd>
+					<!--{/if}-->
+					<!--{/foreach}-->
+					</dl>
+					<p>
+						<input type="submit" value="設定する" />
+						<input type="reset" value="リセット" />
+					</p>
+				</fieldset>
+			</form>
+		</div>
+		<!--{/if}-->
+	</div>
+{include file='internals/admin/footer.html'}

@@ -1,0 +1,33 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>プラグイン一覧</h2>
+		<ul>
+			<li>現在導入されているプラグインは以下のとおりです。</li>
+		</ul>
+		<table summary="プラグイン">
+			<thead>
+				<tr>
+					<th>プラグインの名前</th>
+					<th>バージョン</th>
+					<th>管理ページ</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>プラグインの名前</th>
+					<th>バージョン</th>
+					<th>管理ページ</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				<!--{foreach from=$freo.plugin|smarty:nodefaults item='plugin'}-->
+				<tr>
+					<td>{$plugin.name}</td>
+					<td class="number">{$plugin.version}</td>
+					<td><!--{if $plugin.admin}--><a href="{$freo.core.http_file}/{$plugin.admin}">管理ページ</a><!--{/if}--></td>
+				</tr>
+				<!--{/foreach}-->
+			</tbody>
+		</table>
+	</div>
+{include file='internals/admin/footer.html'}

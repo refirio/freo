@@ -1,0 +1,40 @@
+{include file='header.html'}
+	<h2>ユーザー登録</h2>
+	<ul>
+		<li>以下の内容で登録します。</li>
+	</ul>
+	<dl>
+		<dt>ユーザーID</dt>
+			<dd>{$user.id}</dd>
+		<dt>パスワード</dt>
+			<dd>{$user.password}</dd>
+		<dt>名前</dt>
+			<dd>{$user.name}</dd>
+		<dt>メールアドレス</dt>
+			<dd>{$user.mail}</dd>
+		<!--{if $user.url}-->
+		<dt>URL</dt>
+			<dd>{$user.url}</dd>
+		<!--{/if}-->
+		<!--{if $user.text}-->
+		<dt>紹介文</dt>
+			<dd>{$user.text|nl2p}</dd>
+		<!--{/if}-->
+	</dl>
+	<div id="action">
+		<form action="{$freo.core.https_file}/regist/form" method="get">
+			<fieldset>
+				<legend>ユーザー編集フォーム</legend>
+				<input type="hidden" name="session" value="1" />
+				<p><input type="submit" value="戻る" /></p>
+			</fieldset>
+		</form>
+		<form action="{$freo.core.https_file}/regist/preview" method="post">
+			<fieldset>
+				<legend>ユーザー登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+	</div>
+{include file='footer.html'}

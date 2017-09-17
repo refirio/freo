@@ -1,0 +1,106 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>ステータス</h2>
+		<ul>
+			<li>現在 <em>{$freo.user.id}</em> としてログインしています。権限は <em><!--{if $freo.user.authority == 'root'}-->管理者<!--{elseif $freo.user.authority == 'author'}-->投稿者<!--{elseif $freo.user.authority == 'guest'}-->ゲスト<!--{/if}--></em> です。</li>
+			<li>本体のバージョンは <em>{$freo.core.version}</em> です。</li>
+			<li><a href="{$freo.core.http_file}">サイトを確認する</a>。</li>
+		</ul>
+		<h3>登録データ</h3>
+		<table summary="登録データ">
+			<thead>
+				<tr>
+					<th>項目</th>
+					<th>登録件数</th>
+					<th>未承認</th>
+					<th>更新日時</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>項目</th>
+					<th>登録件数</th>
+					<th>未承認</th>
+					<th>更新日時</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				<tr>
+					<td>エントリー</td>
+					<td class="number">{$entry_count}</td>
+					<td class="number">{$entry_count-$entry_approved}</td>
+					<td><!--{if $entry_modified|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$entry_modified|date_format:'%H:%M:%S'}<!--{else}-->{$entry_modified|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+				</tr>
+				<tr>
+					<td>ページ</td>
+					<td class="number">{$page_count}</td>
+					<td class="number">{$page_count-$page_approved}</td>
+					<td><!--{if $page_modified|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$page_modified|date_format:'%H:%M:%S'}<!--{else}-->{$page_modified|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+				</tr>
+				<tr>
+					<td>コメント</td>
+					<td class="number">{$comment_count}</td>
+					<td class="number">{$comment_count-$comment_approved}</td>
+					<td><!--{if $comment_modified|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$comment_modified|date_format:'%H:%M:%S'}<!--{else}-->{$comment_modified|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+				</tr>
+				<tr>
+					<td>トラックバック</td>
+					<td class="number">{$trackback_count}</td>
+					<td class="number">{$trackback_count-$trackback_approved}</td>
+					<td><!--{if $trackback_modified|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$trackback_modified|date_format:'%H:%M:%S'}<!--{else}-->{$trackback_modified|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+				</tr>
+				<tr>
+					<td>ユーザー</td>
+					<td class="number">{$user_count}</td>
+					<td class="number">{$user_count-$user_approved}</td>
+					<td><!--{if $user_modified|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$user_modified|date_format:'%H:%M:%S'}<!--{else}-->{$user_modified|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+				</tr>
+			</tbody>
+		</table>
+		<h3>ファイルサイズ</h3>
+		<table summary="ファイルサイズ">
+			<thead>
+				<tr>
+					<th>項目</th>
+					<th>ファイルサイズ</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>項目</th>
+					<th>ファイルサイズ</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				<tr>
+					<td>エントリーファイル</td>
+					<td class="number">{$entry_file_size/1024|intval}KB</td>
+				</tr>
+				<tr>
+					<td>エントリーイメージ</td>
+					<td class="number">{$entry_image_size/1024|intval}KB</td>
+				</tr>
+				<tr>
+					<td>エントリーオプションファイル</td>
+					<td class="number">{$entry_option_size/1024|intval}KB</td>
+				</tr>
+				<tr>
+					<td>ページファイル</td>
+					<td class="number">{$page_file_size/1024|intval}KB</td>
+				</tr>
+				<tr>
+					<td>ページイメージ</td>
+					<td class="number">{$page_image_size/1024|intval}KB</td>
+				</tr>
+				<tr>
+					<td>ページオプションファイル</td>
+					<td class="number">{$page_option_size/1024|intval}KB</td>
+				</tr>
+				<tr>
+					<td>メディアファイル</td>
+					<td class="number">{$media_size/1024|intval}KB</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+{include file='internals/admin/footer.html'}

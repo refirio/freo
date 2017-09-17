@@ -1,0 +1,34 @@
+{include file='header.html'}
+	<h2>ユーザー用ページ</h2>
+	<h3>コメント登録</h3>
+	<ul>
+		<li>以下の内容で登録します。</li>
+	</ul>
+	<dl>
+		<dt>ユーザーID</dt>
+			<dd>{$comment.user_id}</dd>
+		<dt>名前</dt>
+			<dd>{$freo.refer.users[$comment.user_id].name}</dd>
+		<dt>コメント</dt>
+			<dd>{$comment.text|nl2p}</dd>
+		<dt>閲覧制限</dt>
+			<dd><!--{if $comment.restriction == 'user'}-->登録ユーザーに公開<!--{elseif $comment.restriction == 'admin'}-->管理者に公開<!--{else}-->全体に公開<!--{/if}--></dd>
+	</dl>
+	<div id="action">
+		<form action="{$freo.core.http_file}/user/comment_form" method="get">
+			<fieldset>
+				<legend>コメント編集フォーム</legend>
+				<input type="hidden" name="session" value="1" />
+				<input type="hidden" name="id" value="{$freo.query.id}" />
+				<p><input type="submit" value="戻る" /></p>
+			</fieldset>
+		</form>
+		<form action="{$freo.core.http_file}/user/comment_preview?id={$freo.query.id}" method="post">
+			<fieldset>
+				<legend>コメント登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+	</div>
+{include file='footer.html'}

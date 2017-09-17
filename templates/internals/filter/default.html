@@ -1,0 +1,54 @@
+{include file='header.html'}
+	<h2>フィルター設定</h2>
+	<!--{if $freo.query.error}-->
+	<ul class="attention">
+		<li>不正なアクセスです。</li>
+	</ul>
+	<!--{elseif $errors}-->
+	<ul class="attention">
+		<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+		<li>{$error}</li>
+		<!--{/foreach}-->
+	</ul>
+	<!--{elseif $freo.query.exec == 'update'}-->
+	<ul class="complete">
+		<li>フィルター設定を編集しました。</li>
+	</ul>
+	<!--{/if}-->
+	<ul>
+		<li>以下の内容を表示するかどうか選択してください。</li>
+	</ul>
+	<form action="{$freo.core.https_file}/filter" method="post">
+		<fieldset>
+			<legend>フィルター設定フォーム</legend>
+			<input type="hidden" name="freo[token]" value="{$token}" />
+			<table summary="フィルター">
+				<thead>
+					<tr>
+						<th>フィルター</th>
+						<th>設定内容</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th>フィルター</th>
+						<th>設定内容</th>
+					</tr>
+				</tfoot>
+				<tbody>
+					<!--{foreach from=$freo.refer.filters|smarty:nodefaults item='refer_filter'}-->
+					<tr>
+						<td>{$refer_filter.name}</td>
+						<td>
+							<input type="radio" name="filter[{$refer_filter.id}]" id="label_filter_{$refer_filter.id}_yes" value="1"{if $input.filter[$refer_filter.id]} checked="checked"{/if} /> <label for="label_filter_{$refer_filter.id}_yes">表示する</label>
+							&nbsp;
+							<input type="radio" name="filter[{$refer_filter.id}]" id="label_filter_{$refer_filter.id}_no" value=""{if !$input.filter[$refer_filter.id]} checked="checked"{/if} /> <label for="label_filter_{$refer_filter.id}_no">表示しない</label>
+						</td>
+					</tr>
+					<!--{/foreach}-->
+				</tbody>
+			</table>
+			<p><input type="submit" value="設定する" /></p>
+		</fieldset>
+	</form>
+{include file='footer.html'}

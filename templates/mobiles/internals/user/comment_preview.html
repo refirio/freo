@@ -1,0 +1,31 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/user">ﾕｰｻﾞｰ用ﾍﾟｰｼﾞに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">コメント登録</span></div>
+
+以下の内容で登録します。<br />
+<br />
+ﾕｰｻﾞｰID:{$comment.user_id}<br />
+名前:{$freo.refer.users[$comment.user_id].name}<br />
+ｺﾒﾝﾄ:{$comment.text|nl2br}<br />
+閲覧制限:<!--{if $comment.restriction == 'user'}-->登録ﾕｰｻﾞｰに公開<!--{elseif $comment.restriction == 'admin'}-->管理者に公開<!--{else}-->全体に公開<!--{/if}--><br />
+
+<br />
+<form action="{$freo.core.http_file}/user/comment_form" method="get">
+<input type="hidden" name="session" value="1" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="戻る" />
+</div>
+</form>
+<form action="{$freo.core.http_file}/user/comment_preview?id={$freo.query.id}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

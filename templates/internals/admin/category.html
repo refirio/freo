@@ -1,0 +1,75 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>カテゴリー管理</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $freo.query.exec}-->
+		<ul class="complete">
+			<!--{if $freo.query.exec == 'insert'}-->
+			<li>カテゴリーを新規に登録しました。</li>
+			<!--{elseif $freo.query.exec == 'update'}-->
+			<li>ID.{$freo.query.id}のカテゴリーを編集しました。</li>
+			<!--{elseif $freo.query.exec == 'delete'}-->
+			<li>ID.{$freo.query.id}のカテゴリーを削除しました。</li>
+			<!--{elseif $freo.query.exec == 'sort'}-->
+			<li>カテゴリーを並び替えました。</li>
+			<!--{/if}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li><!--{if $freo.query.pid}--><code>{$freo.query.pid}</code> に<!--{/if}-->登録されたカテゴリーは以下のとおりです。</li>
+			<li>IDをクリックすると、そのカテゴリーに属するカテゴリーを表示できます。</li>
+			<li><a href="{$freo.core.http_file}/admin/category_form?pid={$freo.query.pid}">この階層にカテゴリーを登録する</a>。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/category_update" method="post">
+			<fieldset>
+				<legend>カテゴリー並び替えフォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="pid" value="{$freo.query.pid}" />
+				<table summary="カテゴリー">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>カテゴリー名</th>
+							<th>並び順</th>
+							<th>作業</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th>ID</th>
+							<th>カテゴリー名</th>
+							<th>並び順</th>
+							<th>作業</th>
+						</tr>
+					</tfoot>
+					<tbody>
+						<!--{if $freo.query.pid}-->
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><a href="{$freo.core.http_file}/admin/category?pid={$parent.pid}">上の階層へ</a></td>
+						</tr>
+						<!--{/if}-->
+						<!--{foreach from=$categories|smarty:nodefaults item='category'}-->
+						<tr>
+							<td><a href="{$freo.core.http_file}/admin/category?pid={$category.id}">{$category.id}</a></td>
+							<td>{$category.name}</td>
+							<td class="number"><input type="text" name="sort[{$category.id}]" size="3" value="{$category.sort}" /></td>
+							<td>
+								<a href="{$freo.core.http_file}/category/{$category.id}">確認</a>
+								<a href="{$freo.core.http_file}/admin/category_form?id={$category.id}">編集</a>
+								<a href="{$freo.core.http_file}/admin/category_delete?freo%5Btoken%5D={$token}&amp;id={$category.id}" class="delete">削除</a>
+							</td>
+						</tr>
+						<!--{/foreach}-->
+					</tbody>
+				</table>
+				<p><input type="submit" value="並び順を編集する" /></p>
+			</fieldset>
+		</form>
+	</div>
+{include file='internals/admin/footer.html'}

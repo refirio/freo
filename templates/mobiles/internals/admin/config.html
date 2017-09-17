@@ -1,0 +1,70 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">設定管理</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{elseif $freo.query.exec == 'update'}-->
+<div style="color:#00AA00;">{$config_name}を編集しました。</div>
+<!--{/if}-->
+
+<!--{if $freo.query.type and $freo.query.file}-->
+{$config_name}の設定内容は以下のとおりです。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/config?type={$freo.query.type}&amp;file={$freo.query.file}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<input type="hidden" name="config[type]" value="{$freo.query.type}" />
+<input type="hidden" name="config[file]" value="{$freo.query.file}" />
+<!--{foreach name='loop' from=$configs|smarty:nodefaults item='config'}-->
+<!--{if $config.type == 'section'}-->
+<br />
+■{$config.data}<br />
+<br />
+<!--{elseif $config.type == 'comment'}-->
+{$config.data|smarty:nodefaults}<br />
+<!--{else}-->
+{$config.data|smarty:nodefaults}<br />
+<!--{/if}-->
+<!--{/foreach}-->
+<br />
+<div style="text-align:center;">
+<input type="submit" value="設定する" />
+<input type="reset" value="ﾘｾｯﾄ" />
+</div>
+</form>
+
+<hr />
+<!--{/if}-->
+
+設定できる項目は以下のとおりです。<br />
+
+<br />
+■本体の設定<br />
+<br />
+<!--{foreach from=$internals|smarty:nodefaults item='internal'}-->
+<a href="{$freo.core.http_file}/admin/config?type=internal&amp;file={$internal.id}">{$internal.name}</a><br />
+<!--{foreachelse}-->
+設定項目はありません。<br />
+<!--{/foreach}-->
+
+<br />
+■ﾌﾟﾗｸﾞｲﾝの設定<br />
+<br />
+<!--{foreach from=$plugins|smarty:nodefaults item='plugin'}-->
+<a href="{$freo.core.http_file}/admin/config?type=plugin&amp;file={$plugin.id}">{$plugin.name}</a><br />
+<!--{foreachelse}-->
+設定項目はありません。<br />
+<!--{/foreach}-->
+
+{include file='mobiles/footer.html'}

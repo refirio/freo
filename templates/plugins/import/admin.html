@@ -1,0 +1,36 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>インポート</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{elseif $plugin_import}-->
+		<ul class="complete">
+			<li>{$plugin_import}のSQLが実行されました。</li>
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>SQLファイルからデータベースに入力します。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/import/admin" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<legend>インポート実行フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<dl>
+					<dt>対象</dt>
+						<dd>
+							<input type="file" name="target" size="30" />
+						</dd>
+				</dl>
+				<p><input type="submit" value="入力する" /></p>
+			</fieldset>
+		</form>
+	</div>
+{include file='internals/admin/footer.html'}

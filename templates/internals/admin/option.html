@@ -1,0 +1,67 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>オプション管理</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $freo.query.exec}-->
+		<ul class="complete">
+			<!--{if $freo.query.exec == 'insert'}-->
+			<li>オプションを新規に登録しました。</li>
+			<!--{elseif $freo.query.exec == 'update'}-->
+			<li>ID.{$freo.query.id}のオプションを編集しました。</li>
+			<!--{elseif $freo.query.exec == 'delete'}-->
+			<li>ID.{$freo.query.id}のオプションを削除しました。</li>
+			<!--{elseif $freo.query.exec == 'sort'}-->
+			<li>オプションを並び替えました。</li>
+			<!--{/if}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>登録されたオプションは以下のとおりです。</li>
+			<li><a href="{$freo.core.http_file}/admin/option_form">オプションを登録する</a>。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/option_update" method="post">
+			<fieldset>
+				<legend>オプション並び替えフォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<table summary="オプション">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>オプション名</th>
+							<th>利用対象</th>
+							<th>並び順</th>
+							<th>作業</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th>ID</th>
+							<th>オプション名</th>
+							<th>利用対象</th>
+							<th>並び順</th>
+							<th>作業</th>
+						</tr>
+					</tfoot>
+					<tbody>
+						<!--{foreach from=$options|smarty:nodefaults item='option'}-->
+						<tr>
+							<td>{$option.id}</td>
+							<td>{$option.name}</td>
+							<td><!--{if $option.target == 'entry'}-->エントリー<!--{elseif $option.target == 'page'}-->ページ<!--{else}-->すべて<!--{/if}--></td>
+							<td class="number"><input type="text" name="sort[{$option.id}]" size="3" value="{$option.sort}" /></td>
+							<td>
+								<a href="{$freo.core.http_file}/admin/option_form?id={$option.id}">編集</a>
+								<a href="{$freo.core.http_file}/admin/option_delete?freo%5Btoken%5D={$token}&amp;id={$option.id}" class="delete">削除</a>
+							</td>
+						</tr>
+						<!--{/foreach}-->
+					</tbody>
+				</table>
+				<p><input type="submit" value="並び順を編集する" /></p>
+			</fieldset>
+		</form>
+	</div>
+{include file='internals/admin/footer.html'}

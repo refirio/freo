@@ -1,0 +1,22 @@
+{include file='header.html'}
+	<h2>ユーザー用ページ</h2>
+	<!--{if $freo.query.error}-->
+	<ul class="attention">
+		<li>不正なアクセスです。</li>
+	</ul>
+	<!--{elseif $freo.query.exec}-->
+	<ul class="complete">
+		<!--{if $freo.query.exec == 'delete'}-->
+		<li>No.{$freo.query.id}のコメントを削除しました。</li>
+		<!--{/if}-->
+	</ul>
+	<!--{/if}-->
+	<ul>
+		<li><a href="{$freo.core.http_file}/profile/{$freo.user.id}">プロフィール</a></li>
+	</ul>
+	<ul>
+		<li><a href="{$freo.core.http_file}/user/profile_form">プロフィール編集</a></li>
+		<li><a href="{$freo.core.https_file}/user/password_form">パスワード変更</a></li>
+		<li><a href="{$freo.core.http_file}/login?freo%5Bsession%5D=logout">ログアウト</a></li>
+	</ul>
+{include file='footer.html'}

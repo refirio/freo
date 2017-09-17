@@ -1,0 +1,74 @@
+{include file='mobiles/header.html'}
+
+<div style="text-align:center;">{$freo.config.basis.title}</div>
+<hr />
+
+<!--{if $freo.config.view.information and !$smarty.get.category}-->
+
+<!--{if $information_entry}-->
+▼<a href="{$freo.core.http_file}/view/{if $information_entry.code}{$information_entry.code}{else}{$information_entry.id}{/if}">{$information_entry.title}</a><br />
+<br />
+{$information_entry_text.excerpt|smarty:nodefaults|strip_tags|mb_truncate:50:'...'|escape}<br />
+<br />
+<!--{/if}-->
+
+<!--{if $information_page}-->
+▼<a href="{$freo.core.http_file}/page/{$information_page.id}">{$information_page.title}</a><br />
+<br />
+{$information_page_text.excerpt|smarty:nodefaults|strip_tags|mb_truncate:200:'...'|escape}<br />
+<br />
+<!--{/if}-->
+
+<!--{if $information.text}-->
+■インフォメーション<br />
+<!--{if $information_text.excerpt}-->
+{$information_text.excerpt|smarty:nodefaults}
+<!--{/if}-->
+<!--{if $information_text.more}-->
+<p><a href="{$freo.core.http_file}/information?continue=1">続きを読む</a></p>
+<!--{/if}-->
+<!--{/if}-->
+
+<hr />
+<!--{/if}-->
+
+<!--{if $smarty.get.word}-->ｷｰﾜｰﾄﾞ「{$smarty.get.word}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.user}-->ﾕｰｻﾞｰ「{$smarty.get.user}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.tag}-->ﾀｸﾞ「{$smarty.get.tag}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 4}-->{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 6}-->{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 8}-->{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.category}-->ｶﾃｺﾞﾘｰ「{$freo.refer.categories[$smarty.get.category].name}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+
+<!--{if $smarty.get.word or $smarty.get.user or $smarty.get.tag or $smarty.get.date or $smarty.get.category}-->
+<br />
+<!--{/if}-->
+
+<!--{foreach from=$entries|smarty:nodefaults item='entry'}-->
+▼<a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}">{$entry.title}</a>({$entry.datetime|date_format:'%Y/%m/%d'})<br />
+<!--{/foreach}-->
+
+<br />
+<!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/{if $freo.query.category}category/{$freo.query.category}{else}entry{/if}?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のﾍﾟｰｼﾞ</a><!--{else}-->前のﾍﾟｰｼﾞ<!--{/if}--> |
+<!--{if $entry_page > $freo.query.page}--><a href="{$freo.core.http_file}/{if $freo.query.category}category/{$freo.query.category}{else}entry{/if}?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のﾍﾟｰｼﾞ</a><!--{else}-->次のﾍﾟｰｼﾞ<!--{/if}-->
+
+<hr />
+<!--{foreach from=$plugin_page_menus|smarty:nodefaults item='plugin_page_menu'}-->
+▼<a href="{$freo.core.http_file}/page/{$plugin_page_menu.id}">{$plugin_page_menu.title}</a><br />
+<!--{/foreach}-->
+▼<a href="{$freo.core.http_file}/entry_gallery">ｷﾞｬﾗﾘｰ</a><br />
+<!--{if !$freo.user.authority and $freo.config.user.regist}-->
+▼<a href="{$freo.core.http_file}/regist">ﾕｰｻﾞｰ登録</a><br />
+<!--{/if}-->
+<!--{if $freo.user.authority == 'root' or $freo.user.authority == 'author'}-->
+▼<a href="{$freo.core.http_file}/admin">管理者用ﾍﾟｰｼﾞ</a><br />
+<!--{elseif $freo.user.authority == 'guest'}-->
+▼<a href="{$freo.core.http_file}/admin">ﾕｰｻﾞｰ用ﾍﾟｰｼﾞ</a><br />
+<!--{else}-->
+▼<a href="{$freo.core.http_file}/reissue">ﾊﾟｽﾜｰﾄﾞ再発行</a><br />
+<!--{/if}-->
+<!--{if $freo.user.authority != 'root' and $freo.user.authority != 'author' and ($freo.config.entry.filter or $freo.config.page.filter or $freo.config.media.filter)}-->
+▼<a href="{$freo.core.http_file}/filter">ﾌｨﾙﾀｰ設定</a><br />
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

@@ -1,0 +1,85 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;"><!--{if $freo.query.id}-->ID.{$freo.query.id}のオプションを編集<!--{else}-->オプション登録<!--{/if}--></span></div>
+
+<!--{if $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{/if}-->
+ｵﾌﾟｼｮﾝを入力してください。<br />
+<span style="color:#FF0000;">*</span>の付いた項目は入力必須項目です。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/option_form{if $freo.query.id}?id={$freo.query.id}{/if}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<!--{if $freo.query.id}-->
+<input type="hidden" name="option[id]" value="{$input.option.id}" />
+<!--{/if}-->
+<!--{if !$freo.query.id}-->
+ｵﾌﾟｼｮﾝID<span style="color:#FF0000;">*</span><br />
+<input type="text" name="option[id]" size="20" value="{$input.option.id}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+<!--{/if}-->
+ｵﾌﾟｼｮﾝ名<span style="color:#FF0000;">*</span><br />
+<input type="text" name="option[name]" size="20" value="{$input.option.name}" /><br />
+利用対象<span style="color:#FF0000;">*</span><br />
+<select name="option[target]">
+<option value="">▼すべて</option>
+<option value="entry"{if $input.option.target == 'entry'} selected="selected"{/if}>▼ｴﾝﾄﾘｰ</option>
+<option value="page"{if $input.option.target == 'page'} selected="selected"{/if}>▼ﾍﾟｰｼﾞ</option>
+</select><br />
+種類<span style="color:#FF0000;">*</span><br />
+<select name="option[type]">
+<option value="text"{if $input.option.type == 'text'} selected="selected"{/if}>▼一行入力</option>
+<option value="textarea"{if $input.option.type == 'textarea'} selected="selected"{/if}>▼複数行入力</option>
+<option value="select"{if $input.option.type == 'select'} selected="selected"{/if}>▼ｾﾚｸﾄﾎﾞｯｸｽ</option>
+<option value="radio"{if $input.option.type == 'radio'} selected="selected"{/if}>▼ﾗｼﾞｵﾎﾞﾀﾝ</option>
+<option value="checkbox"{if $input.option.type == 'checkbox'} selected="selected"{/if}>▼ﾁｪｯｸﾎﾞｯｸｽ</option>
+<option value="file"{if $input.option.type == 'file'} selected="selected"{/if}>▼ｱｯﾌﾟﾛｰﾄﾞ</option>
+</select><br />
+必須<span style="color:#FF0000;">*</span><br />
+<select name="option[required]">
+<option value="yes"{if $input.option.required == 'yes'} selected="selected"{/if}>▼入力必須</option>
+<option value="no"{if $input.option.required == 'no'} selected="selected"{/if}>▼任意</option>
+</select><br />
+説明<br />
+<textarea name="option[memo]" cols="20" rows="5">{$input.option.memo}</textarea><br />
+初期値<br />
+<textarea name="option[text]" cols="20" rows="5">{$input.option.text}</textarea><br />
+並び順<span style="color:#FF0000;">*</span><br />
+<input type="text" name="option[sort]" size="5" value="{$input.option.sort}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} /><br />
+検証<br />
+<select name="option[validate]">
+<option value="">▼なし</option>
+<option value="numeric"{if $input.option.validate == 'numeric'} selected="selected"{/if}>▼数値のみ</option>
+<option value="alphabet"{if $input.option.validate == 'alphabet'} selected="selected"{/if}>▼英数字のみ</option>
+</select><br />
+<br />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+<!--{if $freo.query.id}-->
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ID.{$freo.query.id}のオプションを削除</span></div>
+
+このｵﾌﾟｼｮﾝを削除するには、削除ﾎﾞﾀﾝを押してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/option_delete" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="削除する" />
+</div>
+</form>
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

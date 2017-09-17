@@ -1,0 +1,28 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}">戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">プロフィール</span></div>
+
+ﾕｰｻﾞｰ[{$user.id}]のﾌﾟﾛﾌｨｰﾙ<br />
+<br />
+名前:{$user.name}<br />
+<!--{if $user.url}-->
+URL:<a href="{$user.url}">{$user.url}</a><br />
+<!--{/if}-->
+<!--{if $user.text}-->
+紹介文:{$user.text|nl2br}<br />
+<!--{/if}-->
+権限:<!--{if $user.authority == 'root'}-->管理者<!--{elseif $user.authority == 'author'}-->投稿者<!--{elseif $user.authority == 'guest'}-->ｹﾞｽﾄ<!--{/if}--><br />
+<!--{if $user_associate.group}-->
+ｸﾞﾙｰﾌﾟ<br />
+<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refers_group'}-->
+<!--{if $user_associate.group[$refers_group.id]}-->{$refers_group.name}<br /><!--{/if}-->
+<!--{/foreach}-->
+<!--{/if}-->
+<!--{if $user.authority == 'root' or $user.authority == 'author'}-->
+登録記事:<a href="{$freo.core.http_file}/entry?user={$user.id}">{$freo.core.http_file}/entry?user={$user.id}</a><br />
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

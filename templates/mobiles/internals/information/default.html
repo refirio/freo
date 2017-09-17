@@ -1,0 +1,26 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}">戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">インフォメーション</span></div>
+
+<!--{if $information_text.excerpt}-->
+<!--{if $freo.query.continue}-->
+<p><a href="{$freo.core.http_file}/information">記事の前半を読む</a></p>
+<!--{else}-->
+{$information_text.excerpt|smarty:nodefaults}
+<!--{/if}-->
+<!--{/if}-->
+<!--{if $information_text.more}-->
+<!--{if $freo.query.continue}-->
+{$information_text.more|smarty:nodefaults}
+<!--{else}-->
+<p><a href="{$freo.core.http_file}/information?continue=1">続きを読む</a></p>
+<!--{/if}-->
+<!--{/if}-->
+<!--{if $freo.user.authority == 'root' or $freo.user.authority == 'author'}-->
+▼<a href="{$freo.core.http_file}/admin/information_form">編集</a><br />
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

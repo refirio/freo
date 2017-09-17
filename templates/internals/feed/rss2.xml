@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xml:lang="ja">
+	<channel>
+		<title>{$freo.config.basis.title}</title>
+		<link>{$freo.core.http_url}</link>
+		<description>{$freo.config.basis.description}</description>
+		<language>ja</language>
+		<lastBuildDate>{$entry_update|date_format:'%a, %d %b %Y %H:%M:%S +0900'}</lastBuildDate>
+		<docs>{$freo.core.http_file}/feed/rss2</docs>
+		<!--{foreach from=$entries|smarty:nodefaults item='entry'}-->
+		<item>
+			<title>{$entry.title}</title>
+			<link>{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}</link>
+			<guid>{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}</guid>
+			<description>{if $entry_texts[$entry.id].excerpt}{$entry_texts[$entry.id].excerpt|smarty:nodefaults|strip_tags|mb_truncate:200:'...'|escape}{/if}</description>
+			<pubDate>{$entry.datetime|date_format:'%a, %d %b %Y %H:%M:%S +0900'}</pubDate>
+		</item>
+		<!--{/foreach}-->
+	</channel>
+</rss>

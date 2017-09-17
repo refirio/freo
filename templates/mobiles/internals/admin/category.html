@@ -1,0 +1,30 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">カテゴリー管理</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $freo.query.exec}-->
+<div style="color:#00AA00;">
+<!--{if $freo.query.exec == 'insert'}-->
+ｶﾃｺﾞﾘｰを新規に登録しました。
+<!--{elseif $freo.query.exec == 'update'}-->
+ID.{$freo.query.id}のｶﾃｺﾞﾘｰを編集しました。
+<!--{elseif $freo.query.exec == 'delete'}-->
+ID.{$freo.query.id}のｶﾃｺﾞﾘｰを削除しました。
+<!--{/if}-->
+</div>
+<!--{/if}-->
+<!--{if $freo.query.pid}-->[{$freo.query.pid}]に<!--{/if}-->登録されたｶﾃｺﾞﾘｰは以下のとおりです。<br />
+IDをｸﾘｯｸすると、そのｶﾃｺﾞﾘｰに属するｶﾃｺﾞﾘｰを表示できます。<br />
+<a href="{$freo.core.http_file}/admin/category_form?pid={$freo.query.pid}">この階層にｶﾃｺﾞﾘｰを登録する</a>。<br />
+
+<br />
+<!--{foreach from=$categories|smarty:nodefaults item='category'}-->
+▼[<a href="{$freo.core.http_file}/admin/category?pid={$category.id}">{$category.id}</a>]<a href="{$freo.core.http_file}/admin/category_form?id={$category.id}">{$category.name}</a><br />
+<!--{/foreach}-->
+
+{include file='mobiles/footer.html'}

@@ -1,0 +1,41 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">プロフィール編集</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{elseif $freo.query.exec == 'update'}-->
+<div style="color:#00AA00;">ﾌﾟﾛﾌｨｰﾙを編集しました。</div>
+<!--{/if}-->
+ﾌﾟﾛﾌｨｰﾙを入力してください。<br />
+<span style="color:#FF0000;">*</span>の付いた項目は入力必須項目です。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/profile_form" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+名前<span style="color:#FF0000;">*</span><br />
+<input type="text" name="user[name]" size="20" value="{$input.user.name}" /><br />
+ﾒｰﾙｱﾄﾞﾚｽ<span style="color:#FF0000;">*</span><br />
+<input type="text" name="user[mail]" size="20" value="{$input.user.mail}" /><br />
+URL<br />
+<input type="text" name="user[url]" size="20" value="{$input.user.url}" /><br />
+紹介文<br />
+<textarea name="user[text]" cols="20" rows="5">{$input.user.text}</textarea><br />
+<br />
+<div style="text-align:center;">
+<input type="submit" name="preview" value="確認する" />
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

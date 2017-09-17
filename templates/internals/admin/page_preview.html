@@ -1,0 +1,128 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>ページ登録</h2>
+		<ul>
+			<li>以下の内容で登録します。</li>
+		</ul>
+		<dl>
+			<dt>タイトル</dt>
+				<dd>{$page.title}</dd>
+			<!--{if $page.text}-->
+			<dt>本文</dt>
+				<dd>{$page.text|smarty:nodefaults}</dd>
+			<!--{/if}-->
+			<!--{foreach from=$freo.refer.options|smarty:nodefaults item='option'}-->
+			<!--{if $page_associate.option[$option.id]}-->
+			<dt>{$option.name}</dt>
+				<dd>{$page_associate.option[$option.id]|nl2br}</dd>
+			<!--{/if}-->
+			<!--{/foreach}-->
+		</dl>
+		<!--{if $page.file or $page.image or $page.memo}-->
+		<h3>添付ファイル</h3>
+		<dl>
+			<!--{if $page.file}-->
+			<dt>ファイル</dt>
+				<dd>{$page.file}<!--{if $page.file_remove}-->（削除）<!--{/if}--></dd>
+			<!--{/if}-->
+			<!--{if $page.image}-->
+			<dt>ファイルのイメージ</dt>
+				<dd>{$page.image}<!--{if $page.image_remove}-->（削除）<!--{/if}--></dd>
+			<!--{/if}-->
+			<!--{if $page.memo}-->
+			<dt>ファイルの説明</dt>
+				<dd>{$page.memo}</dd>
+			<!--{/if}-->
+		</dl>
+		<!--{/if}-->
+		<h3>ページ情報</h3>
+		<dl>
+			<dt>ページID</dt>
+				<dd>{$page.id}</dd>
+			<!--{if $page.pid}-->
+			<dt>親ID</dt>
+				<dd>{$page.pid}</dd>
+			<!--{/if}-->
+			<dt>日時</dt>
+				<dd>{$page.datetime|date_format:'%Y/%m/%d %H:%M:%S'}</dd>
+			<dt>ページの状態</dt>
+				<dd><!--{if $page.status == 'publish'}-->公開<!--{elseif $page.status == 'private'}-->未公開<!--{elseif $page.status == 'future'}-->予約公開<!--{/if}--></dd>
+			<dt>ページの表示</dt>
+				<dd><!--{if $page.display == 'publish'}-->初期画面に表示する<!--{elseif $page.display == 'private'}-->初期画面に表示しない<!--{/if}--></dd>
+			<dt>コメントの受付</dt>
+				<dd><!--{if $page.comment == 'open'}-->受け付ける<!--{elseif $page.comment == 'closed'}-->受け付けない<!--{elseif $page.comment == 'view'}-->表示のみ<!--{elseif $page.comment == 'user'}-->登録ユーザーから受け付ける<!--{/if}--></dd>
+			<dt>トラックバックの受付</dt>
+				<dd><!--{if $page.trackback == 'open'}-->受け付ける<!--{elseif $page.trackback == 'closed'}-->受け付けない<!--{elseif $page.trackback == 'view'}-->表示のみ<!--{/if}--></dd>
+			<!--{if $page.tag}-->
+			<dt>タグ</dt>
+				<dd>{$page.tag}</dd>
+			<!--{/if}-->
+			<!--{if $page.sort}-->
+			<dt>並び順</dt>
+				<dd>{$page.sort}</dd>
+			<!--{/if}-->
+			<!--{if $page.close}-->
+			<dt>公開終了日時</dt>
+				<dd>{$page.close|date_format:'%Y/%m/%d %H:%M:%S'}</dd>
+			<!--{/if}-->
+		</dl>
+		<!--{if $page.trackback_url}-->
+		<h3>通知</h3>
+		<dl>
+			<dt>トラックバック送信先</dt>
+				<dd>{$page.trackback_url|nl2br}</dd>
+		</dl>
+		<!--{/if}-->
+		<!--{if $page.restriction}-->
+		<h3>閲覧制限</h3>
+		<dl>
+			<dt>制限</dt>
+				<dd><!--{if $page.restriction == 'user'}-->ユーザー登録で制限<!--{elseif $page.restriction == 'group'}-->グループで制限<!--{elseif $page.restriction == 'password'}-->パスワードで制限<!--{else}-->制限なし<!--{/if}--></dd>
+			<!--{if $page_associate.group}-->
+			<dt>グループで制限</dt>
+				<dd class="list">
+					<ul>
+						<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refers_group'}-->
+						<!--{if $page_associate.group[$refers_group.id]}--><li>{$refers_group.name}</li><!--{/if}-->
+						<!--{/foreach}-->
+					</ul>
+				</dd>
+			<!--{/if}-->
+			<!--{if $page.password}-->
+			<dt>パスワードで制限</dt>
+				<dd>{$page.password}</dd>
+			<!--{/if}-->
+		</dl>
+		<!--{/if}-->
+		<!--{if $page_associate.filter}-->
+		<h3>フィルター</h3>
+		<dl>
+			<dt>フィルターで制限</dt>
+				<dd class="list">
+					<ul>
+						<!--{foreach from=$freo.refer.filters|smarty:nodefaults item='refers_filter'}-->
+						<!--{if $page_associate.filter[$refers_filter.id]}--><li>{$refers_filter.name}</li><!--{/if}-->
+						<!--{/foreach}-->
+					</ul>
+				</dd>
+		</dl>
+		<!--{/if}-->
+		<div id="action">
+			<form action="{$freo.core.http_file}/admin/page_form" method="get">
+				<fieldset>
+					<legend>ページ編集フォーム</legend>
+					<input type="hidden" name="session" value="1" />
+					<input type="hidden" name="id" value="{$freo.query.id}" />
+					<p><input type="submit" value="戻る" /></p>
+				</fieldset>
+			</form>
+			<form action="{$freo.core.http_file}/admin/page_preview{if $freo.query.id}?id={$freo.query.id}{/if}" method="post">
+				<fieldset>
+					<legend>ページ登録フォーム</legend>
+					<input type="hidden" name="freo[token]" value="{$token}" />
+					<p><input type="submit" value="登録する" /></p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+{include file='internals/admin/footer.html'}

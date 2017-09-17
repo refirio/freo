@@ -1,0 +1,45 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ユーザー登録</span></div>
+
+以下の内容で登録します。<br />
+<br />
+ﾕｰｻﾞｰID:{$user.id}<br />
+ﾊﾟｽﾜｰﾄﾞ:{$user.password}<br />
+承認:<!--{if $user.approved == 'yes'}-->承認済<!--{elseif $user.approved == 'no'}-->未承認<!--{/if}--><br />
+権限:<!--{if $user.authority == 'root'}-->管理者<!--{elseif $user.authority == 'author'}-->投稿者<!--{elseif $user.authority == 'guest'}-->ｹﾞｽﾄ<!--{/if}--><br />
+名前:{$user.name}<br />
+ﾒｰﾙｱﾄﾞﾚｽ:{$user.mail}<br />
+<!--{if $user.url}-->
+URL:{$user.url}<br />
+<!--{/if}-->
+<!--{if $user.text}-->
+紹介文:{$user.text|nl2br}<br />
+<!--{/if}-->
+<!--{if $user_associate.group}-->
+ｸﾞﾙｰﾌﾟ<br />
+<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refers_group'}-->
+<!--{if $user_associate.group[$refers_group.id]}-->{$refers_group.name}<br /><!--{/if}-->
+<!--{/foreach}-->
+<!--{/if}-->
+
+<br />
+<form action="{$freo.core.https_file}/admin/user_form" method="get">
+<input type="hidden" name="session" value="1" />
+<!--{if $freo.query.id}--><input type="hidden" name="id" value="{$freo.query.id}" /><!--{/if}-->
+<div style="text-align:center;">
+<input type="submit" value="戻る" />
+</div>
+</form>
+<form action="{$freo.core.https_file}/admin/user_preview{if $freo.query.id}?id={$freo.query.id}{/if}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

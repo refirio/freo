@@ -1,0 +1,106 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>コメント管理</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $freo.query.exec}-->
+		<ul class="complete">
+			<!--{if $freo.query.exec == 'approve'}-->
+			<li>No.{$freo.query.id}のコメントを承認しました。</li>
+			<!--{elseif $freo.query.exec == 'update'}-->
+			<li>No.{$freo.query.id}のコメントを編集しました。</li>
+			<!--{elseif $freo.query.exec == 'delete'}-->
+			<li>No.{$freo.query.id}のコメントを削除しました。</li>
+			<!--{/if}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<!--{if $smarty.get.word or $smarty.get.user or $smarty.get.approved or $smarty.get.date}-->
+			<!--{if $smarty.get.word}--><li>キーワード「{$smarty.get.word}」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.user}--><li>ユーザー「{$smarty.get.user}」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.approved}--><li><!--{if $smarty.get.approved == 'yes'}-->承認済み<!--{elseif $smarty.get.approved == 'no'}-->未承認<!--{/if}-->コメントの検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 4}--><li>{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 6}--><li>{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 8}--><li>{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{else}-->
+			<li>登録されたコメントは以下のとおりです。</li>
+			<!--{/if}-->
+		</ul>
+		<div id="search">
+			<form action="{$freo.core.http_file}/admin/comment" method="get">
+				<fieldset>
+					<legend>コメント検索フォーム</legend>
+					<dl>
+						<dt>キーワード</dt>
+							<dd><input type="text" name="word" size="50" value="{$smarty.get.word}" /></dd>
+						<!--{if $freo.config.comment.approve == 'no'}-->
+						<dt>状態</dt>
+							<dd>
+								<input type="checkbox" name="approved" id="label_approved_no" value="no"{if $freo.query.approved == 'no'} checked="checked"{/if} /> <label for="label_approved_no">未承認のみ</label>
+							</dd>
+						<!--{/if}-->
+					</dl>
+					<p><input type="submit" value="検索する" /></p>
+				</fieldset>
+			</form>
+		</div>
+		<ul>
+			<li><em>{$comment_count}</em>件のコメント。全<em>{$comment_page}</em>ページ中<em>{$freo.query.page}</em>ページ目を表示しています。</li>
+		</ul>
+		<table summary="コメント">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>日時</th>
+					<th>名前</th>
+					<th>IPアドレス</th>
+					<th>状態</th>
+					<th>作業</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>No</th>
+					<th>日時</th>
+					<th>名前</th>
+					<th>IPアドレス</th>
+					<th>状態</th>
+					<th>作業</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				<!--{foreach from=$comments|smarty:nodefaults item='comment'}-->
+				<tr>
+					<td>{$comment.id}</td>
+					<td><!--{if $comment.created|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$comment.created|date_format:'%H:%M:%S'}<!--{else}-->{$comment.created|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+					<td><!--{if $comment.user_id}-->{$freo.refer.users[$comment.user_id].name}<!--{else}-->{$comment.name}<!--{/if}--></td>
+					<td>{$comment.ip}</td>
+					<td><!--{if $comment.approved == 'no'}-->未承認<!--{elseif $comment.restriction == 'admin'}-->管理者に公開<!--{elseif $comment.restriction == 'user'}-->登録ユーザーに公開<!--{else}-->公開<!--{/if}--></td>
+					<td>
+						<a href="{$freo.core.http_file}/{if $comment.entry_id}view/{$comment.entry_id}{elseif $comment.page_id}page/{$comment.page_id}{/if}">確認</a>
+						<!--{if $freo.user.authority == 'root' or $freo.user.id == $comment.user_id or $freo.refer.users[$comment.user_id].authority == '' or $freo.refer.users[$comment.user_id].authority == 'guest'}-->
+						<a href="{$freo.core.http_file}/admin/comment_form?id={$comment.id}">編集</a>
+						<a href="{$freo.core.http_file}/admin/comment_delete?freo%5Btoken%5D={$token}&amp;id={$comment.id}" class="delete">削除</a>
+						<!--{/if}-->
+					</td>
+				</tr>
+				<!--{/foreach}-->
+			</tbody>
+		</table>
+		<div id="page">
+			<h2>ページ移動</h2>
+			<ul class="order">
+				<li><!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/admin/comment?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.approved}&amp;approved={$smarty.get.approved}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のページ</a><!--{else}-->前のページ<!--{/if}--></li>
+				<li><!--{if $comment_page > $freo.query.page}--><a href="{$freo.core.http_file}/admin/comment?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.approved}&amp;approved={$smarty.get.approved}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のページ</a><!--{else}-->次のページ<!--{/if}--></li>
+			</ul>
+			<ul class="direct">
+				<li>ページ</li>
+				<!--{section name='loop' loop=$comment_page}-->
+				<li><!--{if $smarty.section.loop.iteration != $freo.query.page}--><a href="{$freo.core.http_file}/admin/comment?page={$smarty.section.loop.iteration}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.approved}&amp;approved={$smarty.get.approved}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">{$smarty.section.loop.iteration}</a><!--{else}-->{$smarty.section.loop.iteration}<!--{/if}--></li>
+				<!--{/section}-->
+			</ul>
+		</div>
+	</div>
+{include file='internals/admin/footer.html'}

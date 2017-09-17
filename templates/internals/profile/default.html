@@ -1,0 +1,32 @@
+{include file='header.html'}
+	<h2>プロフィール</h2>
+	<h3>ユーザー {$user.id} のプロフィール</h3>
+	<dl>
+		<dt>名前</dt>
+			<dd>{$user.name}</dd>
+		<!--{if $user.url}-->
+		<dt>URL</dt>
+			<dd><a href="{$user.url}">{$user.url}</a></dd>
+		<!--{/if}-->
+		<!--{if $user.text}-->
+		<dt>紹介文</dt>
+			<dd>{$user.text|nl2p}</dd>
+		<!--{/if}-->
+		<dt>権限</dt>
+			<dd><!--{if $user.authority == 'root'}-->管理者<!--{elseif $user.authority == 'author'}-->投稿者<!--{elseif $user.authority == 'guest'}-->ゲスト<!--{/if}--></dd>
+		<!--{if $user_associate.group}-->
+		<dt>グループ</dt>
+			<dd>
+				<ul>
+					<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refers_group'}-->
+					<!--{if $user_associate.group[$refers_group.id]}--><li>{$refers_group.name}</li><!--{/if}-->
+					<!--{/foreach}-->
+				</ul>
+			</dd>
+		<!--{/if}-->
+		<!--{if $user.authority == 'root' or $user.authority == 'author'}-->
+		<dt>登録記事</dt>
+			<dd><a href="{$freo.core.http_file}/entry?user={$user.id}">{$freo.core.http_file}/entry?user={$user.id}</a></dd>
+		<!--{/if}-->
+	</dl>
+{include file='footer.html'}

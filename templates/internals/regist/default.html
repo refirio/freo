@@ -1,0 +1,42 @@
+{include file='header.html'}
+	<h2>ユーザー登録</h2>
+	<!--{if $freo.query.error}-->
+	<ul class="attention">
+		<li>不正なアクセスです。</li>
+	</ul>
+	<!--{elseif $errors}-->
+	<ul class="attention">
+		<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+		<li>{$error}</li>
+		<!--{/foreach}-->
+	</ul>
+	<!--{/if}-->
+	<ul>
+		<li>ユーザーを入力してください。<!--{if $freo.config.user.approve != 'yes'}-->登録完了後、管理者に承認されるとログインできるようになります。<!--{/if}--></li>
+		<li><abbr class="attention" title="入力必須">*</abbr> の付いた項目は入力必須項目です。</li>
+	</ul>
+	<form action="{$freo.core.https_file}/regist/form{if $freo.query.id}?id={$freo.query.id}{/if}" method="post">
+		<fieldset>
+			<legend>ユーザー登録フォーム</legend>
+			<input type="hidden" name="freo[token]" value="{$token}" />
+			<dl>
+				<dt>ユーザーID <abbr class="attention" title="入力必須">*</abbr></dt>
+					<dd><input type="text" name="user[id]" size="30" value="{$input.user.id}" /></dd>
+				<dt>パスワード <abbr class="attention" title="入力必須">*</abbr></dt>
+					<dd><input type="password" name="user[password]" size="30" value="{$input.user.password}" /></dd>
+				<dt>名前 <abbr class="attention" title="入力必須">*</abbr></dt>
+					<dd><input type="text" name="user[name]" size="30" value="{$input.user.name}" /></dd>
+				<dt>メールアドレス <abbr class="attention" title="入力必須">*</abbr></dt>
+					<dd><input type="text" name="user[mail]" size="30" value="{$input.user.mail}" /></dd>
+				<dt>URL</dt>
+					<dd><input type="text" name="user[url]" size="30" value="{$input.user.url}" /></dd>
+				<dt>紹介文</dt>
+					<dd><textarea name="user[text]" cols="50" rows="5">{$input.user.text}</textarea></dd>
+			</dl>
+			<p>
+				<input type="submit" name="preview" value="確認する" />
+				<input type="submit" value="登録する" />
+			</p>
+		</fieldset>
+	</form>
+{include file='footer.html'}

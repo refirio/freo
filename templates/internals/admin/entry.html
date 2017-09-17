@@ -1,0 +1,122 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>エントリー管理</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $freo.query.exec}-->
+		<ul class="complete">
+			<!--{if $freo.query.exec == 'insert'}-->
+			<li>エントリーを新規に登録しました。</li>
+			<!--{elseif $freo.query.exec == 'approve'}-->
+			<li>No.{$freo.query.id}のエントリーを承認しました。</li>
+			<!--{elseif $freo.query.exec == 'update'}-->
+			<li>No.{$freo.query.id}のエントリーを編集しました。</li>
+			<!--{elseif $freo.query.exec == 'delete'}-->
+			<li>No.{$freo.query.id}のエントリーを削除しました。</li>
+			<!--{/if}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<!--{if $smarty.get.word or $smarty.get.user or $smarty.get.approved or $smarty.get.status or $smarty.get.tag or $smarty.get.date or $smarty.get.category}-->
+			<!--{if $smarty.get.word}--><li>キーワード「{$smarty.get.word}」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.user}--><li>ユーザー「{$smarty.get.user}」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.approved}--><li><!--{if $smarty.get.approved == 'yes'}-->承認済み<!--{elseif $smarty.get.approved == 'no'}-->未承認<!--{/if}-->エントリーの検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.status}--><li>ステータス「<!--{if $smarty.get.status == 'publish'}-->公開<!--{elseif $smarty.get.status == 'private'}-->未公開<!--{elseif $smarty.get.status == 'future'}-->予約公開<!--{/if}-->」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.tag}--><li>タグ「{$smarty.get.tag}」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 4}--><li>{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 6}--><li>{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 8}--><li>{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.category}--><li>カテゴリー「{$freo.refer.categories[$smarty.get.category].name}」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{else}-->
+			<li>登録されたエントリーは以下のとおりです。</li>
+			<!--{/if}-->
+			<li><a href="{$freo.core.http_file}/admin/entry_form">エントリーを登録する</a>。</li>
+		</ul>
+		<div id="search">
+			<form action="{$freo.core.http_file}/admin/entry" method="get">
+				<fieldset>
+					<legend>エントリー検索フォーム</legend>
+					<dl>
+						<dt>キーワード</dt>
+							<dd><input type="text" name="word" size="50" value="{$smarty.get.word}" /></dd>
+						<!--{if $freo.config.entry.category}-->
+						<dt>カテゴリー</dt>
+							<dd>
+								<select name="category">
+									<option value="">すべてのカテゴリー</option>
+									{include file='internals/admin/entry_category.html'}
+								</select>
+							</dd>
+						<!--{/if}-->
+						<dt>状態</dt>
+							<dd>
+								<input type="checkbox" name="status" id="label_status_private" value="private"{if $freo.query.status == 'private'} checked="checked"{/if} /> <label for="label_status_private">未公開のみ</label>
+								<!--{if $freo.config.entry.approve == 'no'}-->
+								&nbsp;
+								<input type="checkbox" name="approved" id="label_approved_no" value="no"{if $freo.query.approved == 'no'} checked="checked"{/if} /> <label for="label_approved_no">未承認のみ</label>
+								<!--{/if}-->
+							</dd>
+					</dl>
+					<p><input type="submit" value="検索する" /></p>
+				</fieldset>
+			</form>
+		</div>
+		<ul>
+			<li><em>{$entry_count}</em>件のエントリー。全<em>{$entry_page}</em>ページ中<em>{$freo.query.page}</em>ページ目を表示しています。</li>
+		</ul>
+		<table summary="エントリー">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>日時</th>
+					<th>タイトル</th>
+					<th>状態</th>
+					<th>作業</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>No</th>
+					<th>日時</th>
+					<th>タイトル</th>
+					<th>状態</th>
+					<th>作業</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				<!--{foreach from=$entries|smarty:nodefaults item='entry'}-->
+				<tr>
+					<td>{$entry.id}</td>
+					<td><!--{if $entry.datetime|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$entry.datetime|date_format:'%H:%M:%S'}<!--{else}-->{$entry.datetime|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+					<td>{$entry.title}</td>
+					<td><!--{if $entry.approved == 'no'}-->未承認<!--{elseif $entry.status == 'publish'}-->公開<!--{elseif $entry.status == 'private'}-->未公開<!--{elseif $entry.status == 'future'}-->予約公開<!--{/if}--></td>
+					<td>
+						<!--{if $entry.approved == 'yes' and ($entry.status == 'publish' or ($entry.status == 'future' and $entry.datetime|date_format:'%Y%m%d%H%M%S' <= $smarty.now|date_format:'%Y%m%d%H%M%S')) and (!$entry.close or $entry.close|date_format:'%Y%m%d%H%M%S' >= $smarty.now|date_format:'%Y%m%d%H%M%S')}-->
+						<a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}">確認</a>
+						<!--{/if}-->
+						<!--{if $freo.user.authority == 'root' or $freo.user.id == $entry.user_id}-->
+						<a href="{$freo.core.http_file}/admin/entry_form?id={$entry.id}">編集</a>
+						<a href="{$freo.core.http_file}/admin/entry_delete?freo%5Btoken%5D={$token}&amp;id={$entry.id}" class="delete">削除</a>
+						<!--{/if}-->
+					</td>
+				</tr>
+				<!--{/foreach}-->
+			</tbody>
+		</table>
+		<div id="page">
+			<h2>ページ移動</h2>
+			<ul class="order">
+				<li><!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/admin/entry{if $freo.query.category}/{$freo.query.category}{/if}?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.status}&amp;status={$smarty.get.status}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のページ</a><!--{else}-->前のページ<!--{/if}--></li>
+				<li><!--{if $entry_page > $freo.query.page}--><a href="{$freo.core.http_file}/admin/entry{if $freo.query.category}/{$freo.query.category}{/if}?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.status}&amp;status={$smarty.get.status}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のページ</a><!--{else}-->次のページ<!--{/if}--></li>
+			</ul>
+			<ul class="direct">
+				<li>ページ</li>
+				<!--{section name='loop' loop=$entry_page}-->
+				<li><!--{if $smarty.section.loop.iteration != $freo.query.page}--><a href="{$freo.core.http_file}/admin/entry{if $freo.query.category}/{$freo.query.category}{/if}?page={$smarty.section.loop.iteration}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.status}&amp;status={$smarty.get.status}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">{$smarty.section.loop.iteration}</a><!--{else}-->{$smarty.section.loop.iteration}<!--{/if}--></li>
+				<!--{/section}-->
+			</ul>
+		</div>
+	</div>
+{include file='internals/admin/footer.html'}

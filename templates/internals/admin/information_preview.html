@@ -1,0 +1,38 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>インフォメーション登録</h2>
+		<ul>
+			<li>以下の内容で登録します。</li>
+		</ul>
+		<dl>
+			<!--{if $information.entry_id}-->
+			<dt>エントリーID</dt>
+				<dd>{$information.entry_id}</dd>
+			<!--{/if}-->
+			<!--{if $information.page_id}-->
+			<dt>ページID</dt>
+				<dd>{$information.page_id}</dd>
+			<!--{/if}-->
+			<!--{if $information.text}-->
+			<dt>本文</dt>
+				<dd>{$information.text|smarty:nodefaults}</dd>
+			<!--{/if}-->
+		</dl>
+		<div id="action">
+			<form action="{$freo.core.http_file}/admin/information_form" method="get">
+				<fieldset>
+					<legend>インフォメーション編集フォーム</legend>
+					<input type="hidden" name="session" value="1" />
+					<p><input type="submit" value="戻る" /></p>
+				</fieldset>
+			</form>
+			<form action="{$freo.core.http_file}/admin/information_preview" method="post">
+				<fieldset>
+					<legend>インフォメーション登録フォーム</legend>
+					<input type="hidden" name="freo[token]" value="{$token}" />
+					<p><input type="submit" value="登録する" /></p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+{include file='internals/admin/footer.html'}

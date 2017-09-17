@@ -1,0 +1,104 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;"><!--{if $freo.query.id}-->ID.{$freo.query.id}のユーザーを編集<!--{else}-->ユーザー登録<!--{/if}--></span></div>
+
+<!--{if $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{/if}-->
+ﾕｰｻﾞｰを入力してください。<br />
+<span style="color:#FF0000;">*</span>の付いた項目は入力必須項目です。<br />
+
+<br />
+<form action="{$freo.core.https_file}/admin/user_form{if $freo.query.id}?id={$freo.query.id}{/if}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<!--{if $freo.query.id}--><input type="hidden" name="user[id]" value="{$input.user.id}" /><!--{/if}-->
+<!--{if !$freo.query.id}-->
+ﾕｰｻﾞｰID<span style="color:#FF0000;">*</span><br />
+<input type="text" name="user[id]" size="20" value="{$input.user.id}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+ﾊﾟｽﾜｰﾄﾞ<span style="color:#FF0000;">*</span><br />
+<input type="text" name="user[password]" size="20" value="{$input.user.password}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+<!--{/if}-->
+権限<span style="color:#FF0000;">*</span><br />
+<select name="user[authority]">
+<option value="root"{if $input.user.authority == 'root'} selected="selected"{/if}>▼管理者</option>
+<option value="author"{if $input.user.authority == 'author'} selected="selected"{/if}>▼投稿者</option>
+<option value="guest"{if $input.user.authority == 'guest'} selected="selected"{/if}>▼ｹﾞｽﾄ</option>
+</select><br />
+名前<span style="color:#FF0000;">*</span><br />
+<input type="text" name="user[name]" size="20" value="{$input.user.name}" /><br />
+ﾒｰﾙｱﾄﾞﾚｽ<span style="color:#FF0000;">*</span><br />
+<input type="text" name="user[mail]" size="20" value="{$input.user.mail}" /><br />
+URL<br />
+<input type="text" name="user[url]" size="20" value="{$input.user.url}" /><br />
+紹介文<br />
+<textarea name="user[text]" cols="20" rows="5">{$input.user.text}</textarea><br />
+<!--{if $freo.config.entry.restriction or $freo.config.page.restriction}-->
+ｸﾞﾙｰﾌﾟ<br />
+<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refer_group'}-->
+<input type="checkbox" name="user_associate[group][{$refer_group.id}]" value="1"{if $input.user_associate.group[$refer_group.id]} checked="checked"{/if} />{$refer_group.name}<br />
+<!--{foreachelse}-->
+ｸﾞﾙｰﾌﾟが登録されていません。<br />
+<!--{/foreach}-->
+<!--{/if}-->
+<br />
+<div style="text-align:center;">
+<input type="submit" name="preview" value="確認する" />
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+<!--{if $freo.query.id}-->
+<!--{if $input.user.approved == 'no'}-->
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ID.{$freo.query.id}のユーザーを承認</span></div>
+
+このﾕｰｻﾞｰは未承認です。<br />
+このﾕｰｻﾞｰを承認するには、承認ﾎﾞﾀﾝを押してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/user_approve" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="承認する" />
+</div>
+</form>
+<!--{/if}-->
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ID.{$freo.query.id}のユーザーを削除</span></div>
+
+このﾕｰｻﾞｰを削除するには、削除ﾎﾞﾀﾝを押してください。<br />
+すでに登録された記事は、削除するか所有者を変更することができます。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/user_delete" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+登録された記事の扱い<br />
+<input type="radio" name="article" value="delete" checked="checked" />ﾕｰｻﾞｰが登録した記事も一括削除<br />
+<input type="radio" name="article" value="alter" />ﾕｰｻﾞｰが登録した記事の所有者を
+<select name="user">
+<!--{foreach from=$freo.refer.users|smarty:nodefaults item='refer_user'}-->
+<!--{if $refer_user.id != $freo.query.id}-->
+<option value="{$refer_user.id}">▼{$refer_user.id}</option>
+<!--{/if}-->
+<!--{/foreach}-->
+</select>
+に変更<br />
+<br />
+<div style="text-align:center;">
+<input type="submit" value="削除する" />
+</div>
+</form>
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

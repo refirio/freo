@@ -1,0 +1,169 @@
+{include file='header.html'}
+	<div id="content">
+		<!--{if $freo.config.view.information and !$smarty.get.category}-->
+		<div id="information">
+			<!--{if $information_entry}-->
+			<div class="entry">
+				<h2>{$information_entry.title}</h2>
+				<!--{if $information_entry.restriction == 'user' and !$information_entry_security}-->
+					<p class="attention">このエントリーは、登録ユーザーのみに公開されています。</p>
+				<!--{elseif $information_entry.restriction == 'group' and !$information_entry_security}-->
+					<p class="attention">このエントリーは、一部のグループのみに公開されています。</p>
+				<!--{elseif $information_entry.restriction == 'password' and !$information_entry_security}-->
+					<p class="attention">このエントリーは、パスワードで認証した人のみに公開されています。</p>
+				<!--{/if}-->
+				<!--{if $information_entry.file and $information_entry.image}-->
+					<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$information_entry.id}/{$information_entry.file}"><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_images/{$information_entry.id}/{$information_entry.image}" alt="{$information_entry.memo|default:$information_entry.file}" title="{$information_entry.memo|default:$information_entry.file}" width="{$information_entry_image.width}" height="{$information_entry_image.height}" /></a></p>
+				<!--{elseif $information_entry_thumbnail}-->
+					<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$information_entry.id}/{$information_entry.file}"><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_thumbnails/{$information_entry.id}/{$information_entry.file}" alt="{$information_entry.memo|default:$information_entry.file}" title="{$information_entry.memo|default:$information_entry.file}" width="{$information_entry_thumbnail.width}" height="{$information_entry_thumbnail.height}" /></a></p>
+				<!--{elseif $information_entry.file and $information_entry_file.width and $information_entry_file.height}-->
+					<p><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$information_entry.id}/{$information_entry.file}" alt="{$information_entry.memo|default:$information_entry.file}" title="{$information_entry.memo|default:$information_entry.file}" width="{$information_entry_file.width}" height="{$information_entry_file.height}" /></p>
+				<!--{elseif $information_entry.file}-->
+					<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$information_entry.id}/{$information_entry.file}">{$information_entry.memo|default:$information_entry.file}</a></p>
+				<!--{/if}-->
+				<!--{if $information_entry_text.excerpt}--><p>{$information_entry_text.excerpt|smarty:nodefaults|strip_tags|mb_truncate:200:'...'|escape}</p><!--{/if}-->
+				<ul class="continue">
+					<li><a href="{$freo.core.http_file}/view/{if $information_entry.code}{$information_entry.code}{else}{$information_entry.id}{/if}">この記事を表示</a></li>
+				</ul>
+			</div>
+			<!--{/if}-->
+			<!--{if $information_page}-->
+			<div class="page">
+				<h2>{$information_page.title}</h2>
+				<!--{if $information_page.restriction == 'user' and !$information_page_security}-->
+					<p class="attention">このページは、登録ユーザーのみに公開されています。</p>
+				<!--{elseif $information_page.restriction == 'group' and !$information_page_security}-->
+					<p class="attention">このページは、一部のグループのみに公開されています。</p>
+				<!--{elseif $information_page.restriction == 'password' and !$information_page_security}-->
+					<p class="attention">このページは、パスワードで認証した人のみに公開されています。</p>
+				<!--{/if}-->
+				<!--{if $information_page.file and $information_page.image}-->
+					<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}page_files/{$information_page.id}/{$information_page.file}"><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}page_images/{$information_page.id}/{$information_page.image}" alt="{$information_page.memo|default:$information_page.file}" title="{$information_page.memo|default:$information_page.file}" width="{$information_page_image.width}" height="{$information_page_image.height}" /></a></p>
+				<!--{elseif $information_page_thumbnail}-->
+					<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}page_files/{$information_page.id}/{$information_page.file}"><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}page_thumbnails/{$information_page.id}/{$information_page.file}" alt="{$information_page.memo|default:$information_page.file}" title="{$information_page.memo|default:$information_page.file}" width="{$information_page_thumbnail.width}" height="{$information_page_thumbnail.height}" /></a></p>
+				<!--{elseif $information_page.file and $information_page_file.width and $information_page_file.height}-->
+					<p><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}page_files/{$information_page.id}/{$information_page.file}" alt="{$information_page.memo|default:$information_page.file}" title="{$information_page.memo|default:$information_page.file}" width="{$information_page_file.width}" height="{$information_page_file.height}" /></p>
+				<!--{elseif $information_page.file}-->
+					<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}page_files/{$information_page.id}/{$information_page.file}">{$information_page.memo|default:$information_page.file}</a></p>
+				<!--{/if}-->
+				<!--{if $information_page_text.excerpt}--><p>{$information_page_text.excerpt|smarty:nodefaults|strip_tags|mb_truncate:200:'...'|escape}</p><!--{/if}-->
+				<ul class="continue">
+					<li><a href="{$freo.core.http_file}/page/{$information_page.id}">このページを表示</a></li>
+				</ul>
+			</div>
+			<!--{/if}-->
+			<!--{if $information.text}-->
+			<div class="text">
+				<h2>インフォメーション</h2>
+				<!--{if $information_text.excerpt}-->
+					{$information_text.excerpt|smarty:nodefaults}
+				<!--{/if}-->
+				<!--{if $information_text.more}-->
+				<ul class="continue">
+					<li><a href="{$freo.core.http_file}/information?continue=1#continue" title="インフォメーションの続き">続きを読む</a></li>
+				</ul>
+				<!--{/if}-->
+			</div>
+			<!--{/if}-->
+		</div>
+		<!--{/if}-->
+		<div id="entry">
+			<h2>エントリー</h2>
+			<!--{if $smarty.get.word}--><p>キーワード「{$smarty.get.word}」の検索結果は以下のとおりです。</p><!--{/if}-->
+			<!--{if $smarty.get.user}--><p>ユーザー「{$smarty.get.user}」の検索結果は以下のとおりです。</p><!--{/if}-->
+			<!--{if $smarty.get.tag}--><p>タグ「{$smarty.get.tag}」の検索結果は以下のとおりです。</p><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 4}--><p>{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。</p><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 6}--><p>{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。</p><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 8}--><p>{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。</p><!--{/if}-->
+			<!--{if $smarty.get.category}--><p>カテゴリー「{$freo.refer.categories[$smarty.get.category].name}」の検索結果は以下のとおりです。</p><!--{/if}-->
+			<!--{foreach from=$entries|smarty:nodefaults item='entry'}-->
+			<div class="entry">
+				<h3><a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}">{$entry.title}</a></h3>
+				<ul class="information">
+					<li>{$entry.datetime|date_format:'%Y/%m/%d %H:%M'}</li>
+					<!--{if $entry_associates[$entry.id].category}-->
+					<li>カテゴリー：<!--{foreach from=$entry_associates[$entry.id].category|smarty:nodefaults key='entry_category' item='entry_category' name='loop'}--><a href="{$freo.core.http_file}/category/{$entry_category}">{$freo.refer.categories[$entry_category].name}</a><!--{if !$smarty.foreach.loop.last}-->,&nbsp;<!--{/if}--><!--{/foreach}--></li>
+					<!--{/if}-->
+					<!--{if $entry_tags[$entry.id]}-->
+					<li>タグ：<!--{foreach from=$entry_tags[$entry.id]|smarty:nodefaults item='entry_tag' name='loop'}--><a href="{$freo.core.http_file}/entry?tag={$entry_tag|smarty:nodefaults|escape:'url'}">{$entry_tag}</a><!--{if !$smarty.foreach.loop.last}-->,&nbsp;<!--{/if}--><!--{/foreach}--></li>
+					<!--{/if}-->
+				</ul>
+				<div class="content">
+					<!--{if $entry.restriction == 'user' and !$entry_securities[$entry.id]}-->
+						<p class="attention">このエントリーは、登録ユーザーのみに公開されています。</p>
+					<!--{elseif $entry.restriction == 'group' and !$entry_securities[$entry.id]}-->
+						<p class="attention">このエントリーは、一部のグループのみに公開されています。</p>
+					<!--{elseif $entry.restriction == 'password' and !$entry_securities[$entry.id]}-->
+						<p class="attention">このエントリーは、パスワードで認証した人のみに公開されています。</p>
+					<!--{/if}-->
+					<!--{if $entry.file and $entry.image}-->
+						<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$entry.id}/{$entry.file}"><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_images/{$entry.id}/{$entry.image}" alt="{$entry.memo|default:$entry.file}" title="{$entry.memo|default:$entry.file}" width="{$entry_images[$entry.id].width}" height="{$entry_images[$entry.id].height}" /></a></p>
+					<!--{elseif $entry_thumbnails[$entry.id]}-->
+						<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$entry.id}/{$entry.file}"><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_thumbnails/{$entry.id}/{$entry.file}" alt="{$entry.memo|default:$entry.file}" title="{$entry.memo|default:$entry.file}" width="{$entry_thumbnails[$entry.id].width}" height="{$entry_thumbnails[$entry.id].height}" /></a></p>
+					<!--{elseif $entry.file and $entry_files[$entry.id].width and $entry_files[$entry.id].height}-->
+						<p><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$entry.id}/{$entry.file}" alt="{$entry.memo|default:$entry.file}" title="{$entry.memo|default:$entry.file}" width="{$entry_files[$entry.id].width}" height="{$entry_files[$entry.id].height}" /></p>
+					<!--{elseif $entry.file}-->
+						<p><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$entry.id}/{$entry.file}">{$entry.memo|default:$entry.file}</a></p>
+					<!--{/if}-->
+					<!--{if $entry_texts[$entry.id].excerpt}-->
+						{$entry_texts[$entry.id].excerpt|smarty:nodefaults}
+					<!--{/if}-->
+					<!--{if $entry_texts[$entry.id].more}-->
+						<p><a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}?continue=1#continue" title="No.{$entry.id}の続き">続きを読む</a></p>
+					<!--{/if}-->
+					<!--{if $entry.restriction == 'password' and !$smarty.session.security.entry[$entry.id] and $freo.user.authority != 'root' and $freo.user.authority != 'author'}-->
+						<form action="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}" method="post">
+							<fieldset>
+								<legend>認証フォーム</legend>
+								<dl>
+									<dt>パスワード</dt>
+										<dd><input type="text" name="entry[password]" size="30" value="" /></dd>
+								</dl>
+								<p><input type="submit" value="認証する" /></p>
+							</fieldset>
+						</form>
+					<!--{/if}-->
+					<!--{if $entry_associates[$entry.id].option}-->
+					<dl>
+						<!--{foreach from=$freo.refer.options|smarty:nodefaults item='option'}-->
+						<!--{if $entry_associates[$entry.id].option[$option.id] != ''}-->
+						<dt>{$option.name}</dt>
+							<dd><!--{if $option.type == 'file'}--><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_options/{$entry.id}/{$option.id}/{$entry_associates[$entry.id].option[$option.id]}">{$entry_associates[$entry.id].option[$option.id]}</a><!--{else}-->{$entry_associates[$entry.id].option[$option.id]|nl2br}<!--{/if}--></dd>
+						<!--{/if}-->
+						<!--{/foreach}-->
+					</dl>
+					<!--{/if}-->
+				</div>
+				<ul class="link">
+					<li><a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}" title="No.{$entry.id}の固定URL">この記事のURL</a></li>
+					<!--{if $entry.comment != 'closed'}-->
+					<li><a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}#comment" title="No.{$entry.id}のコメント">コメント({$plugin_comment_counts[$entry.id]})</a></li>
+					<!--{/if}-->
+					<!--{if $entry.trackback != 'closed'}-->
+					<li><a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}#trackback" title="No.{$entry.id}のトラックバック">トラックバック({$plugin_trackback_counts[$entry.id]})</a></li>
+					<!--{/if}-->
+					<!--{if $freo.user.authority == 'root' or $freo.user.id == $entry.user_id}-->
+					<li><a href="{$freo.core.http_file}/admin/entry_form?id={$entry.id}"><img src="{$freo.core.http_url}images/icons/edit.png" alt="編集" title="編集" width="16" height="16" /></a></li>
+					<!--{/if}-->
+				</ul>
+			</div>
+			<!--{/foreach}-->
+		</div>
+		<div id="page">
+			<h2>ページ移動</h2>
+			<ul class="order">
+				<li><!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/{if $freo.query.category}category/{$freo.query.category}{else}entry{/if}?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のページ</a><!--{else}-->前のページ<!--{/if}--></li>
+				<li><!--{if $entry_page > $freo.query.page}--><a href="{$freo.core.http_file}/{if $freo.query.category}category/{$freo.query.category}{else}entry{/if}?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のページ</a><!--{else}-->次のページ<!--{/if}--></li>
+			</ul>
+			<!--{if $smarty.get.word or $smarty.get.user or $smarty.get.tag or $smarty.get.date or $smarty.get.category}-->
+			<ul class="direct">
+				<li>ページ</li>
+				<!--{section name='loop' loop=$entry_page}-->
+				<li><!--{if $smarty.section.loop.iteration != $freo.query.page}--><a href="{$freo.core.http_file}/{if $freo.query.category}category/{$freo.query.category}{else}entry{/if}?page={$smarty.section.loop.iteration}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">{$smarty.section.loop.iteration}</a><!--{else}-->{$smarty.section.loop.iteration}<!--{/if}--></li>
+				<!--{/section}-->
+			</ul>
+			<!--{/if}-->
+		</div>
+	</div>
+{include file='utility.html'}
+{include file='footer.html'}

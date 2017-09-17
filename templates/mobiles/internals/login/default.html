@@ -1,0 +1,37 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}">戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ログイン</span></div>
+
+<!--{if $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{/if}-->
+
+ﾕｰｻﾞｰIDとﾊﾟｽﾜｰﾄﾞを入力してください。<br />
+<!--{if $freo.config.user.regist}-->
+<a href="{$freo.core.http_file}/regist">ﾕｰｻﾞｰ登録を行う</a>。<br />
+<!--{/if}-->
+<a href="{$freo.core.http_file}/reissue">ﾊﾟｽﾜｰﾄﾞを再発行する</a>。<br />
+
+<br />
+<form action="{$freo.core.https_file}/login?guid=ON" method="{$freo.agent.method}">
+<input type="hidden" name="freo[method]" value="post" />
+ﾕｰｻﾞｰID<br />
+<input type="text" name="freo[user]" size="20" value="{$smarty.post.freo.user}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+ﾊﾟｽﾜｰﾄﾞ<br />
+<input type="text" name="freo[password]" size="20" value="{$smarty.post.freo.password}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+<br />
+<input type="checkbox" name="freo[session]" value="keep" />ﾛｸﾞｲﾝ状態を記憶する<br />
+<br />
+<div style="text-align:center;">
+<input type="submit" value="認証する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

@@ -1,0 +1,56 @@
+{include file='header.html'}
+	<h2>ユーザー用ページ</h2>
+	<h3>No.{$freo.query.id}のコメントを編集</h3>
+	<!--{if $errors}-->
+	<ul class="attention">
+		<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+		<li>{$error}</li>
+		<!--{/foreach}-->
+	</ul>
+	<!--{elseif $freo.query.exec == 'update'}-->
+	<ul class="complete">
+		<li>コメントを編集しました。</li>
+	</ul>
+	<!--{/if}-->
+	<ul>
+		<li>コメントを入力してください。</li>
+	</ul>
+	<form action="{$freo.core.http_file}/user/comment_form?id={$freo.query.id}" method="post">
+		<fieldset>
+			<legend>登録フォーム</legend>
+			<input type="hidden" name="freo[token]" value="{$token}" />
+			<input type="hidden" name="comment[id]" value="{$input.comment.id}" />
+			<input type="hidden" name="comment[user_id]" value="{$input.comment.user_id}" />
+			<dl>
+				<dt>コメント</dt>
+					<dd><textarea name="comment[text]" cols="50" rows="10">{$input.comment.text}</textarea></dd>
+				<dt>閲覧制限</dt>
+					<dd>
+						<select name="comment[restriction]">
+							<option value="">全体に公開</option>
+							<!--{if $freo.user.id}--><option value="user"{if $input.comment.restriction == 'user'} selected="selected"{/if}>登録ユーザーに公開</option><!--{/if}-->
+							<option value="admin"{if $input.comment.restriction == 'admin'} selected="selected"{/if}>管理者に公開</option>
+						</select>
+					</dd>
+			</dl>
+			<p>
+				<input type="submit" name="preview" value="確認する" />
+				<input type="submit" value="登録する" />
+			</p>
+		</fieldset>
+	</form>
+	<!--{if $freo.query.id}-->
+	<h2>No.{$freo.query.id}のコメントを削除</h2>
+	<ul>
+		<li>このコメントを削除するには、<em>削除ボタン</em>を押してください。</li>
+	</ul>
+	<form action="{$freo.core.http_file}/user/comment_delete" method="get" class="delete">
+		<fieldset>
+			<legend>コメント削除フォーム</legend>
+			<input type="hidden" name="freo[token]" value="{$token}" />
+			<input type="hidden" name="id" value="{$freo.query.id}" />
+			<p><input type="submit" value="削除する" /></p>
+		</fieldset>
+	</form>
+	<!--{/if}-->
+{include file='footer.html'}

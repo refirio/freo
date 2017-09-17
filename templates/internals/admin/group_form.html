@@ -1,0 +1,52 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2><!--{if $freo.query.id}-->ID.{$freo.query.id}のグループを編集<!--{else}-->グループ登録<!--{/if}--></h2>
+		<!--{if $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>グループを入力してください。</li>
+			<li><abbr class="attention" title="入力必須">*</abbr> の付いた項目は入力必須項目です。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/group_form{if $freo.query.id}?id={$freo.query.id}{/if}" method="post">
+			<fieldset>
+				<legend>グループ登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<!--{if $freo.query.id}-->
+				<input type="hidden" name="group[id]" value="{$input.group.id}" />
+				<!--{/if}-->
+				<dl>
+					<!--{if !$freo.query.id}-->
+					<dt>グループID <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="group[id]" size="30" value="{$input.group.id}" /></dd>
+					<!--{/if}-->
+					<dt>グループ名 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="group[name]" size="50" value="{$input.group.name}" /></dd>
+					<dt>説明</dt>
+						<dd><textarea name="group[memo]" cols="50" rows="5">{$input.group.memo}</textarea></dd>
+					<dt>並び順 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="group[sort]" size="5" value="{$input.group.sort}" /></dd>
+				</dl>
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+		<!--{if $freo.query.id}-->
+		<h2>ID.{$freo.query.id}のグループを削除</h2>
+		<ul>
+			<li>このグループを削除するには、<em>削除ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/group_delete" method="get" class="delete">
+			<fieldset>
+				<legend>グループ削除フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="id" value="{$freo.query.id}" />
+				<p><input type="submit" value="削除する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+	</div>
+{include file='internals/admin/footer.html'}

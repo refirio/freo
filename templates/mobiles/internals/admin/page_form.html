@@ -1,0 +1,244 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;"><!--{if $freo.query.id}-->ID.{$freo.query.id}のページを編集<!--{else}-->ページ登録<!--{/if}--></span></div>
+
+<!--{if $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{/if}-->
+ﾍﾟｰｼﾞを入力してください。<br />
+<span style="color:#FF0000;">*</span>の付いた項目は入力必須項目です。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/page_form{if $freo.query.id}?id={$freo.query.id}{/if}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<!--{if $freo.query.id}-->
+<input type="hidden" name="page[id]" value="{$input.page.id}" />
+<!--{/if}-->
+ﾀｲﾄﾙ<span style="color:#FF0000;">*</span><br />
+<input type="text" name="page[title]" size="20" value="{$input.page.title}" /><br />
+本文<br />
+<textarea name="page[text]" cols="20" rows="5">{$input.page.text}</textarea><br />
+<!--{foreach from=$options|smarty:nodefaults item='option'}-->
+{$option.name}<!--{if $option.required == 'yes'}--><span style="color:#FF0000;">*</span><!--{/if}--><br />
+<!--{if $option.type == 'text'}-->
+<input type="text" name="page_associate[option][{$option.id}]" size="20" value="{$input.page_associate.option[$option.id]}" /><br />
+<!--{elseif $option.type == 'textarea'}-->
+<textarea name="page_associate[option][{$option.id}]" cols="20" rows="5">{$input.page_associate.option[$option.id]}</textarea><br />
+<!--{elseif $option.type == 'select'}-->
+<select name="page_associate[option][{$option.id}]">
+<option value="">▼選択してください</option>
+<!--{foreach from=$option_texts[$option.id]|smarty:nodefaults item='option_text'}-->
+<option value="{$option_text}"{if $input.page_associate.option[$option.id] == $option_text} selected="selected"{/if} >▼{$option_text}</option>
+<!--{/foreach}-->
+</select><br />
+<!--{elseif $option.type == 'radio'}-->
+<!--{if $option.required == 'no'}-->
+<input type="radio" name="page_associate[option][{$option.id}]" value=""{if !$input.page_associate.option[$option.id]} checked="checked"{/if} />選択なし<br />
+<!--{/if}-->
+<!--{foreach from=$option_texts[$option.id]|smarty:nodefaults item='option_text' name='loop'}-->
+<input type="radio" name="page_associate[option][{$option.id}]" value="{$option_text}"{if $input.page_associate.option[$option.id] == $option_text} checked="checked"{/if} />{$option_text}<br />
+<!--{/foreach}-->
+<!--{elseif $option.type == 'checkbox'}-->
+<!--{assign var='options' value=$input.page_associate.option[$option.id]|explode:"\n"}-->
+<!--{foreach from=$option_texts[$option.id]|smarty:nodefaults item='option_text' name='loop'}-->
+<input type="checkbox" name="page_associate[option][{$option.id}][]" value="{$option_text}"{if $option_text|in_array:$options} checked="checked"{/if} />{$option_text}<br />
+<!--{/foreach}-->
+<!--{elseif $option.type == 'file'}-->
+<!--{if $input.page_associate.option[$option.id]}-->
+<input type="checkbox" name="page_associate[option_remove][{$option.id}]" value="{$input.page_associate.option[$option.id]}"{if $input.page_associate.option_remove[$option.id]} checked="checked"{/if} />{$input.page_associate.option[$option.id]}を削除<br />
+<input type="hidden" name="page_associate[option][{$option.id}]" value="{$input.page_associate.option[$option.id]}" />
+<!--{/if}-->
+<!--{/if}-->
+<!--{/foreach}-->
+<br />
+<div style="text-align:center;">
+<input type="submit" name="preview" value="確認する" />
+<input type="submit" value="登録する" />
+</div>
+
+<!--{if $freo.config.page.file and $freo.query.id}-->
+<br />
+■添付ﾌｧｲﾙ<br />
+<br />
+ﾌｧｲﾙ<br />
+<!--{if $input.page.file}-->
+<input type="checkbox" name="page[file_remove]" value="{$input.page.file}"{if $input.page.file_remove} checked="checked"{/if} />{$input.page.file}を削除<br />
+<input type="hidden" name="page[file]" value="{$input.page.file}" />
+<!--{/if}-->
+<br />
+ﾌｧｲﾙのｲﾒｰｼﾞ<br />
+<!--{if $input.page.image}-->
+<input type="checkbox" name="page[image_remove]" value="{$input.page.image}"{if $input.page.image_remove} checked="checked"{/if} />{$input.page.image}を削除<br />
+<input type="hidden" name="page[image]" value="{$input.page.image}" />
+<!--{/if}-->
+<br />
+ﾌｧｲﾙの説明<br />
+<input type="text" name="page[memo]" size="20" value="{$input.page.memo}" /><br />
+<!--{else}-->
+<input type="hidden" name="page[memo]" value="{$input.page.memo}" />
+<!--{/if}-->
+
+<br />
+■ﾍﾟｰｼﾞ情報<br />
+<br />
+
+<!--{if !$freo.query.id}-->
+ﾍﾟｰｼﾞID<span style="color:#FF0000;">*</span><br />
+<input type="text" name="page[id]" size="20" value="{$input.page.id}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+<!--{/if}-->
+親ID<br />
+<input type="text" name="page[pid]" size="20" value="{$input.page.pid}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+日時<span style="color:#FF0000;">*</span><br />
+<input type="text" name="page[datetime][year]" size="4" value="{$input.page.datetime|date_format:'%Y'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />年<input type="text" name="page[datetime][month]" size="2" value="{$input.page.datetime|date_format:'%m'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />月<input type="text" name="page[datetime][day]" size="2" value="{$input.page.datetime|date_format:'%d'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />日<input type="text" name="page[datetime][hour]" size="2" value="{$input.page.datetime|date_format:'%H'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />時<input type="text" name="page[datetime][minute]" size="2" value="{$input.page.datetime|date_format:'%M'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />分<input type="text" name="page[datetime][second]" size="2" value="{$input.page.datetime|date_format:'%S'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />秒<br />
+<br />
+ﾍﾟｰｼﾞの状態<span style="color:#FF0000;">*</span><br />
+<select name="page[status]">
+<option value="publish"{if $input.page.status == 'publish'} selected="selected"{/if}>▼公開</option>
+<option value="private"{if $input.page.status == 'private'} selected="selected"{/if}>▼未公開</option>
+<option value="future"{if $input.page.status == 'future'} selected="selected"{/if}>▼予約公開</option>
+</select><br />
+ﾍﾟｰｼﾞの表示<span style="color:#FF0000;">*</span><br />
+<select name="page[display]">
+<option value="publish"{if $input.page.display == 'publish'} selected="selected"{/if}>▼初期画面に表示する</option>
+<option value="private"{if $input.page.display == 'private'} selected="selected"{/if}>▼初期画面に表示しない</option>
+</select>
+ｺﾒﾝﾄの受付<span style="color:#FF0000;">*</span><br />
+<select name="page[comment]">
+<option value="open"{if $input.page.comment == 'open'} selected="selected"{/if}>▼受け付ける</option>
+<option value="closed"{if $input.page.comment == 'closed'} selected="selected"{/if}>▼受け付けない</option>
+<option value="view"{if $input.page.comment == 'view'} selected="selected"{/if}>▼表示のみ</option>
+<option value="user"{if $input.page.comment == 'user'} selected="selected"{/if}>▼登録ﾕｰｻﾞｰから受け付ける</option>
+</select><br />
+ﾄﾗｯｸﾊﾞｯｸの受付<span style="color:#FF0000;">*</span><br />
+<select name="page[trackback]">
+<option value="open"{if $input.page.trackback == 'open'} selected="selected"{/if}>▼受け付ける</option>
+<option value="closed"{if $input.page.trackback == 'closed'} selected="selected"{/if}>▼受け付けない</option>
+<option value="view"{if $input.page.trackback == 'view'} selected="selected"{/if}>▼表示のみ</option>
+</select><br />
+<!--{if $freo.config.page.tag}-->
+ﾀｸﾞ<br />
+<input type="text" name="page[tag]" size="20" value="{$input.page.tag}" /><br />
+<!--{else}-->
+<input type="hidden" name="page[tag]" value="" />
+<!--{/if}-->
+並び順<span style="color:#FF0000;">*</span><br />
+<input type="text" name="page[sort]" size="5" value="{$input.page.sort}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} /><br />
+<!--{if $freo.config.page.close}-->
+ｴﾝﾄﾘｰの公開終了<span style="color:#FF0000;">*</span><br />
+<select name="page[close_set]">
+<option value="1">▼指定する</option>
+<option value="0"{if !$input.page.close} selected="selected"{/if}>▼指定しない</option>
+</select><br />
+<!--{else}-->
+<input type="hidden" name="page[close_set]" value="" />
+<!--{/if}-->
+<!--{if $freo.config.page.close}-->
+公開終了日時<br />
+<input type="text" name="page[close][year]" size="4" value="{$input.page.close|default:$input.page.datetime|date_format:'%Y'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />年<input type="text" name="page[close][month]" size="2" value="{$input.page.close|default:$input.page.datetime|date_format:'%m'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />月<input type="text" name="page[close][day]" size="2" value="{$input.page.close|default:$input.page.datetime|date_format:'%d'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />日<input type="text" name="page[close][hour]" size="2" value="{$input.page.close|default:$input.page.datetime|date_format:'%H'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />時<input type="text" name="page[close][minute]" size="2" value="{$input.page.close|default:$input.page.datetime|date_format:'%M'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />分<input type="text" name="page[close][second]" size="2" value="{$input.page.close|default:$input.page.datetime|date_format:'%S'}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} />秒
+<!--{else}-->
+<input type="hidden" name="page[close]" value="" />
+<!--{/if}-->
+
+<!--{if $freo.config.page.trackback}-->
+<br />
+■通知<br />
+<br />
+ﾄﾗｯｸﾊﾞｯｸ送信先<br />
+<textarea name="page[trackback_url]" cols="20" rows="5">{$input.page.trackback_url}</textarea><br />
+<!--{else}-->
+<input type="hidden" name="page[trackback_url]" value="" />
+<!--{/if}-->
+
+<!--{if $freo.config.page.restriction}-->
+<br />
+■閲覧制限<br />
+<br />
+制限<span style="color:#FF0000;">*</span><br />
+<select name="page[restriction]" id="restriction">
+<option value="">▼制限なし</option>
+<option value="user"{if $input.page.restriction == 'user'} selected="selected"{/if}>▼ﾕｰｻﾞｰ登録で制限</option>
+<option value="group"{if $input.page.restriction == 'group'} selected="selected"{/if}>▼ｸﾞﾙｰﾌﾟで制限</option>
+<option value="password"{if $input.page.restriction == 'password'} selected="selected"{/if}>▼ﾊﾟｽﾜｰﾄﾞで制限</option>
+</select><br />
+ｸﾞﾙｰﾌﾟで制限<br />
+<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refer_group'}-->
+<input type="checkbox" name="page_associate[group][{$refer_group.id}]" value="1"{if $input.page_associate.group[$refer_group.id]} checked="checked"{/if} />{$refer_group.name}<br />
+<!--{foreachelse}-->
+ｸﾞﾙｰﾌﾟが登録されていません。<br />
+<!--{/foreach}-->
+ﾊﾟｽﾜｰﾄﾞで制限<br />
+<input type="text" name="page[password]" size="20" value="{$input.page.password}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+<!--{else}-->
+<input type="hidden" name="page[restriction]" value="" />
+<input type="hidden" name="page[password]" value="" />
+<!--{/if}-->
+
+<!--{if $freo.config.page.filter}-->
+<br />
+■ﾌｨﾙﾀｰ<br />
+<br />
+ﾌｨﾙﾀｰで制限<br />
+<!--{foreach from=$freo.refer.filters|smarty:nodefaults item='refer_filter'}-->
+<input type="checkbox" name="page_associate[filter][{$refer_filter.id}]" value="1"{if $input.page_associate.filter[$refer_filter.id]} checked="checked"{/if} />{$refer_filter.name}<br />
+<!--{foreachelse}-->
+ﾌｨﾙﾀｰが登録されていません。<br />
+<!--{/foreach}-->
+<!--{/if}-->
+<br />
+<div style="text-align:center;">
+<input type="submit" name="preview" value="確認する" />
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+<!--{if $freo.query.id}-->
+<!--{if $freo.user.authority == 'root'}-->
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ID.{$freo.query.id}のページを削除</span></div>
+
+登録ﾕｰｻﾞｰ:{$input.page.user_id}<br />
+新規投稿日時:{$input.page.created|date_format:'%Y/%m/%d %H:%M'}<br />
+最終編集日時:{$input.page.modified|date_format:'%Y/%m/%d %H:%M'}<br />
+
+<!--{if $input.page.approved == 'no'}-->
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ID.{$freo.query.id}のページを承認</span></div>
+
+このﾍﾟｰｼﾞは未承認です。<br />
+このﾍﾟｰｼﾞを承認するには、承認ﾎﾞﾀﾝを押してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/page_approve" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="承認する" />
+</div>
+</form>
+<!--{/if}-->
+<!--{/if}-->
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ID.{$freo.query.id}のページを削除</span></div>
+
+このﾍﾟｰｼﾞを削除するには、削除ﾎﾞﾀﾝを押してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/page_delete" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="削除する" />
+</div>
+</form>
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

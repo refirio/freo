@@ -1,0 +1,8 @@
+<!--{foreach from=$freo.refer.categories|smarty:nodefaults item='refer_category'}-->
+	<!--{if $refer_category.pid == $pid}-->
+	<option value="{$refer_category.id}"{if $freo.query.category == $refer_category.id} selected="selected"{/if}>{if $refer_category.pid}　{/if}{$refer_category.name}</option>
+	<!--{assign var="pid" value=$refer_category.id}-->
+	{include file='internals/admin/entry_category.html'}
+	<!--{assign var="pid" value=$refer_category.pid}-->
+	<!--{/if}-->
+<!--{/foreach}-->

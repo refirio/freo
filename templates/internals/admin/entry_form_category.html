@@ -1,0 +1,17 @@
+<!--{foreach from=$freo.refer.categories|smarty:nodefaults item='refer_category'}-->
+	<!--{if $refer_category.pid == $pid}-->
+	<!--{php}if (!$flag) :{/php}--><ul><!--{php}endif;{/php}-->
+	<li>
+		<input type="checkbox" name="entry_associate[category][{$refer_category.id}]" id="label_category_{$refer_category.id}" value="1"{if $input.entry_associate.category[$refer_category.id]} checked="checked"{/if} /> <label for="label_category_{$refer_category.id}">{$refer_category.name}</label>
+		<!--{assign var="pid" value=$refer_category.id}-->
+		{include file='internals/admin/entry_form_category.html'}
+		<!--{assign var="pid" value=$refer_category.pid}-->
+	</li>
+	<!--{php}$flag = 1;{/php}-->
+	<!--{/if}-->
+<!--{foreachelse}-->
+<ul>
+	<li>カテゴリーが登録されていません。</li>
+</ul>
+<!--{/foreach}-->
+<!--{php}if ($flag) :{/php}--></ul><!--{php}endif;{/php}-->

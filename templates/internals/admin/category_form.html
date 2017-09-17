@@ -1,0 +1,68 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2><!--{if $freo.query.id}-->ID.{$freo.query.id}のカテゴリーを編集<!--{else}-->カテゴリー登録<!--{/if}--></h2>
+		<!--{if $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>カテゴリーを入力してください。</li>
+			<li><abbr class="attention" title="入力必須">*</abbr> の付いた項目は入力必須項目です。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/category_form{if $freo.query.id}?id={$freo.query.id}{/if}" method="post">
+			<fieldset>
+				<legend>カテゴリー登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<!--{if $freo.query.id}-->
+				<input type="hidden" name="category[id]" value="{$input.category.id}" />
+				<!--{/if}-->
+				<dl>
+					<!--{if !$freo.query.id}-->
+					<dt>カテゴリーID <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="category[id]" size="30" value="{$input.category.id}" /></dd>
+					<!--{/if}-->
+					<dt>親ID</dt>
+						<dd>
+							<select name="category[pid]">
+								<option value="">なし</option>
+								<!--{foreach from=$categories|smarty:nodefaults item='category'}-->
+								<option value="{$category.id}"{if $input.category.pid == $category.id} selected="selected"{/if} >{$category.id}</option>
+								<!--{/foreach}-->
+							</select>
+						</dd>
+					<dt>カテゴリー名 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="category[name]" size="50" value="{$input.category.name}" /></dd>
+					<dt>説明</dt>
+						<dd><textarea name="category[memo]" cols="50" rows="5">{$input.category.memo}</textarea></dd>
+					<dt>カテゴリーの表示 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd>
+							<select name="category[display]">
+								<option value="publish"{if $input.category.display == 'publish'} selected="selected"{/if}>一覧に表示する</option>
+								<option value="private"{if $input.category.display == 'private'} selected="selected"{/if}>一覧に表示しない</option>
+							</select>
+						</dd>
+					<dt>並び順 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="category[sort]" size="5" value="{$input.category.sort}" /></dd>
+				</dl>
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+		<!--{if $freo.query.id}-->
+		<h2>ID.{$freo.query.id}のカテゴリーを削除</h2>
+		<ul>
+			<li>このカテゴリーを削除するには、<em>削除ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/category_delete" method="get" class="delete">
+			<fieldset>
+				<legend>カテゴリー削除フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="id" value="{$freo.query.id}" />
+				<p><input type="submit" value="削除する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+	</div>
+{include file='internals/admin/footer.html'}

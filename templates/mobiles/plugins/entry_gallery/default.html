@@ -1,0 +1,27 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}">戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ギャラリー</span></div>
+
+<!--{if $smarty.get.word}-->ｷｰﾜｰﾄﾞ「{$smarty.get.word}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.user}-->ﾕｰｻﾞｰ「{$smarty.get.user}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.tag}-->ﾀｸﾞ「{$smarty.get.tag}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 4}-->{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 6}-->{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 8}-->{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.category}-->ｶﾃｺﾞﾘｰ「{$freo.refer.categories[$smarty.get.category].name}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+
+<br />
+<!--{foreach from=$entries|smarty:nodefaults item='entry'}-->
+<a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}"><!--{if $entry.image}--><img src="{$freo.core.http_file}/file/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}?type=image" alt="{$entry.memo|default:$entry.title}" title="{$entry.memo|default:$entry.title}" width="{$entry_images[$entry.id].width}" height="{$entry_images[$entry.id].height}" /><!--{else}-->{$entry.memo|default:$entry.title}<!--{/if}--></a><br />
+<!--{/foreach}-->
+
+<!--{if $freo.config.plugin.entry_gallery.limit}-->
+<br />
+<!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/entry_gallery/{if $freo.query.category}category/{$freo.query.category}{/if}?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のﾍﾟｰｼﾞ</a><!--{else}-->前のﾍﾟｰｼﾞ<!--{/if}--> |
+<!--{if $entry_page > $freo.query.page}--><a href="{$freo.core.http_file}/entry_gallery/{if $freo.query.category}category/{$freo.query.category}{else}entry{/if}?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のﾍﾟｰｼﾞ</a><!--{else}-->次のﾍﾟｰｼﾞ<!--{/if}-->
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

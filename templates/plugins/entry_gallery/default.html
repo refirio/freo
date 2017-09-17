@@ -1,0 +1,33 @@
+{include file='header.html'}
+	<div id="gallery">
+		<h2>ギャラリー</h2>
+		<!--{if $smarty.get.word}--><p>キーワード「{$smarty.get.word}」の検索結果は以下のとおりです。</p><!--{/if}-->
+		<!--{if $smarty.get.user}--><p>ユーザー「{$smarty.get.user}」の検索結果は以下のとおりです。</p><!--{/if}-->
+		<!--{if $smarty.get.tag}--><p>タグ「{$smarty.get.tag}」の検索結果は以下のとおりです。</p><!--{/if}-->
+		<!--{if $smarty.get.date|count_characters == 4}--><p>{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。</p><!--{/if}-->
+		<!--{if $smarty.get.date|count_characters == 6}--><p>{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。</p><!--{/if}-->
+		<!--{if $smarty.get.date|count_characters == 8}--><p>{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。</p><!--{/if}-->
+		<!--{if $smarty.get.category}--><p>カテゴリー「{$freo.refer.categories[$smarty.get.category].name}」の検索結果は以下のとおりです。</p><!--{/if}-->
+		<!--{foreach from=$entries|smarty:nodefaults item='entry'}-->
+		<div class="gallery">
+			<p class="picture"><a href="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}"><!--{if $entry.image}--><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_images/{$entry.id}/{$entry.image}" alt="{$entry.memo|default:$entry.title}" title="{$entry.memo|default:$entry.title}" /><!--{elseif $entry_thumbnails[$entry.id]}--><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_thumbnails/{$entry.id}/{$entry.file}" alt="{$entry.memo|default:$entry.title}" title="{$entry.memo|default:$entry.title}" /><!--{elseif $entry.file}--><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}entry_files/{$entry.id}/{$entry.file}" alt="{$entry.memo|default:$entry.title}" title="{$entry.memo|default:$entry.title}" /><!--{elseif $entry_medias[$entry.id].file}--><img src="{$entry_medias[$entry.id].file}" alt="{$entry.memo|default:$entry.title}" title="{$entry.memo|default:$entry.title}" /><!--{else}--><span class="empty">NO IMAGE</span><!--{/if}--></a></p>
+			<p class="comment">{$entry.memo|default:$entry.title}</p>
+		</div>
+		<!--{/foreach}-->
+	</div>
+	<!--{if $freo.config.plugin.entry_gallery.limit}-->
+	<div id="page">
+		<h2>ページ移動</h2>
+		<ul class="order">
+			<li><!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/entry_gallery/{if $freo.query.category}category/{$freo.query.category}{/if}?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のページ</a><!--{else}-->前のページ<!--{/if}--></li>
+			<li><!--{if $entry_page > $freo.query.page}--><a href="{$freo.core.http_file}/entry_gallery/{if $freo.query.category}category/{$freo.query.category}{else}entry{/if}?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のページ</a><!--{else}-->次のページ<!--{/if}--></li>
+		</ul>
+		<ul class="direct">
+			<li>ページ</li>
+			<!--{section name='loop' loop=$entry_page}-->
+			<li><!--{if $smarty.section.loop.iteration != $freo.query.page}--><a href="{$freo.core.http_file}/entry_gallery/{if $freo.query.category}category/{$freo.query.category}{/if}?page={$smarty.section.loop.iteration}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">{$smarty.section.loop.iteration}</a><!--{else}-->{$smarty.section.loop.iteration}<!--{/if}--></li>
+			<!--{/section}-->
+		</ul>
+	</div>
+	<!--{/if}-->
+{include file='footer.html'}

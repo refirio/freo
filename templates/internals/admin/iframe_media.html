@@ -1,0 +1,116 @@
+{include file='internals/admin/iframe_header.html'}
+	<h2>メディア管理</h2>
+	<!--{if $freo.query.error}-->
+	<ul class="attention">
+		<li>不正なアクセスです。</li>
+	</ul>
+	<!--{elseif $freo.query.exec}-->
+	<ul class="complete">
+		<!--{if $freo.query.exec == 'insert'}-->
+		<li>ファイルを新規に登録しました。</li>
+		<!--{elseif $freo.query.exec == 'edit_thumbnail'}-->
+		<li>サムネイル画像を登録しました。</li>
+		<!--{elseif $freo.query.exec == 'edit_file'}-->
+		<li>ファイルを編集しました。</li>
+		<!--{elseif $freo.query.exec == 'edit_memo'}-->
+		<li>ファイルの説明を登録しました。</li>
+		<!--{elseif $freo.query.exec == 'insert_file'}-->
+		<li>ファイルを新規に作成しました。</li>
+		<!--{elseif $freo.query.exec == 'rename_file'}-->
+		<li>ファイル名を変更しました。</li>
+		<!--{elseif $freo.query.exec == 'move_file'}-->
+		<li>ファイルを移動しました。</li>
+		<!--{elseif $freo.query.exec == 'delete_file'}-->
+		<li>ファイルを削除しました。</li>
+		<!--{elseif $freo.query.exec == 'insert_directory'}-->
+		<li>ディレクトリを新規に作成しました。</li>
+		<!--{elseif $freo.query.exec == 'restrict_directory'}-->
+		<li>ディレクトリの閲覧制限を設定しました。</li>
+		<!--{elseif $freo.query.exec == 'rename_directory'}-->
+		<li>ディレクトリ名を変更しました。</li>
+		<!--{elseif $freo.query.exec == 'move_directory'}-->
+		<li>ディレクトリを移動しました。</li>
+		<!--{elseif $freo.query.exec == 'delete_directory'}-->
+		<li>ディレクトリを削除しました。</li>
+		<!--{/if}-->
+	</ul>
+	<!--{/if}-->
+	<!--{if $restriction}-->
+	<ul>
+		<li><strong>このディレクトリには、閲覧制限が設定されています。</strong></li>
+	</ul>
+	<!--{/if}-->
+	<ul>
+		<li><!--{if $freo.query.path}--><code>{$freo.query.path}</code> に<!--{/if}-->登録されたメディアは以下のとおりです。</li>
+		<li><a href="{$freo.core.http_file}/admin/media_form{if $freo.query.path}?path={$freo.query.path}&amp;{else}?{/if}type=iframe"><!--{if $freo.query.path}-->この階層に<!--{/if}-->メディアを登録する</a>。</li>
+		<li><a href="{$freo.core.http_file}/admin/media_form?directory=1{if $freo.query.path}&amp;path={$freo.query.path}{/if}&amp;type=iframe"><!--{if $freo.query.path}-->この階層に<!--{/if}-->ディレクトリを作成する</a>。</li>
+	</ul>
+	<table summary="メディア" id="media" class="tablesorter">
+		<thead>
+			<tr>
+				<th>メディア</th>
+				<th>更新日時</th>
+				<th>サイズ</th>
+				<th>画像</th>
+				<th>作業</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>メディア</th>
+				<th>更新日時</th>
+				<th>サイズ</th>
+				<th>画像</th>
+				<th>作業</th>
+			</tr>
+		</tfoot>
+		<tbody>
+			<!--{if $freo.query.path}-->
+			<tr>
+				<td><img src="{$freo.core.http_url}images/icons/directory.png" alt="ディレクトリ" width="16" height="16" /> <code>..</code></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><a href="{$freo.core.http_file}/admin/media?path={$parent}&amp;type=iframe">上の階層へ</a></td>
+			</tr>
+			<!--{/if}-->
+			<!--{foreach from=$directories|smarty:nodefaults item='directory'}-->
+			<tr>
+				<td><img src="{$freo.core.http_url}images/icons/{if $directory.restriction}directory_restricted.png{else}directory.png{/if}" alt="ディレクトリ" width="16" height="16" /> <code>{$directory.name}</code></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					<a href="{$freo.core.http_file}/admin/media?path={$freo.query.path}{$directory.name}/&amp;type=iframe">開く</a>
+					<a href="{$freo.core.http_file}/admin/media_form?directory=1&amp;name={$directory.name}&amp;path={$freo.query.path}&amp;type=iframe">編集</a>
+					<a href="{$freo.core.http_file}/admin/media_delete?freo%5Btoken%5D={$token}&amp;directory=1&amp;name={$directory.name}/&amp;path={$freo.query.path}&amp;type=iframe" class="delete">削除</a>
+				</td>
+			</tr>
+			<!--{/foreach}-->
+			<!--{foreach from=$files|smarty:nodefaults item='file'}-->
+			<tr>
+				<td><img src="{$freo.core.http_url}images/icons/file.png" alt="ファイル" width="16" height="16" /> <code{if $file.memo} title="{$file.memo}"{/if}>{$file.name}</code></td>
+				<td><span title="{$file.datetime|date_format:'%Y/%m/%d %H:%M:%S'}"><!--{if $file.datetime|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$file.datetime|date_format:'%H:%M:%S'}<!--{else}-->{$file.datetime|date_format:'%Y/%m/%d'}<!--{/if}--></span></td>
+				<td class="number"><span title="{$file.size} byte"><!--{if $file.size >= 1024}-->{$file.size/1024|intval}KB<!--{elseif $file.size > 0}-->1KB<!--{else}-->0KB<!--{/if}--></span></td>
+				<td><!--{if $file.width and $file.height and !$restriction}--><a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}medias/{$freo.query.path}{$file.name}"><img src="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}{if $file.thumbnail.width and $file.thumbnail.height}media_thumbnails{else}medias{/if}/{$freo.query.path}{$file.name}" alt="{$file.name}（{$file.width}px × {$file.height}px）" title="{$file.name}（{$file.width}px × {$file.height}px）" width="30" /></a><!--{/if}--></td>
+				<td>
+					<a href="{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}medias/{$freo.query.path}{$file.name}"
+					{if $restriction}
+					title="&lt;a href=&quot;{$freo.core.http_file}/file/media/{$freo.query.path}{$file.name}&quot;&gt;{$file.memo|default:$file.name}&lt;/a&gt;"
+					{elseif $file.thumbnail.width and $file.thumbnail.height}
+					title="&lt;a href=&quot;{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}medias/{$freo.query.path}{$file.name}&quot;&gt;&lt;img src=&quot;{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}media_thumbnails/{$freo.query.path}{$file.name}&quot; alt=&quot;{$file.memo|default:$file.name}&quot; title=&quot;{$file.memo|default:$file.name}&quot; width=&quot;{$file.thumbnail.width}&quot; height=&quot;{$file.thumbnail.height}&quot; /&gt;&lt;/a&gt;"
+					{elseif $file.width and $file.height}
+					title="&lt;img src=&quot;{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}medias/{$freo.query.path}{$file.name}&quot; alt=&quot;{$file.memo|default:$file.name}&quot; title=&quot;{$file.memo|default:$file.name}&quot; width=&quot;{$file.width}&quot; height=&quot;{$file.height}&quot; /&gt;"
+					{else}
+					title="&lt;a href=&quot;{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}medias/{$freo.query.path}{$file.name}&quot;&gt;{$file.memo|default:$file.name}&lt;/a&gt;"
+					{/if}
+					class="insert">挿入</a>
+					<a href="{if $restriction}{$freo.core.http_file}/file/media/{$freo.query.path}{$file.name}{else}{$freo.core.http_url}{$smarty.const.FREO_FILE_DIR}medias/{$freo.query.path}{$file.name}{/if}"{if !$file.width or !$file.height} class="colorbox"{/if}>確認</a>
+					<a href="{$freo.core.http_file}/admin/media_form?name={$file.name}&amp;path={$freo.query.path}&amp;type=iframe">編集</a>
+					<a href="{$freo.core.http_file}/admin/media_delete?freo%5Btoken%5D={$token}&amp;name={$file.name}&amp;path={$freo.query.path}&amp;type=iframe" class="delete">削除</a>
+				</td>
+			</tr>
+			<!--{/foreach}-->
+		</tbody>
+	</table>
+{include file='internals/admin/iframe_footer.html'}

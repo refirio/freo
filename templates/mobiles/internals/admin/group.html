@@ -1,0 +1,29 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">グループ管理</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $freo.query.exec}-->
+<div style="color:#00AA00;">
+<!--{if $freo.query.exec == 'insert'}-->
+ｸﾞﾙｰﾌﾟを新規に登録しました。
+<!--{elseif $freo.query.exec == 'update'}-->
+ID.{$freo.query.id}のｸﾞﾙｰﾌﾟを編集しました。
+<!--{elseif $freo.query.exec == 'delete'}-->
+ID.{$freo.query.id}のｸﾞﾙｰﾌﾟを削除しました。
+<!--{/if}-->
+</div>
+<!--{/if}-->
+登録されたｸﾞﾙｰﾌﾟは以下のとおりです。<br />
+<a href="{$freo.core.http_file}/admin/group_form">ｸﾞﾙｰﾌﾟを登録する</a>。<br />
+
+<br />
+<!--{foreach from=$groups|smarty:nodefaults item='group'}-->
+▼[{$group.id}]<a href="{$freo.core.http_file}/admin/group_form?id={$group.id}">{$group.name}</a><br />
+<!--{/foreach}-->
+
+{include file='mobiles/footer.html'}

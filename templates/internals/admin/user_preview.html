@@ -1,0 +1,57 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>ユーザー登録</h2>
+		<ul>
+			<li>以下の内容で登録します。</li>
+		</ul>
+		<dl>
+			<dt>ユーザーID</dt>
+				<dd>{$user.id}</dd>
+			<dt>パスワード</dt>
+				<dd>{$user.password}</dd>
+			<dt>承認</dt>
+				<dd><!--{if $user.approved == 'yes'}-->承認済<!--{elseif $user.approved == 'no'}-->未承認<!--{/if}--></dd>
+			<dt>権限</dt>
+				<dd><!--{if $user.authority == 'root'}-->管理者<!--{elseif $user.authority == 'author'}-->投稿者<!--{elseif $user.authority == 'guest'}-->ゲスト<!--{/if}--></dd>
+			<dt>名前</dt>
+				<dd>{$user.name}</dd>
+			<dt>メールアドレス</dt>
+				<dd>{$user.mail}</dd>
+			<!--{if $user.url}-->
+			<dt>URL</dt>
+				<dd>{$user.url}</dd>
+			<!--{/if}-->
+			<!--{if $user.text}-->
+			<dt>紹介文</dt>
+				<dd>{$user.text|nl2p}</dd>
+			<!--{/if}-->
+			<!--{if $user_associate.group}-->
+			<dt>グループ</dt>
+				<dd>
+					<ul>
+						<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refers_group'}-->
+						<!--{if $user_associate.group[$refers_group.id]}--><li>{$refers_group.name}</li><!--{/if}-->
+						<!--{/foreach}-->
+					</ul>
+				</dd>
+			<!--{/if}-->
+		</dl>
+		<div id="action">
+			<form action="{$freo.core.https_file}/admin/user_form" method="get">
+				<fieldset>
+					<legend>ユーザー編集フォーム</legend>
+					<input type="hidden" name="session" value="1" />
+					<!--{if $freo.query.id}--><input type="hidden" name="id" value="{$freo.query.id}" /><!--{/if}-->
+					<p><input type="submit" value="戻る" /></p>
+				</fieldset>
+			</form>
+			<form action="{$freo.core.https_file}/admin/user_preview{if $freo.query.id}?id={$freo.query.id}{/if}" method="post">
+				<fieldset>
+					<legend>ユーザー登録フォーム</legend>
+					<input type="hidden" name="freo[token]" value="{$token}" />
+					<p><input type="submit" value="登録する" /></p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+{include file='internals/admin/footer.html'}

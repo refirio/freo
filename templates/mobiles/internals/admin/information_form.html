@@ -1,0 +1,38 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">インフォメーション編集</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{elseif $freo.query.exec == 'update'}-->
+<div style="color:#00AA00;">ｲﾝﾌｫﾒｰｼｮﾝを編集しました。</div>
+<!--{/if}-->
+ｲﾝﾌｫﾒｰｼｮﾝを入力してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/information_form" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+ｴﾝﾄﾘｰID<br />
+<input type="text" name="information[entry_id]" size="5" value="{$input.information.entry_id}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} /><br />
+ﾍﾟｰｼﾞID<br />
+<input type="text" name="information[page_id]" size="20" value="{$input.information.page_id}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+本文<br />
+<textarea name="information[text]" cols="20" rows="5" id="tiny_mce">{$input.information.text}</textarea><br />
+<br />
+<div style="text-align:center;">
+<input type="submit" name="preview" value="確認する" />
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

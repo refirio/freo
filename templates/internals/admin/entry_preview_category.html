@@ -1,0 +1,8 @@
+<!--{foreach from=$freo.refer.categories|smarty:nodefaults item='refer_category'}-->
+	<!--{if $refer_category.pid == $pid}-->
+	<!--{if $entry_associate.category[$refer_category.id]}--><li>{$refer_category.name}</li><!--{/if}-->
+	<!--{assign var="pid" value=$refer_category.id}-->
+	{include file='internals/admin/entry_preview_category.html'}
+	<!--{assign var="pid" value=$refer_category.pid}-->
+	<!--{/if}-->
+<!--{/foreach}-->

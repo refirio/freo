@@ -1,0 +1,442 @@
+@charset "utf-8";
+
+/********* HTML再定義 ***********************************************/
+
+body {
+	padding: 10px;
+	background-color: #999999;
+}
+
+h2, h3, h4, h5, h6 {
+	font-size: 120%;
+}
+h2 {
+	margin: 15px 0;
+	padding: 5px 0;
+	border-top: 1px solid #999999;
+	border-bottom: 1px solid #999999;
+	font-weight: bold;
+}
+
+/********* 全体 *****************************************************/
+
+div#container {
+	width: 760px;
+	margin: 0 auto;
+	padding: 20px;
+	border-bottom: 5px solid #666666;
+	background-color: #FFFFFF;
+}
+
+/********* ヘッダー *************************************************/
+
+div#header {
+	clear: both;
+}
+div#header h1 {
+	line-height: 1.0;
+	margin: 0;
+}
+div#header h1 a:link, div#header h1 a:visited {
+	color: #222222;
+	text-decoration: none;
+}
+div#header h1 a:active, div#header h1 a:hover {
+	color: #777777;
+	text-decoration: none;
+}
+
+/********* フッター *************************************************/
+
+div#footer {
+	clear: both;
+}
+div#footer address {
+	padding-top: 10px;
+	border-top: 1px solid #999999;
+}
+
+/********* メニュー *************************************************/
+
+div#menu {
+	background-color: #666666;
+}
+div#menu h2 {
+	display: none;
+}
+div#menu ul {
+	margin: 0;
+	padding: 5px 10px;
+}
+div#menu ul li {
+	display: inline;
+	list-style: none;
+	margin-right: 10px;
+}
+
+div#menu a:link, div#menu a:visited {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+div#menu a:active, div#menu a:hover {
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+
+/********* 内容 *****************************************************/
+
+div#content {
+	float: left;
+	width: 550px;
+}
+
+/********* エントリー ***********************************************/
+
+div#entry h2 {
+	display: none;
+}
+div#entry div.entry {
+	width: 550px;
+	margin: 15px 0;
+	border: 1px solid #999999;
+}
+div#entry div.entry h3 {
+	margin: 0;
+	padding: 10px 10px 0 10px;
+}
+div#entry div.entry h3 a:link, div#entry div.entry h3 a:visited {
+	color: #222222;
+	text-decoration: none;
+}
+div#entry div.entry h3 a:active, div#entry div.entry h3 a:hover {
+	color: #777777;
+	text-decoration: none;
+}
+div#entry div.entry div.content {
+	margin: 0 10px;
+}
+div#entry div.entry ul.information {
+	margin: 2px 10px 15px 10px;
+	padding-top: 2px;
+	border-top: 1px solid #CCCCCC;
+	font-size: 90%;
+}
+div#entry div.entry ul.information li {
+	display: inline;
+	margin-right: 5px;
+}
+div#entry div.entry ul.link {
+	margin: 0;
+	padding: 10px;
+	text-align: right;
+}
+div#entry div.entry ul.link li {
+	display: inline;
+	margin-left: 5px;
+}
+
+div#entry div#entry_link h3 {
+	display: none;
+}
+div#entry div#entry_link ul.entry_link {
+	margin: 0;
+}
+div#entry div#entry_link ul.entry_link li {
+	display: inline;
+	list-style: none;
+	margin-right: 10px;
+}
+div#entry div#entry_link ul.entry_link li.home {
+	padding-right: 10px;
+	padding-left: 10px;
+	border-right: 1px solid #999999;
+	border-left: 1px solid #999999;
+}
+div#entry div#entry_link ul.entry_link li.previous:before {
+	content: "<< ";
+}
+div#entry div#entry_link ul.entry_link li.next:after {
+	content: " >>";
+}
+
+/********* ページ移動 ***********************************************/
+
+div#page h2 {
+	display: none;
+}
+div#page ul.order {
+	margin: 10px 0;
+}
+div#page ul.order li {
+	display: inline;
+	list-style: none;
+	margin-right: 10px;
+}
+div#page ul.direct {
+	margin: 10px 0;
+	text-align: right;
+}
+div#page ul.direct li {
+	display: inline;
+	list-style: none;
+	margin-left: 10px;
+}
+
+/********* コメント *************************************************/
+
+div#comment div.comment ul.information {
+	margin: 15px 0 0 0;
+	text-align: right;
+}
+div#comment div.comment ul.information li {
+	display: inline;
+	margin-left: 5px;
+}
+
+/********* トラックバック *******************************************/
+
+div#trackback div.trackback ul.information {
+	margin: 15px 0 0 0;
+	text-align: right;
+}
+div#trackback div.trackback ul.information li {
+	display: inline;
+	margin-left: 5px;
+}
+
+/********* インフォメーション ***************************************/
+
+div#information {
+	margin-bottom: 30px;
+}
+div#information ul.continue {
+	margin: 0;
+	text-align: right;
+}
+div#information ul.continue li {
+	display: inline;
+}
+
+/********* ユーティリティ *******************************************/
+
+div#utility {
+	float: left;
+	width: 200px;
+	margin-left: 10px;
+	margin-bottom: 20px;
+}
+div#utility h2 {
+	display: none;
+}
+div#utility div.utility {
+	margin: 15px 0;
+	padding-bottom: 10px;
+	background-color: #EEEEEE;
+}
+div#utility div.utility h3 {
+	padding: 10px 10px 0 10px;
+}
+div#utility div.utility div.content {
+	margin: 0 10px;
+}
+div#utility div.utility ul {
+	margin-right: 0;
+}
+div#utility div.utility ul li ul {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+div#utility div.utility form {
+	margin: 0;
+}
+div#utility div.utility form dl {
+	margin: 0;
+}
+div#utility div.utility form dl dt {
+	display: none;
+}
+div#utility div.utility form dl dd {
+	margin: 0;
+}
+div#utility div.utility form dl dd input {
+	width: 170px;
+}
+div#utility div.utility form p {
+	margin: 0 0 10px 0;
+}
+
+div#utility div.utility table.calender {
+	margin: 0;
+	border: 0px solid #000000;
+}
+div#utility div.utility table.calender tr th, table.calender tr td {
+	padding: 5px;
+	border: 0px solid #000000;
+	background-color: #EEEEEE;
+	font-weight: normal;
+	text-align: center;
+}
+div#utility div.utility table.calender tr td span.day {
+	color: #222222;
+}
+div#utility div.utility table.calender tr td span.satday {
+	color: #2222CC;
+}
+div#utility div.utility table.calender tr td span.sunday {
+	color: #CC2222;
+}
+div#utility div.utility ul.calender {
+	margin: 10px 0;
+}
+div#utility div.utility ul.calender li {
+	display: inline;
+	list-style: none;
+	margin-right: 10px;
+}
+
+div#utility div.utility ul.gallery {
+	margin: 0;
+	padding: 0;
+}
+div#utility div.utility ul.gallery li {
+	list-style: none;
+}
+div#utility div.utility ul.gallery li img {
+	max-width: 180px;
+	max-height: 130px;
+	margin-bottom: 5px;
+}
+
+/********* ギャラリー ***********************************************/
+
+div#gallery {
+	overflow: hidden;
+}
+div#gallery div.gallery {
+	float: left;
+	margin-right: 12px;
+	margin-bottom: 20px;
+}
+div#gallery div.gallery p.picture {
+	overflow: hidden;
+	width: 140px;
+	height: 100px;
+	margin: 0;
+}
+div#gallery div.gallery p.picture a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+div#gallery div.gallery p.picture a img {
+	min-width: 140px;
+	min-height: 100px;
+}
+div#gallery div.gallery p.picture a span.empty {
+	display: block;
+	line-height: 100px;
+	width: 140px;
+	height: 100px;
+	background-color: #AAAAAA;
+	text-align: center;
+}
+div#gallery div.gallery p.comment {
+	overflow: hidden;
+	width: 140px;
+	margin: 3px 0 0;
+	font-size: 80%;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+div#gallery ul {
+	margin: 10px 0 20px 0;
+}
+div#gallery ul li {
+	display: inline;
+}
+div#gallery ul li img {
+	margin: 0 2px 10px 0;
+}
+
+/********* 個別指定 *************************************************/
+
+div#page_link ul.page_link {
+	margin: 0 0 20px 0;
+}
+div#page_link ul.page_link li {
+	display: inline;
+	list-style: none;
+	margin-right: 10px;
+}
+div#page_link ul.page_link li.home {
+	padding-right: 10px;
+	padding-left: 10px;
+	border-right: 1px solid #999999;
+	border-left: 1px solid #999999;
+}
+div#page_link ul.page_link li.previous:before {
+	content: "<< ";
+}
+div#page_link ul.page_link li.next:after {
+	content: " >>";
+}
+
+ul.link {
+	margin: 0;
+	padding: 10px;
+	text-align: right;
+}
+ul.link li {
+	display: inline;
+	margin-left: 5px;
+}
+
+/********* レスポンシブ *********************************************/
+
+@media (max-width: 480px) {
+	body {
+		padding: 5px;
+	}
+	form textarea {
+		width: 95%;
+	}
+	img {
+		max-width : 100%;
+		height: auto;
+	}
+	div#container {
+		width: 90%;
+		padding: 15px;
+	}
+	div#content {
+		float: none;
+		width: 100%;
+	}
+	div#entry div.entry {
+		width: 100%;
+		border-right: 0;
+		border-left: 0;
+	}
+	div#utility {
+		float: none;
+		width: 100%;
+		margin: 0;
+	}
+}
+
+/********* IE6用設定 ************************************************/
+
+* html body {
+	text-align: center;
+}
+* html div#container {
+	width: 800px;
+	text-align: left;
+}
+* html pre {
+	width: 100%;
+}
+* html table tr th, * html table tr td {
+	font-size: 80%;
+}

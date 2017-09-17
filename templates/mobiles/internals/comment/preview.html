@@ -1,0 +1,42 @@
+{include file='mobiles/header.html'}
+
+<!--{if $freo.query.entry_id}-->
+▲<a href="{$freo.core.http_file}/view/{$freo.query.entry_id}">ｴﾝﾄﾘｰに戻る</a>
+<!--{else}-->
+▲<a href="{$freo.core.http_file}/page/{$freo.query.page_id}">ﾍﾟｰｼﾞに戻る</a>
+<!--{/if}-->
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">コメント登録</span></div>
+
+以下の内容で登録します。<br />
+<br />
+<!--{if !$freo.user.id}-->
+名前:{$comment.name}<br />
+<!--{if $comment.mail}-->
+ﾒｰﾙｱﾄﾞﾚｽ:{$comment.mail}<br />
+<!--{/if}-->
+<!--{if $comment.url}-->
+URL:{$comment.url}<br />
+<!--{/if}-->
+<!--{/if}-->
+ｺﾒﾝﾄ:{$comment.text|nl2br}<br />
+閲覧制限:<!--{if $comment.restriction == 'user'}-->登録ﾕｰｻﾞｰに公開<!--{elseif $comment.restriction == 'admin'}-->管理者に公開<!--{else}-->全体に公開<!--{/if}--><br />
+
+<br />
+<form action="{$freo.core.http_file}{if $freo.query.entry_id}/view/{$freo.query.entry_id}{elseif $freo.query.page_id}/page/{$freo.query.page_id}{/if}" method="get">
+<input type="hidden" name="action" value="comment_form" />
+<input type="hidden" name="session" value="1" />
+<div style="text-align:center;">
+<input type="submit" value="戻る" />
+</div>
+</form>
+<form action="{$freo.core.http_file}/comment/preview{if $freo.query.entry_id}?entry_id={$freo.query.entry_id}{elseif $freo.query.page_id}?page_id={$freo.query.page_id}{/if}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

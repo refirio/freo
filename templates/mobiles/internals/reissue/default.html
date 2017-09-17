@@ -1,0 +1,32 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}">戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">パスワード再発行</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{/if}-->
+ﾊﾟｽﾜｰﾄﾞを忘れた場合、以下のﾌｫｰﾑから再発行することができます。<br />
+登録済みのﾒｰﾙｱﾄﾞﾚｽを入力すると、登録されているﾒｰﾙｱﾄﾞﾚｽにﾊﾟｽﾜｰﾄﾞ取得用のURLが送信されます。<br />
+
+<br />
+<form action="{$freo.core.http_file}/reissue" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+ﾒｰﾙｱﾄﾞﾚｽ<br />
+<input type="text" name="reissue[mail]" size="20" value="{$input.reissue.mail}" /><br />
+<br />
+<div style="text-align:center;">
+<input type="submit" value="再発行する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

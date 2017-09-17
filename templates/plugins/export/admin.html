@@ -1,0 +1,25 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>エクスポート</h2>
+		<ul>
+			<li>データベースの内容をSQLファイルに出力します。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/export/admin_post" method="post">
+			<fieldset>
+				<legend>エクスポート実行フォーム</legend>
+				<dl>
+					<dt>対象</dt>
+						<dd>
+							<select name="target">
+								<option value="">すべて</option>
+								<!--{foreach from=$plugin_exports|smarty:nodefaults item='plugin_export'}-->
+								<option value="{$plugin_export}">{$plugin_export}</option>
+								<!--{/foreach}-->
+							</select>
+						</dd>
+				</dl>
+				<p><input type="submit" value="出力する" /></p>
+			</fieldset>
+		</form>
+	</div>
+{include file='internals/admin/footer.html'}

@@ -1,0 +1,66 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>ユーザー管理</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $freo.query.exec}-->
+		<ul class="complete">
+			<!--{if $freo.query.exec == 'insert'}-->
+			<li>ユーザーを新規に登録しました。</li>
+			<!--{elseif $freo.query.exec == 'approve'}-->
+			<li>ID.{$freo.query.id}のユーザーを承認しました。</li>
+			<!--{elseif $freo.query.exec == 'update'}-->
+			<li>ID.{$freo.query.id}のユーザーを編集しました。</li>
+			<!--{elseif $freo.query.exec == 'delete'}-->
+			<li>ID.{$freo.query.id}のユーザーを削除しました。</li>
+			<!--{/if}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>登録されたユーザーは以下のとおりです。</li>
+			<li><a href="{$freo.core.https_file}/admin/user_form">ユーザーを登録する</a>。</li>
+		</ul>
+		<table summary="ユーザー">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>登録日時</th>
+					<th>名前</th>
+					<th>承認</th>
+					<th>権限</th>
+					<th>作業</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>ID</th>
+					<th>登録日時</th>
+					<th>名前</th>
+					<th>承認</th>
+					<th>権限</th>
+					<th>作業</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				<!--{foreach from=$users|smarty:nodefaults item='user'}-->
+				<tr>
+					<td>{$user.id}</td>
+					<td><!--{if $user.created|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$user.created|date_format:'%H:%M:%S'}<!--{else}-->{$user.created|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+					<td>{$user.name}</td>
+					<td><!--{if $user.approved == 'yes'}-->承認済<!--{elseif $user.approved == 'no'}-->未承認<!--{/if}--></td>
+					<td><!--{if $user.authority == 'root'}-->管理者<!--{elseif $user.authority == 'author'}-->投稿者<!--{elseif $user.authority == 'guest'}-->ゲスト<!--{/if}--></td>
+					<td>
+						<a href="{$freo.core.http_file}/profile/{$user.id}">確認</a>
+						<!--{if $freo.user.id != $user.id}-->
+						<a href="{$freo.core.http_file}/admin/user_form?id={$user.id}">編集</a>
+						<a href="{$freo.core.http_file}/admin/user_form?id={$user.id}#user_delete">削除</a>
+						<!--{/if}-->
+					</td>
+				</tr>
+				<!--{/foreach}-->
+			</tbody>
+		</table>
+	</div>
+{include file='internals/admin/footer.html'}

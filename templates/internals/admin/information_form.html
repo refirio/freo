@@ -1,0 +1,41 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>インフォメーション編集</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{elseif $freo.query.exec == 'update'}-->
+		<ul class="complete">
+			<li>インフォメーションを編集しました。</li>
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>インフォメーションを入力してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/information_form" method="post">
+			<fieldset>
+				<legend>インフォメーション登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<dl>
+					<dt>エントリーID</dt>
+						<dd><input type="text" name="information[entry_id]" size="5" value="{$input.information.entry_id}" /></dd>
+					<dt>ページID</dt>
+						<dd><input type="text" name="information[page_id]" size="30" value="{$input.information.page_id}" /></dd>
+					<dt>本文 <a href="{$freo.core.http_file}/admin/media?type=iframe" class="colorbox" title="メディア"><img src="{$freo.core.http_url}images/icons/media.png" alt="メディア管理" title="メディア管理" width="16" height="16" /></a> <a href="{$freo.core.http_file}/admin/media_form?type=iframe" class="colorbox" title="メディア"><img src="{$freo.core.http_url}images/icons/media_add.png" alt="メディア登録" title="メディア登録" width="16" height="16" /></a></dt>
+						<dd><textarea name="information[text]" cols="65" rows="30" id="tiny_mce">{$input.information.text}</textarea></dd>
+				</dl>
+				<p>
+					<input type="submit" name="preview" value="確認する" />
+					<input type="submit" value="登録する" />
+				</p>
+			</fieldset>
+		</form>
+	</div>
+{include file='internals/admin/footer.html'}

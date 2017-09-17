@@ -1,0 +1,15 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">プラグイン一覧</span></div>
+
+現在導入されているﾌﾟﾗｸﾞｲﾝは以下のとおりです。<br />
+
+<br />
+<!--{foreach from=$freo.plugin|smarty:nodefaults item='plugin'}-->
+{$plugin.name}<br />
+<!--{/foreach}-->
+
+{include file='mobiles/footer.html'}

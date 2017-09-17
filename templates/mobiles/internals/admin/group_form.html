@@ -1,0 +1,57 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;"><!--{if $freo.query.id}-->ID.{$freo.query.id}のグループを編集<!--{else}-->グループ登録<!--{/if}--></span></div>
+
+<!--{if $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{/if}-->
+ｸﾞﾙｰﾌﾟを入力してください。<br />
+<span style="color:#FF0000;">*</span>の付いた項目は入力必須項目です。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/group_form{if $freo.query.id}?id={$freo.query.id}{/if}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<!--{if $freo.query.id}-->
+<input type="hidden" name="group[id]" value="{$input.group.id}" />
+<!--{/if}-->
+<!--{if !$freo.query.id}-->
+ｸﾞﾙｰﾌﾟID<span style="color:#FF0000;">*</span><br />
+<input type="text" name="group[id]" size="20" value="{$input.group.id}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+<!--{/if}-->
+ｸﾞﾙｰﾌﾟ名<span style="color:#FF0000;">*</span><br />
+<input type="text" name="group[name]" size="20" value="{$input.group.name}" /><br />
+説明<br />
+<textarea name="group[memo]" cols="20" rows="5">{$input.group.memo}</textarea><br />
+並び順<span style="color:#FF0000;">*</span><br />
+<input type="text" name="group[sort]" size="5" value="{$input.group.sort}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} /><br />
+<br />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+<!--{if $freo.query.id}-->
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ID.{$freo.query.id}のグループを削除</span></div>
+
+このｸﾞﾙｰﾌﾟを削除するには、削除ﾎﾞﾀﾝを押してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/group_delete" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="削除する" />
+</div>
+</form>
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

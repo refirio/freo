@@ -1,0 +1,350 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<!--{if $freo.query.directory}-->
+		<h2><!--{if $smarty.get.name}-->ディレクトリ名変更<!--{else}-->ディレクトリ作成<!--{/if}--></h2>
+		<!--{if $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{/if}-->
+		<!--{if $smarty.get.name}-->
+		<ul>
+			<li><!--{if $freo.query.path}--><code>{$freo.query.path}</code> 内にある<!--{/if}-->ディレクトリ <code>{$smarty.get.name}</code> の名前を変更します。</li>
+			<li><a href="{$freo.core.http_file}/admin/media?path={$freo.query.path}"><!--{if $freo.query.path}-->この階層の<!--{/if}-->メディアを一欄表示する</a>。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_form?directory=1&amp;name={$smarty.get.name}&amp;path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>ディレクトリ名変更フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[exec]" value="rename_directory" />
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<input type="hidden" name="media[directory_org]" value="{$smarty.get.name}" />
+				<dl>
+					<dt>ディレクトリ名</dt>
+						<dd><input type="text" name="media[directory]" size="50" value="{$smarty.get.name}" /></dd>
+				</dl>
+				<p><input type="submit" value="変更する" /></p>
+			</fieldset>
+		</form>
+		<h2>ディレクトリ移動</h2>
+		<ul>
+			<li>移動先を選択してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_move?directory=1&amp;name={$smarty.get.name}&amp;path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>メディア移動フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<dl>
+					<dt>移動先</dt>
+						<dd>
+							<select name="media[path]">
+								<option value="">メディア管理ディレクトリ直下</option>
+								<!--{foreach from=$directories|smarty:nodefaults item='directory'}-->
+								<!--{if $freo.query.path != $directory and $freo.query.path|cat:$smarty.get.name|cat:'/' != $directory}-->
+								<option value="{$directory}">{$directory}</option>
+								<!--{/if}-->
+								<!--{/foreach}-->
+							</select>
+						</dd>
+				</dl>
+				<p><input type="submit" value="移動する" /></p>
+			</fieldset>
+		</form>
+		<!--{if $smarty.get.name and ($freo.config.media.restriction or $freo.config.media.filter)}-->
+		<h2>閲覧制限</h2>
+		<ul>
+			<li>ディレクトリの閲覧制限を設定します。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_form?directory=1&amp;name={$smarty.get.name}&amp;path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>閲覧制限設定フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[exec]" value="restrict_directory" />
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<input type="hidden" name="media[directory]" value="{$smarty.get.name}" />
+				<!--{if $freo.config.media.restriction}-->
+				<dl>
+					<dt>制限</dt>
+						<dd>
+							<select name="media[restriction]" id="article_restriction">
+								<option value="">制限なし</option>
+								<option value="user"{if $input.media.restriction == 'user'} selected="selected"{/if}>ユーザー登録で制限</option>
+								<option value="group"{if $input.media.restriction == 'group'} selected="selected"{/if}>グループで制限</option>
+								<option value="password"{if $input.media.restriction == 'password'} selected="selected"{/if}>パスワードで制限</option>
+							</select>
+						</dd>
+				</dl>
+				<dl id="article_group">
+					<dt>グループで制限</dt>
+						<dd class="list">
+							<ul>
+								<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refer_group'}-->
+								<li><input type="checkbox" name="media[group][{$refer_group.id}]" id="label_group_{$refer_group.id}" value="1"{if $input.media.group[$refer_group.id]} checked="checked"{/if} /> <label for="label_group_{$refer_group.id}">{$refer_group.name}</label></li>
+								<!--{foreachelse}-->
+								<li>グループが登録されていません。</li>
+								<!--{/foreach}-->
+							</ul>
+						</dd>
+				</dl>
+				<dl id="article_password">
+					<dt>パスワードで制限</dt>
+						<dd><input type="text" name="media[password]" size="30" value="{$input.media.password}" /></dd>
+				</dl>
+				<!--{/if}-->
+				<!--{if $freo.config.media.filter}-->
+				<dl>
+					<dt>フィルターで制限</dt>
+						<dd class="list">
+							<ul>
+								<!--{foreach from=$freo.refer.filters|smarty:nodefaults item='refer_filter'}-->
+								<li><input type="checkbox" name="media[filter][{$refer_filter.id}]" id="label_filter_{$refer_filter.id}" value="1"{if $input.media.filter[$refer_filter.id]} checked="checked"{/if} /> <label for="label_filter_{$refer_filter.id}">{$refer_filter.name}</label></li>
+								<!--{foreachelse}-->
+								<li>フィルターが登録されていません。</li>
+								<!--{/foreach}-->
+							</ul>
+						</dd>
+				</dl>
+				<!--{/if}-->
+				<p><input type="submit" value="設定する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+		<h2>ディレクトリ削除</h2>
+		<ul>
+			<li>このディレクトリを削除するには、<em>削除ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_delete" method="get" class="delete">
+			<fieldset>
+				<legend>ディレクトリ削除フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="directory" value="1" />
+				<input type="hidden" name="name" value="{$smarty.get.name}/" />
+				<input type="hidden" name="path" value="{$freo.query.path}" />
+				<p><input type="submit" value="削除する" /></p>
+			</fieldset>
+		</form>
+		<!--{else}-->
+		<ul>
+			<li><!--{if $freo.query.path}--><code>{$freo.query.path}</code> 内に<!--{/if}-->ディレクトリを作成します。</li>
+			<li><a href="{$freo.core.http_file}/admin/media?path={$freo.query.path}"><!--{if $freo.query.path}-->この階層の<!--{/if}-->メディアを一欄表示する</a>。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_form?directory=1&amp;path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>ディレクトリ作成フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[exec]" value="insert_directory" />
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<dl>
+					<dt>ディレクトリ名</dt>
+						<dd><input type="text" name="media[directory]" size="50" value="{$input.media.directory}" /></dd>
+				</dl>
+				<p><input type="submit" value="作成する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+		<!--{else}-->
+		<h2><!--{if $freo.query.name}-->ファイル差し替え<!--{else}-->ファイル登録<!--{/if}--></h2>
+		<!--{if $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<!--{if $freo.query.name}-->
+			<li><!--{if $freo.query.path}--><code>{$freo.query.path}</code> に登録された<!--{/if}-->ファイル <code>{$smarty.get.name}</code> を差し替えます。</li>
+			<li>差し替えたいファイルを選択してください。</li>
+			<!--{else}-->
+			<li><!--{if $freo.query.path}--><code>{$freo.query.path}</code> に<!--{/if}-->登録したいファイルを選択してください。</li>
+			<!--{/if}-->
+			<li><abbr class="attention" title="入力必須">*</abbr> の付いた項目は入力必須項目です。</li>
+			<li><a href="{$freo.core.http_file}/admin/media?path={$freo.query.path}"><!--{if $freo.query.path}-->この階層の<!--{/if}-->メディアを一欄表示する</a>。</li>
+		</ul>
+		<!--{if $input.media.file_image}--><p><a href="{$freo.core.http_file}/file/media/{$freo.query.path}{$smarty.get.name}?name={$smarty.get.name}"><img src="{$freo.core.http_file}/file/media/{$freo.query.path}{$smarty.get.name}?width=100&amp;height=100" alt="現在の画像" width="100" /></a></p><!--{/if}-->
+		<form action="{$freo.core.http_file}/admin/media_form?name={$smarty.get.name}&amp;path={$freo.query.path}" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<legend>メディア登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[exec]" value="insert" />
+				<!--{if $freo.query.path}-->
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<!--{/if}-->
+				<!--{if $freo.query.name}-->
+				<input type="hidden" name="media[file_org]" value="{$smarty.get.name}" />
+				<!--{/if}-->
+				<dl id="media_file">
+					<!--{if !$freo.query.path}-->
+					<dt>アップロード先 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd>
+							<select name="media[path]">
+								<option value="">メディア管理ディレクトリ直下</option>
+								<!--{foreach from=$directories|smarty:nodefaults item='directory'}-->
+								<option value="{$directory}"{if $input.media.path and $input.media.path == $directory} selected="selected"{/if}>{$directory}</option>
+								<!--{/foreach}-->
+							</select>
+						</dd>
+					<!--{/if}-->
+					<dt>ファイル <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="file" name="media[file][]" size="30" /></dd>
+				</dl>
+				<!--{if !$freo.query.name}-->
+				<dl id="media_template">
+					<dt>ファイル</dt>
+						<dd><input type="file" name="media[file][]" size="30" /></dd>
+				</dl>
+				<p><a href="javascript:void(0)" id="media_add">ファイル選択欄を追加</a></p>
+				<!--{/if}-->
+				<!--{if $freo.config.media.thumbnail}-->
+				<dl>
+					<dt>サムネイル画像の最大横幅 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="media[thumbnail_width]" size="4" value="{$input.media.thumbnail_width}" /> px</dd>
+					<dt>サムネイル画像の最大縦幅 <abbr class="attention" title="入力必須">*</abbr></dt>
+						<dd><input type="text" name="media[thumbnail_height]" size="4" value="{$input.media.thumbnail_height}" /> px</dd>
+				</dl>
+				<!--{/if}-->
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+		<!--{if $freo.query.name}-->
+		<!--{if $input.media.exec == 'edit_thumbnail'}-->
+		<h2>サムネイル画像登録</h2>
+		<ul>
+			<li>ファイル <code>{$smarty.get.name}</code> のサムネイル画像のみを登録します。</li>
+			<li>登録したい画像を選択してください。</li>
+		</ul>
+		<!--{if $input.media.thumbnail_image}--><p><a href="{$freo.core.http_file}/file/media/{$freo.query.path}{$smarty.get.name}?type=thumbnail&amp;name={$smarty.get.name}"><img src="{$freo.core.http_file}/file/media/{$freo.query.path}{$smarty.get.name}?type=thumbnail&amp;width=50&amp;height=50" alt="現在の画像" width="50" /></a></p><!--{/if}-->
+		<form action="{$freo.core.http_file}/admin/media_form?name={$smarty.get.name}&amp;path={$freo.query.path}" method="post" enctype="multipart/form-data">
+			<fieldset>
+				<legend>サムネイル画像登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[exec]" value="edit_thumbnail" />
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<input type="hidden" name="media[file_org]" value="{$smarty.get.name}" />
+				<dl>
+					<dt>画像</dt>
+						<dd><input type="file" name="media[thumbnail]" size="30" /></dd>
+				</dl>
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+		<!--{if $input.media.exec == 'edit_file'}-->
+		<h2>ファイル書き換え</h2>
+		<ul>
+			<li>ファイル <code>{$smarty.get.name}</code> の内容を書き換えます。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_form?name={$smarty.get.name}&amp;path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>ファイル書き換えフォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="freo[trim]" value="keep" />
+				<input type="hidden" name="media[exec]" value="edit_file" />
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<input type="hidden" name="media[file]" value="{$smarty.get.name}" />
+				<dl>
+					<dt>内容</dt>
+						<dd><textarea name="media[text]" cols="50" rows="10">{$input.media.text}</textarea></dd>
+				</dl>
+				<p><input type="submit" value="書き換える" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+		<h2>ファイルの説明登録</h2>
+		<ul>
+			<li>ファイル <code>{$smarty.get.name}</code> の説明を登録できます。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_form?name={$smarty.get.name}&amp;path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>ファイルの説明登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[exec]" value="edit_memo" />
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<input type="hidden" name="media[file]" value="{$smarty.get.name}" />
+				<dl>
+					<dt>ファイルの説明</dt>
+						<dd><input type="text" name="media[memo]" size="50" value="{$input.media.memo}" /></dd>
+				</dl>
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+		<h2>ファイル名変更</h2>
+		<ul>
+			<li>ファイル <code>{$smarty.get.name}</code> の名前を変更します。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_form?name={$smarty.get.name}&amp;path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>ファイル名変更フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[exec]" value="rename_file" />
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<input type="hidden" name="media[file_org]" value="{$smarty.get.name}" />
+				<dl>
+					<dt>ファイル名</dt>
+						<dd><input type="text" name="media[file]" size="50" value="{$smarty.get.name}" /></dd>
+				</dl>
+				<p><input type="submit" value="変更する" /></p>
+			</fieldset>
+		</form>
+		<h2>ファイル移動</h2>
+		<ul>
+			<li>移動先を選択してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_move?name={$smarty.get.name}&amp;path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>メディア移動フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[file]" value="{$smarty.get.name}" />
+				<dl>
+					<dt>移動先</dt>
+						<dd>
+							<select name="media[path]">
+								<option value="">メディア管理ディレクトリ直下</option>
+								<!--{foreach from=$directories|smarty:nodefaults item='directory'}-->
+								<!--{if $freo.query.path != $directory}-->
+								<option value="{$directory}">{$directory}</option>
+								<!--{/if}-->
+								<!--{/foreach}-->
+							</select>
+						</dd>
+				</dl>
+				<p><input type="submit" value="移動する" /></p>
+			</fieldset>
+		</form>
+		<h2>ファイル削除</h2>
+		<ul>
+			<li>このファイルを削除するには、<em>削除ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_delete" method="get" class="delete">
+			<fieldset>
+				<legend>ファイル削除フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="name" value="{$smarty.get.name}" />
+				<input type="hidden" name="path" value="{$freo.query.path}" />
+				<p><input type="submit" value="削除する" /></p>
+			</fieldset>
+		</form>
+		<!--{else}-->
+		<h2>ファイル作成</h2>
+		<ul>
+			<li><!--{if $freo.query.path}--><code>{$freo.query.path}</code> 内に<!--{/if}-->ファイルを作成します。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/media_form?path={$freo.query.path}" method="post">
+			<fieldset>
+				<legend>ファイル作成フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="media[exec]" value="insert_file" />
+				<input type="hidden" name="media[path]" value="{$freo.query.path}" />
+				<dl>
+					<dt>ファイル名</dt>
+						<dd><input type="text" name="media[file]" size="50" value="{$input.media.file}" /></dd>
+				</dl>
+				<p><input type="submit" value="作成する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+		<!--{/if}-->
+	</div>
+{include file='internals/admin/footer.html'}

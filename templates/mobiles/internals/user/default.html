@@ -1,0 +1,27 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}">戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ユーザー用ページ</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $freo.query.exec}-->
+<div style="color:#00AA00;">
+<!--{if $freo.query.exec == 'delete'}-->
+No.{$freo.query.id}のｺﾒﾝﾄを削除しました。<br />
+<!--{/if}-->
+</div>
+<!--{/if}-->
+
+<br />
+▼<a href="{$freo.core.http_file}/profile/{$freo.user.id}">ﾌﾟﾛﾌｨｰﾙ</a><br />
+<br />
+▼<a href="{$freo.core.http_file}/user/profile_form">ﾌﾟﾛﾌｨｰﾙ編集</a><br />
+▼<a href="{$freo.core.https_file}/user/password_form">ﾊﾟｽﾜｰﾄﾞ変更</a><br />
+
+<br />
+▼<a href="{$freo.core.http_file}/login?guid=ON&amp;freo%5Bsession%5D=logout">ﾛｸﾞｱｳﾄ</a><br />
+
+{include file='mobiles/footer.html'}

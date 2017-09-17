@@ -1,0 +1,50 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">コメント管理</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $freo.query.exec}-->
+<div style="color:#00AA00;">
+<!--{if $freo.query.exec == 'approve'}-->
+No.{$freo.query.id}のｺﾒﾝﾄを承認しました。
+<!--{elseif $freo.query.exec == 'update'}-->
+No.{$freo.query.id}のｺﾒﾝﾄを編集しました。
+<!--{elseif $freo.query.exec == 'delete'}-->
+No.{$freo.query.id}のｺﾒﾝﾄを削除しました。
+<!--{/if}-->
+</div>
+<!--{/if}-->
+<!--{if $smarty.get.word or $smarty.get.user or $smarty.get.approved or $smarty.get.date}-->
+<!--{if $smarty.get.word}-->ｷｰﾜｰﾄﾞ「{$smarty.get.word}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.user}-->ﾕｰｻﾞｰ「{$smarty.get.user}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.approved}--><!--{if $smarty.get.approved == 'yes'}-->承認済み<!--{elseif $smarty.get.approved == 'no'}-->未承認<!--{/if}-->ｺﾒﾝﾄの検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 4}-->{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 6}-->{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 8}-->{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{else}-->
+登録されたｺﾒﾝﾄは以下のとおりです。<br />
+<!--{/if}-->
+
+<br />
+<form action="{$freo.core.http_file}/admin/comment" method="get">
+ｷｰﾜｰﾄﾞ<br />
+<input type="text" name="word" size="20" value="{$smarty.get.word}" /><br />
+<div style="text-align:center;">
+<input type="submit" value="検索する" />
+</div>
+</form>
+
+<br />
+<!--{foreach from=$comments|smarty:nodefaults item='comment'}-->
+▼[{$comment.id}]<a href="{$freo.core.http_file}/admin/comment_form?id={$comment.id}"><!--{if $comment.user_id}-->{$freo.refer.users[$comment.user_id].name}<!--{else}-->{$comment.name}<!--{/if}--></a>(<!--{if $comment.created|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$comment.created|date_format:'%H:%M:%S'}<!--{else}-->{$comment.created|date_format:'%Y/%m/%d'}<!--{/if}-->)<br />
+<!--{/foreach}-->
+
+<br />
+<!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/admin/comment?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.approved}&amp;approved={$smarty.get.approved}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のﾍﾟｰｼﾞ</a><!--{else}-->前のﾍﾟｰｼﾞ<!--{/if}--> |
+<!--{if $comment_page > $freo.query.page}--><a href="{$freo.core.http_file}/admin/comment?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.approved}&amp;approved={$smarty.get.approved}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のﾍﾟｰｼﾞ</a><!--{else}-->次のﾍﾟｰｼﾞ<!--{/if}-->
+
+{include file='mobiles/footer.html'}

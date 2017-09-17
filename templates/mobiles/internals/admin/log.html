@@ -1,0 +1,19 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ログ閲覧</span></div>
+
+登録されたは以下のとおりです。<br />
+
+<br />
+<!--{foreach from=$logs|smarty:nodefaults item='log'}-->
+<!--{if $log.created|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$log.created|date_format:'%H:%M:%S'}<!--{else}-->{$log.created|date_format:'%Y/%m/%d'}<!--{/if}-->[{$log.user_id}]{$log.text}<br />
+<!--{/foreach}-->
+
+<br />
+<!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/admin/log?page={$freo.query.page-1}">前のﾍﾟｰｼﾞ</a><!--{else}-->前のﾍﾟｰｼﾞ<!--{/if}--> |
+<!--{if $entry_page > $freo.query.page}--><a href="{$freo.core.http_file}/admin/log?page={$freo.query.page+1}">次のﾍﾟｰｼﾞ</a><!--{else}-->次のﾍﾟｰｼﾞ<!--{/if}-->
+
+{include file='mobiles/footer.html'}

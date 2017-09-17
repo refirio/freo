@@ -1,0 +1,106 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ページ登録</span></div>
+
+以下の内容で登録します。<br />
+<br />
+ﾀｲﾄﾙ:{$page.title}<br />
+<!--{if $page.text}-->
+本文:{$page.text|smarty:nodefaults}<br />
+<!--{/if}-->
+<!--{foreach from=$freo.refer.options|smarty:nodefaults item='option'}-->
+<!--{if $page_associate.option[$option.id]}-->
+{$option.name}:{$page_associate.option[$option.id]|nl2br}<br />
+<!--{/if}-->
+<!--{/foreach}-->
+
+<!--{if $page.file or $page.image or $page.memo}-->
+<br />
+■添付ﾌｧｲﾙ<br />
+<br />
+<!--{if $page.file}-->
+ﾌｧｲﾙ:{$page.file}<!--{if $page.file_remove}-->（削除）<!--{/if}--><br />
+<!--{/if}-->
+<!--{if $page.image}-->
+ﾌｧｲﾙのｲﾒｰｼﾞ:{$page.image}<!--{if $page.image_remove}-->（削除）<!--{/if}--><br />
+<!--{/if}-->
+<!--{if $page.memo}-->
+ﾌｧｲﾙの説明:{$page.memo}<br />
+<!--{/if}-->
+<!--{/if}-->
+
+<br />
+■ﾍﾟｰｼﾞ情報<br />
+<br />
+ﾍﾟｰｼﾞID:{$page.id}<br />
+<!--{if $page.pid}-->
+親ID:{$page.pid}<br />
+<!--{/if}-->
+日時:{$page.datetime|date_format:'%Y/%m/%d %H:%M:%S'}<br />
+ﾍﾟｰｼﾞの状態:<!--{if $page.status == 'publish'}-->公開<!--{elseif $page.status == 'private'}-->未公開<!--{elseif $page.status == 'future'}-->予約公開<!--{/if}--><br />
+ﾍﾟｰｼﾞの表示:<!--{if $page.display == 'publish'}-->初期画面に表示する<!--{elseif $page.display == 'private'}-->初期画面に表示しない<!--{/if}--><br />
+ｺﾒﾝﾄの受付:<!--{if $page.comment == 'open'}-->受け付ける<!--{elseif $page.comment == 'closed'}-->受け付けない<!--{elseif $page.comment == 'view'}-->表示のみ<!--{elseif $page.comment == 'user'}-->登録ﾕｰｻﾞｰから受け付ける<!--{/if}--><br />
+ﾄﾗｯｸﾊﾞｯｸの受付:<!--{if $page.trackback == 'open'}-->受け付ける<!--{elseif $page.trackback == 'closed'}-->受け付けない<!--{elseif $page.trackback == 'view'}-->表示のみ<!--{/if}--><br />
+<!--{if $page.tag}-->
+ﾀｸﾞ:{$page.tag}<br />
+<!--{/if}-->
+<!--{if $page.sort}-->
+並び順:{$page.sort}<br />
+<!--{/if}-->
+<!--{if $page.close}-->
+公開終了日時:{$page.close|date_format:'%Y/%m/%d %H:%M:%S'}<br />
+<!--{/if}-->
+
+<!--{if $page.trackback_url}-->
+<br />
+■通知<br />
+<br />
+ﾄﾗｯｸﾊﾞｯｸ送信先:{$page.trackback_url|nl2br}<br />
+<!--{/if}-->
+
+<!--{if $page.restriction}-->
+<br />
+■閲覧制限<br />
+<br />
+制限:<!--{if $page.restriction == 'user'}-->ﾕｰｻﾞｰ登録で制限<!--{elseif $page.restriction == 'group'}-->ｸﾞﾙｰﾌﾟで制限<!--{elseif $page.restriction == 'password'}-->ﾊﾟｽﾜｰﾄﾞで制限<!--{else}-->制限なし<!--{/if}--><br />
+<!--{if $page_associate.group}-->
+ｸﾞﾙｰﾌﾟで制限<br />
+<!--{foreach from=$freo.refer.groups|smarty:nodefaults item='refers_group'}-->
+<!--{if $page_associate.group[$refers_group.id]}-->{$refers_group.name}<br /><!--{/if}-->
+<!--{/foreach}-->
+<!--{/if}-->
+<!--{if $page.password}-->
+ﾊﾟｽﾜｰﾄﾞで制限:{$page.password}<br />
+<!--{/if}-->
+<!--{/if}-->
+
+<!--{if $page_associate.filter}-->
+<br />
+■ﾌｨﾙﾀｰ<br />
+<br />
+ﾌｨﾙﾀｰで制限<br />
+<!--{foreach from=$freo.refer.filters|smarty:nodefaults item='refers_filter'}-->
+<!--{if $page_associate.filter[$refers_filter.id]}-->{$refers_filter.name}<br /><!--{/if}-->
+<!--{/foreach}-->
+<!--{/if}-->
+
+<br />
+<form action="{$freo.core.http_file}/admin/page_form" method="get">
+<input type="hidden" name="session" value="1" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="戻る" />
+</div>
+</form>
+<form action="{$freo.core.http_file}/admin/page_preview{if $freo.query.id}?id={$freo.query.id}{/if}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

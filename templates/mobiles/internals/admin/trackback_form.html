@@ -1,0 +1,70 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">No.{$freo.query.id}のトラックバックを編集</span></div>
+
+<!--{if $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{/if}-->
+ﾄﾗｯｸﾊﾞｯｸを入力してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/trackback_form?id={$freo.query.id}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<input type="hidden" name="trackback[id]" value="{$input.trackback.id}" />
+名前<br />
+<input type="text" name="trackback[name]" size="20" value="{$input.trackback.name}" /><br />
+URL<br />
+<input type="text" name="trackback[url]" size="20" value="{$input.trackback.url}" /><br />
+ﾀｲﾄﾙ<br />
+<input type="text" name="trackback[title]" size="20" value="{$input.trackback.title}" /><br />
+本文<br />
+<textarea name="trackback[text]" cols="20" rows="10">{$input.trackback.text}</textarea><br />
+<br />
+<div style="text-align:center;">
+<input type="submit" name="preview" value="確認する" />
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+<!--{if $freo.query.id}-->
+<!--{if $input.trackback.approved == 'no'}-->
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">No.{$freo.query.id}のトラックバックを承認</span></div>
+
+このﾄﾗｯｸﾊﾞｯｸは未承認です。<br />
+このﾄﾗｯｸﾊﾞｯｸを承認するには、承認ﾎﾞﾀﾝを押してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/trackback_approve" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="承認する" />
+</div>
+</form>
+<!--{/if}-->
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">No.{$freo.query.id}のトラックバックを削除</span></div>
+
+このﾄﾗｯｸﾊﾞｯｸを削除するには、削除ﾎﾞﾀﾝを押してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/trackback_delete" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="削除する" />
+</div>
+</form>
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

@@ -1,0 +1,37 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>トラックバック登録</h2>
+		<ul>
+			<li>以下の内容で登録します。</li>
+		</ul>
+		<dl>
+			<dt>名前</dt>
+				<dd>{$trackback.name}</dd>
+			<dt>URL</dt>
+				<dd>{$trackback.url}</dd>
+			<dt>タイトル</dt>
+				<dd>{$trackback.title}</dd>
+			<!--{if $trackback.text}-->
+			<dt>本文</dt>
+				<dd>{$trackback.text|nl2p}</dd>
+			<!--{/if}-->
+		</dl>
+		<div id="action">
+			<form action="{$freo.core.http_file}/admin/trackback_form" method="get">
+				<fieldset>
+					<legend>トラックバック編集フォーム</legend>
+					<input type="hidden" name="session" value="1" />
+					<input type="hidden" name="id" value="{$freo.query.id}" />
+					<p><input type="submit" value="戻る" /></p>
+				</fieldset>
+			</form>
+			<form action="{$freo.core.http_file}/admin/trackback_preview?id={$freo.query.id}" method="post">
+				<fieldset>
+					<legend>トラックバック登録フォーム</legend>
+					<input type="hidden" name="freo[token]" value="{$token}" />
+					<p><input type="submit" value="登録する" /></p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+{include file='internals/admin/footer.html'}

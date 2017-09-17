@@ -1,0 +1,35 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">インフォメーション登録</span></div>
+
+以下の内容で登録します。<br />
+<br />
+<!--{if $information.entry_id}-->
+ｴﾝﾄﾘｰID:{$information.entry_id}<br />
+<!--{/if}-->
+<!--{if $information.page_id}-->
+ﾍﾟｰｼﾞID:{$information.page_id}<br />
+<!--{/if}-->
+<!--{if $information.text}-->
+本文:{$information.text|smarty:nodefaults}<br />
+<!--{/if}-->
+
+<br />
+<form action="{$freo.core.http_file}/admin/information_form" method="get">
+<input type="hidden" name="session" value="1" />
+<div style="text-align:center;">
+<input type="submit" value="戻る" />
+</div>
+</form>
+<form action="{$freo.core.http_file}/admin/information_preview" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+{include file='mobiles/footer.html'}

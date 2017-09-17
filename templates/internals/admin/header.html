@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja" dir="ltr">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<title>管理者用 | {$freo.config.basis.title}</title>
+	<link rel="stylesheet" href="{$freo.core.http_url}{$smarty.const.FREO_CSS_DIR}common.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="{$freo.core.http_url}{$smarty.const.FREO_CSS_DIR}admin.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="{$freo.core.http_url}{$smarty.const.FREO_CSS_DIR}colorbox.css" type="text/css" media="all" />
+	<script type="text/javascript" src="{$freo.core.http_url}{$smarty.const.FREO_JS_DIR}jquery.js"></script>
+	<script type="text/javascript" src="{$freo.core.http_url}{$smarty.const.FREO_JS_DIR}jquery.colorbox.js"></script>
+	<script type="text/javascript" src="{$freo.core.http_url}{$smarty.const.FREO_JS_DIR}jquery.tablesorter.js"></script>
+	<script type="text/javascript" src="{$freo.core.http_url}{$smarty.const.FREO_JS_DIR}common.js"></script>
+	<script type="text/javascript" src="{$freo.core.http_url}tinymce/tinymce.min.js"></script>
+	<script type="text/javascript" src="{$freo.core.http_url}{$smarty.const.FREO_JS_DIR}admin.js"></script>
+</head>
+
+<body>
+<div id="container">
+	<div id="header">
+		<h1><a href="{$freo.core.http_file}/admin">{$freo.config.basis.title}</a></h1>
+	</div>
+	<div id="menu">
+		<h2>管理メニュー</h2>
+		<h3>エントリー</h3>
+		<ul>
+			<li><a href="{$freo.core.http_file}/admin/entry">エントリー管理</a></li>
+			<li><a href="{$freo.core.http_file}/admin/entry_form">エントリー登録</a></li>
+		</ul>
+		<!--{if $freo.user.authority == 'root' and $freo.config.entry.category}-->
+		<ul>
+			<li><a href="{$freo.core.http_file}/admin/category">カテゴリー管理</a></li>
+		</ul>
+		<!--{/if}-->
+		<h3>ページ</h3>
+		<ul>
+			<li>
+				<a href="{$freo.core.http_file}/admin/page">ページ管理</a>
+				<ul>
+					<!--{foreach from=$plugin_page_shortcuts|smarty:nodefaults item='plugin_page_shortcut'}-->
+					<li><a href="{$freo.core.http_file}/admin/page?pid={$plugin_page_shortcut.id}">{$plugin_page_shortcut.text}</a></li>
+					<!--{/foreach}-->
+				</ul>
+			</li>
+			<li>
+				<a href="{$freo.core.http_file}/admin/page_form">ページ登録</a>
+				<ul>
+					<!--{foreach from=$plugin_page_shortcuts|smarty:nodefaults item='plugin_page_shortcut'}-->
+					<li><a href="{$freo.core.http_file}/admin/page_form?pid={$plugin_page_shortcut.id}">{$plugin_page_shortcut.text}</a></li>
+					<!--{/foreach}-->
+				</ul>
+			</li>
+		</ul>
+		<h3>コミュニティ</h3>
+		<ul>
+			<li><a href="{$freo.core.http_file}/admin/comment">コメント管理</a></li>
+			<li><a href="{$freo.core.http_file}/admin/trackback">トラックバック管理</a></li>
+		</ul>
+		<h3>ユーザー</h3>
+		<!--{if $freo.user.authority == 'root'}-->
+		<ul>
+			<li><a href="{$freo.core.http_file}/admin/user">ユーザー管理</a></li>
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li><a href="{$freo.core.http_file}/admin/profile_form">プロフィール編集</a></li>
+			<li><a href="{$freo.core.https_file}/admin/password_form">パスワード変更</a></li>
+		</ul>
+		<h3>プラグイン</h3>
+		<ul>
+			<!--{foreach from=$freo.plugin|smarty:nodefaults item='plugin'}-->
+			<!--{if $plugin.admin}-->
+			<li><a href="{$freo.core.http_file}/{$plugin.admin}">{$plugin.name}</a></li>
+			<!--{php}$flag = 1;{/php}-->
+			<!--{/if}-->
+			<!--{/foreach}-->
+			<!--{php}if (!$flag) :{/php}-->
+			<li>管理ページはありません</li>
+			<!--{php}endif;{/php}-->
+		</ul>
+		<h3>システム</h3>
+		<ul>
+			<li><a href="{$freo.core.http_file}/admin/media">メディア管理</a></li>
+			<!--{if $freo.user.authority == 'root'}-->
+			<!--{if $freo.config.entry.restriction or $freo.config.page.restriction or $freo.config.media.restriction}-->
+			<li><a href="{$freo.core.http_file}/admin/group">グループ管理</a></li>
+			<!--{/if}-->
+			<!--{if $freo.config.entry.filter or $freo.config.page.filter or $freo.config.media.filter}-->
+			<li><a href="{$freo.core.http_file}/admin/filter">フィルター管理</a></li>
+			<!--{/if}-->
+			<li><a href="{$freo.core.http_file}/admin/option">オプション管理</a></li>
+			<!--{if $freo.config.view.information}-->
+			<li><a href="{$freo.core.http_file}/admin/information_form">インフォメーション管理</a></li>
+			<!--{/if}-->
+			<li><a href="{$freo.core.http_file}/admin/config">設定管理</a></li>
+			<!--{/if}-->
+		</ul>
+		<ul>
+			<li><a href="{$freo.core.http_file}/admin/plugin">プラグイン一覧</a></li>
+			<!--{if $freo.user.authority == 'root'}-->
+			<li><a href="{$freo.core.http_file}/admin/log">ログ閲覧</a></li>
+			<!--{/if}-->
+			<li><a href="{$freo.core.http_file}/admin/status">ステータス</a></li>
+			<li><a href="{$freo.core.http_file}">サイト確認</a></li>
+			<li><a href="{$freo.core.https_file}/login?freo%5Bsession%5D=logout">ログアウト</a></li>
+		</ul>
+	</div>

@@ -1,0 +1,64 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;"><!--{if $freo.query.id}-->ID.{$freo.query.id}のカテゴリーを編集<!--{else}-->カテゴリー登録<!--{/if}--></span></div>
+
+<!--{if $errors}-->
+<div style="color:#FF0000;">
+<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+{$error}<br />
+<!--{/foreach}-->
+</div>
+<!--{/if}-->
+ｶﾃｺﾞﾘｰを入力してください。<br />
+<span style="color:#FF0000;">*</span>の付いた項目は入力必須項目です。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/category_form{if $freo.query.id}?id={$freo.query.id}{/if}" method="{$freo.agent.method}">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="freo[method]" value="post" />
+<!--{if $freo.query.id}-->
+<input type="hidden" name="category[id]" value="{$input.category.id}" />
+<!--{/if}-->
+<!--{if !$freo.query.id}-->
+ｶﾃｺﾞﾘｰID<span style="color:#FF0000;">*</span><br />
+<input type="text" name="category[id]" size="20" value="{$input.category.id}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+<!--{/if}-->
+親ID<br />
+<input type="text" name="category[pid]" size="20" value="{$input.category.pid}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;;"{else} istyle="3" format="*m" mode="alphabet"{/if} /><br />
+ｶﾃｺﾞﾘｰ名<span style="color:#FF0000;">*</span><br />
+<input type="text" name="category[name]" size="20" value="{$input.category.name}" /><br />
+説明<br />
+<textarea name="category[memo]" cols="20" rows="5">{$input.category.memo}</textarea><br />
+ｶﾃｺﾞﾘｰの表示<span style="color:#FF0000;">*</span><br />
+<select name="category[display]">
+<option value="publish"{if $input.category.display == 'publish'} selected="selected"{/if}>▼一覧に表示する</option>
+<option value="private"{if $input.category.display == 'private'} selected="selected"{/if}>▼一覧に表示しない</option>
+</select><br />
+並び順<span style="color:#FF0000;">*</span><br />
+<input type="text" name="category[sort]" size="5" value="{$input.category.sort}"{if $freo.agent.career == 'docomo'} style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;;"{else} istyle="4" format="*N" mode="numeric"{/if} /><br />
+<br />
+<div style="text-align:center;">
+<input type="submit" value="登録する" />
+</div>
+</form>
+
+<!--{if $freo.query.id}-->
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ID.{$freo.query.id}のカテゴリーを削除</span></div>
+
+このｶﾃｺﾞﾘｰを削除するには、削除ﾎﾞﾀﾝを押してください。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/category_delete" method="get">
+<input type="hidden" name="freo[token]" value="{$token}" />
+<input type="hidden" name="id" value="{$freo.query.id}" />
+<div style="text-align:center;">
+<input type="submit" value="削除する" />
+</div>
+</form>
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

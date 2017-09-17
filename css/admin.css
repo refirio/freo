@@ -1,0 +1,183 @@
+@charset "utf-8";
+
+/********* HTML再定義 ***********************************************/
+
+body {
+	padding: 10px;
+	background-color: #999999;
+}
+
+h2, h3, h4, h5, h6 {
+	font-size: 120%;
+}
+h2 {
+	margin: 15px 0;
+	padding: 5px 0;
+	border-top: 1px solid #AAAAAA;
+	border-bottom: 1px solid #AAAAAA;
+	font-weight: bold;
+}
+
+form h3 {
+	margin-top: 30px;
+}
+
+/********* 全体 *****************************************************/
+
+div#container {
+	width: 760px;
+	margin: 0 auto;
+	padding: 20px;
+	border-bottom: 5px solid #666666;
+	background-color: #FFFFFF;
+}
+
+/********* ヘッダー *************************************************/
+
+div#header {
+	clear: both;
+}
+div#header h1 {
+	line-height: 1.0;
+	margin: 0;
+}
+div#header h1 a:link, div#header h1 a:visited {
+	color: #222222;
+	text-decoration: none;
+}
+div#header h1 a:active, div#header h1 a:hover {
+	color: #777777;
+	text-decoration: none;
+}
+
+/********* フッター *************************************************/
+
+div#footer {
+	clear: both;
+}
+div#footer address {
+	padding-top: 10px;
+	border-top: 1px solid #999999;
+}
+
+/********* メニュー *************************************************/
+
+div#menu {
+	float: left;
+	width: 200px;
+	margin-right: 10px;
+	margin-bottom: 20px;
+}
+div#menu ul li ul {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+/********* 内容 *****************************************************/
+
+div#content {
+	float: left;
+	width: 550px;
+}
+
+/********* 検索 *****************************************************/
+
+div#search form {
+	margin-top: 20px;
+}
+div#search form dl {
+	margin: 0;
+}
+div#search form dl dt {
+	margin: 0;
+}
+div#search form dl dd {
+	margin: 0 0 5px 0;
+}
+div#search form p {
+	margin: 0;
+}
+
+/********* ページ移動 ***********************************************/
+
+div#page h2 {
+	display: none;
+}
+div#page ul.order {
+	margin: 10px 0;
+}
+div#page ul.order li {
+	display: inline;
+	list-style: none;
+	margin-right: 10px;
+}
+div#page ul.direct {
+	margin: 10px 0;
+	text-align: right;
+}
+div#page ul.direct li {
+	display: inline;
+	list-style: none;
+	margin-left: 10px;
+}
+
+/********* 設定編集 *************************************************/
+
+div#config form h3 {
+	margin: 10px 0;
+	padding: 5px;
+	background-color: #EEEEEE;
+}
+div#config form dl {
+	margin-bottom: 20px;
+}
+
+/********* 個別指定 *************************************************/
+
+dl dd.list ul {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+form dl dd.list {
+	padding: 5px;
+	border: 1px solid #CCCCCC;
+}
+form dl dd.list ul {
+	margin: 0;
+}
+form dl dd.list ul li ul {
+	margin-left: 20px;
+}
+
+table.tablesorter {
+	width: 100%;
+}
+table.tablesorter thead tr .header {
+	background-image: url(../images/tablesorter/bg.gif);
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url(../images/tablesorter/asc.gif);
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url(../images/tablesorter/desc.gif);
+}
+
+/********* IE6用設定 ************************************************/
+
+* html body {
+	text-align: center;
+}
+* html div#container {
+	width: 800px;
+	text-align: left;
+}
+* html pre {
+	width: 100%;
+}
+* html table tr th, * html table tr td {
+	font-size: 80%;
+}

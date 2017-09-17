@@ -1,0 +1,58 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}/admin">管理ﾒﾆｭｰに戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">ページ管理</span></div>
+
+<!--{if $freo.query.error}-->
+<div style="color:#FF0000;">不正なｱｸｾｽです。</div>
+<!--{elseif $freo.query.exec}-->
+<div style="color:#00AA00;">
+<!--{if $freo.query.exec == 'insert'}-->
+ﾍﾟｰｼﾞを新規に登録しました。
+<!--{elseif $freo.query.exec == 'update'}-->
+ID.{$freo.query.id}のﾍﾟｰｼﾞを編集しました。
+<!--{elseif $freo.query.exec == 'delete'}-->
+ID.{$freo.query.id}のﾍﾟｰｼﾞを削除しました。
+<!--{/if}-->
+</div>
+<!--{/if}-->
+<!--{if $smarty.get.word or $smarty.get.user or $smarty.get.approved or $smarty.get.status or $smarty.get.tag or $smarty.get.date}-->
+<!--{if $smarty.get.word}-->ｷｰﾜｰﾄﾞ「{$smarty.get.word}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.user}-->ﾕｰｻﾞｰ「{$smarty.get.user}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.approved}--><!--{if $smarty.get.approved == 'yes'}-->承認済み<!--{elseif $smarty.get.approved == 'no'}-->未承認<!--{/if}-->ﾍﾟｰｼﾞの検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.status}-->ｽﾃｰﾀｽ「<!--{if $smarty.get.status == 'publish'}-->公開<!--{elseif $smarty.get.status == 'private'}-->未公開<!--{elseif $smarty.get.status == 'future'}-->予約公開<!--{/if}-->」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.tag}-->ﾀｸﾞ「{$smarty.get.tag}」の検索結果は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 4}-->{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 6}-->{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{if $smarty.get.date|count_characters == 8}-->{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。<br /><!--{/if}-->
+<!--{else}-->
+<!--{if $freo.query.pid}-->[{$freo.query.pid}]に<!--{/if}-->登録されたﾍﾟｰｼﾞは以下のとおりです。<br />
+<!--{/if}-->
+<!--{if $freo.query.pid}-->[{$freo.query.pid}]に<!--{/if}-->登録されたﾍﾟｰｼﾞは以下のとおりです。<br />
+IDをｸﾘｯｸすると、そのﾍﾟｰｼﾞに属するﾍﾟｰｼﾞを表示できます。<br />
+<a href="{$freo.core.http_file}/admin/page_form?pid={$freo.query.pid}">この階層にﾍﾟｰｼﾞを登録する</a>。<br />
+
+<br />
+<form action="{$freo.core.http_file}/admin/page" method="get">
+ｷｰﾜｰﾄﾞ<br />
+<input type="text" name="word" size="20" value="{$smarty.get.word}" /><br />
+<br />
+<div style="text-align:center;">
+<input type="submit" value="検索する" />
+</div>
+</form>
+
+<br />
+<!--{foreach from=$pages|smarty:nodefaults item='page'}-->
+▼[<a href="{$freo.core.http_file}/admin/page?pid={$page.id}">{$page.id}</a>]<a href="{$freo.core.http_file}/admin/page_form?id={$page.id}">{$page.title}</a><br />
+<!--{/foreach}-->
+
+<!--{if $smarty.get.word or $smarty.get.user or $smarty.get.approved or $smarty.get.status or $smarty.get.tag or $smarty.get.date}-->
+<br />
+<!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/admin/page?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.status}&amp;status={$smarty.get.status}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のﾍﾟｰｼﾞ</a><!--{else}-->前のﾍﾟｰｼﾞ<!--{/if}--> |
+<!--{if $page_page > $freo.query.page}--><a href="{$freo.core.http_file}/admin/page?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.user}&amp;user={$smarty.get.user}{/if}{if $smarty.get.status}&amp;status={$smarty.get.status}{/if}{if $smarty.get.tag}&amp;tag={$smarty.get.tag|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のﾍﾟｰｼﾞ</a><!--{else}-->次のﾍﾟｰｼﾞ<!--{/if}-->
+<!--{/if}-->
+
+{include file='mobiles/footer.html'}

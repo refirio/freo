@@ -1,0 +1,66 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>グループ管理</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $freo.query.exec}-->
+		<ul class="complete">
+			<!--{if $freo.query.exec == 'insert'}-->
+			<li>グループを新規に登録しました。</li>
+			<!--{elseif $freo.query.exec == 'update'}-->
+			<li>ID.{$freo.query.id}のグループを編集しました。</li>
+			<!--{elseif $freo.query.exec == 'delete'}-->
+			<li>ID.{$freo.query.id}のグループを削除しました。</li>
+			<!--{elseif $freo.query.exec == 'sort'}-->
+			<li>グループを並び替えました。</li>
+			<!--{/if}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>登録されたグループは以下のとおりです。</li>
+			<li><a href="{$freo.core.http_file}/admin/group_form">グループを登録する</a>。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/group_update" method="post">
+			<fieldset>
+				<legend>グループ並び替えフォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<table summary="グループ">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>グループ名</th>
+							<th>並び順</th>
+							<th>作業</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th>ID</th>
+							<th>グループ名</th>
+							<th>並び順</th>
+							<th>作業</th>
+						</tr>
+					</tfoot>
+					<tbody>
+						<!--{foreach from=$groups|smarty:nodefaults item='group'}-->
+						<tr>
+							<td>{$group.id}</td>
+							<td>{$group.name}</td>
+							<td class="number"><!--{if $freo.user.authority == 'root'}--><input type="text" name="sort[{$group.id}]" size="3" value="{$group.sort}" /><!--{else}-->{$group.sort}<!--{/if}--></td>
+							<td>
+								<a href="{$freo.core.http_file}/admin/group_form?id={$group.id}">編集</a>
+								<a href="{$freo.core.http_file}/admin/group_delete?freo%5Btoken%5D={$token}&amp;id={$group.id}" class="delete">削除</a>
+							</td>
+						</tr>
+						<!--{/foreach}-->
+					</tbody>
+				</table>
+				<!--{if $freo.user.authority == 'root'}-->
+				<p><input type="submit" value="並び順を編集する" /></p>
+				<!--{/if}-->
+			</fieldset>
+		</form>
+	</div>
+{include file='internals/admin/footer.html'}

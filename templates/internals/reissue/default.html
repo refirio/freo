@@ -1,0 +1,29 @@
+{include file='header.html'}
+	<h2>パスワード再発行</h2>
+	<!--{if $freo.query.error}-->
+	<ul class="attention">
+		<li>不正なアクセスです。</li>
+	</ul>
+	<!--{elseif $errors}-->
+	<ul class="attention">
+		<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+		<li>{$error}</li>
+		<!--{/foreach}-->
+	</ul>
+	<!--{/if}-->
+	<ul>
+		<li>パスワードを忘れた場合、以下のフォームから再発行することができます。</li>
+		<li>登録済みのメールアドレスを入力すると、登録されているメールアドレスにパスワード取得用のURLが送信されます。</li>
+	</ul>
+	<form action="{$freo.core.http_file}/reissue" method="post">
+		<fieldset>
+			<legend>パスワード再発行フォーム</legend>
+			<input type="hidden" name="freo[token]" value="{$token}" />
+			<dl>
+				<dt>メールアドレス</dt>
+					<dd><input type="text" name="reissue[mail]" size="30" value="{$input.reissue.mail}" /></dd>
+			</dl>
+			<p><input type="submit" value="再発行する" /></p>
+		</fieldset>
+	</form>
+{include file='footer.html'}

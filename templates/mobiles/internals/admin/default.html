@@ -1,0 +1,74 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}">戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">管理者用</span></div>
+
+[{$freo.user.id}]としてﾛｸﾞｲﾝしています。<br />
+権限は <!--{if $freo.user.authority == 'root'}-->管理者<!--{elseif $freo.user.authority == 'author'}-->投稿者<!--{elseif $freo.user.authority == 'guest'}-->ｹﾞｽﾄ<!--{/if}--> です。<br />
+
+<br />
+▼<a href="{$freo.core.http_file}/admin/entry">ｴﾝﾄﾘｰ管理</a><br />
+▼<a href="{$freo.core.http_file}/admin/entry_form">ｴﾝﾄﾘｰ登録</a><br />
+<!--{if $freo.user.authority == 'root' and $freo.config.entry.category}-->
+▼<a href="{$freo.core.http_file}/admin/category">ｶﾃｺﾞﾘｰ管理</a><br />
+<!--{/if}-->
+<br />
+▼<a href="{$freo.core.http_file}/admin/page">ﾍﾟｰｼﾞ管理</a><br />
+▼<a href="{$freo.core.http_file}/admin/page_form">ﾍﾟｰｼﾞ登録</a><br />
+<br />
+▼<a href="{$freo.core.http_file}/admin/comment">ｺﾒﾝﾄ管理</a><br />
+▼<a href="{$freo.core.http_file}/admin/trackback">ﾄﾗｯｸﾊﾞｯｸ管理</a><br />
+<br />
+<!--{if $freo.user.authority == 'root'}-->
+▼<a href="{$freo.core.http_file}/admin/user">ﾕｰｻﾞｰ管理</a><br />
+<!--{/if}-->
+▼<a href="{$freo.core.http_file}/admin/profile_form">ﾌﾟﾛﾌｨｰﾙ編集</a><br />
+▼<a href="{$freo.core.https_file}/admin/password_form">ﾊﾟｽﾜｰﾄﾞ変更</a><br />
+<br />
+<!--{foreach from=$freo.plugin|smarty:nodefaults item='plugin'}-->
+<!--{if $plugin.admin}-->
+▼<a href="{$freo.core.http_file}/{$plugin.admin}">{$plugin.name}</a><br />
+<!--{php}$flag = 1;{/php}-->
+<!--{/if}-->
+<!--{/foreach}-->
+<!--{php}if ($flag) :{/php}-->
+<br />
+<!--{php}endif;{/php}-->
+<!--{if $freo.user.authority == 'root'}-->
+<!--{if $freo.config.entry.restriction or $freo.config.page.restriction or $freo.config.media.restriction}-->
+▼<a href="{$freo.core.http_file}/admin/group">ｸﾞﾙｰﾌﾟ管理</a><br />
+<!--{/if}-->
+<!--{if $freo.config.entry.filter or $freo.config.page.filter or $freo.config.media.filter}-->
+▼<a href="{$freo.core.http_file}/admin/filter">ﾌｨﾙﾀｰ管理</a><br />
+<!--{/if}-->
+▼<a href="{$freo.core.http_file}/admin/option">ｵﾌﾟｼｮﾝ管理</a><br />
+<!--{if $freo.config.view.information}-->
+▼<a href="{$freo.core.http_file}/admin/information_form">ｲﾝﾌｫﾒｰｼｮﾝ管理</a><br />
+<!--{/if}-->
+▼<a href="{$freo.core.http_file}/admin/config">設定管理</a><br />
+<!--{/if}-->
+▼<a href="{$freo.core.http_file}/admin/plugin">ﾌﾟﾗｸﾞｲﾝ一覧</a><br />
+<!--{if $freo.user.authority == 'root'}-->
+▼<a href="{$freo.core.http_file}/admin/log">ﾛｸﾞ閲覧</a><br />
+<!--{/if}-->
+▼<a href="{$freo.core.http_file}/admin/status">ｽﾃｰﾀｽ</a><br />
+▼<a href="{$freo.core.http_file}">ｻｲﾄ確認</a><br />
+▼<a href="{$freo.core.http_file}/login?guid=ON&amp;freo%5Bsession%5D=logout">ﾛｸﾞｱｳﾄ</a><br />
+
+<br />
+ｴﾝﾄﾘｰ:{$entry_count}件(未承認{$entry_count-$entry_approved}件)<br />
+ﾍﾟｰｼﾞ:{$page_count}件(未承認{$page_count-$page_approved}件)<br />
+ｺﾒﾝﾄ:{$comment_count}件(未承認{$comment_count-$comment_approved}件)<br />
+ﾄﾗｯｸﾊﾞｯｸ:{$trackback_count}件(未承認{$trackback_count-$trackback_approved}件)<br />
+ﾕｰｻﾞｰ:{$user_count}件(未承認{$user_count-$user_approved}件)<br />
+
+<br />
+ｴﾝﾄﾘｰﾌｧｲﾙ:{$entry_file_size/1024|intval}KB<br />
+ｴﾝﾄﾘｰｲﾒｰｼﾞ:{$entry_image_size/1024|intval}KB<br />
+ﾍﾟｰｼﾞﾌｧｲﾙ:{$page_file_size/1024|intval}KB<br />
+ﾍﾟｰｼﾞｲﾒｰｼﾞ:{$page_image_size/1024|intval}KB<br />
+ﾒﾃﾞｨｱﾌｧｲﾙ:{$media_size/1024|intval}KB<br />
+
+{include file='mobiles/footer.html'}

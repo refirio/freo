@@ -1,0 +1,40 @@
+{include file='header.html'}
+	<h2>コメント登録</h2>
+	<ul>
+		<li>以下の内容で登録します。</li>
+	</ul>
+	<dl>
+		<!--{if !$freo.user.id}-->
+		<dt>名前</dt>
+			<dd>{$comment.name}</dd>
+		<!--{if $comment.mail}-->
+		<dt>メールアドレス</dt>
+			<dd>{$comment.mail}</dd>
+		<!--{/if}-->
+		<!--{if $comment.url}-->
+		<dt>URL</dt>
+			<dd>{$comment.url}</dd>
+		<!--{/if}-->
+		<!--{/if}-->
+		<dt>コメント</dt>
+			<dd>{$comment.text|nl2p}</dd>
+		<dt>閲覧制限</dt>
+			<dd><!--{if $comment.restriction == 'user'}-->登録ユーザーに公開<!--{elseif $comment.restriction == 'admin'}-->管理者に公開<!--{else}-->全体に公開<!--{/if}--></dd>
+	</dl>
+	<div id="action">
+		<form action="{$freo.core.http_file}{if $freo.query.entry_id}/view/{$freo.query.entry_id}{elseif $freo.query.page_id}/page/{$freo.query.page_id}{/if}#comment_form" method="get">
+			<fieldset>
+				<legend>コメント編集フォーム</legend>
+				<input type="hidden" name="session" value="1" />
+				<p><input type="submit" value="戻る" /></p>
+			</fieldset>
+		</form>
+		<form action="{$freo.core.http_file}/comment/preview{if $freo.query.entry_id}?entry_id={$freo.query.entry_id}{elseif $freo.query.page_id}?page_id={$freo.query.page_id}{/if}" method="post">
+			<fieldset>
+				<legend>コメント登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<p><input type="submit" value="登録する" /></p>
+			</fieldset>
+		</form>
+	</div>
+{include file='footer.html'}

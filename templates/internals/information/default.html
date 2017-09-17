@@ -1,0 +1,20 @@
+{include file='header.html'}
+	<h2>インフォメーション</h2>
+	<!--{if $information_text.excerpt}-->
+		{$information_text.excerpt|smarty:nodefaults}
+	<!--{/if}-->
+	<!--{if $information_text.more}-->
+		<!--{if $freo.query.continue}-->
+		<div id="continue">
+			{$information_text.more|smarty:nodefaults}
+		</div>
+		<!--{else}-->
+		<p><a href="{$freo.core.http_file}/information?continue=1#continue" title="インフォメーションの続き">続きを読む</a></p>
+		<!--{/if}-->
+	<!--{/if}-->
+	<!--{if $freo.user.authority == 'root' or $freo.user.authority == 'author'}-->
+	<ul class="link">
+		<li><a href="{$freo.core.http_file}/admin/information_form"><img src="{$freo.core.http_url}images/icons/edit.png" alt="編集" title="編集" width="16" height="16" /></a></li>
+	</ul>
+	<!--{/if}-->
+{include file='footer.html'}

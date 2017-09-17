@@ -1,0 +1,65 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>No.{$freo.query.id}のトラックバックを編集</h2>
+		<!--{if $errors}-->
+		<ul class="attention">
+			<!--{foreach from=$errors|smarty:nodefaults item='error'}-->
+			<li>{$error}</li>
+			<!--{/foreach}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<li>トラックバックを入力してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/trackback_form?id={$freo.query.id}" method="post">
+			<fieldset>
+				<legend>登録フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="trackback[id]" value="{$input.trackback.id}" />
+				<dl>
+					<dt>名前</dt>
+						<dd><input type="text" name="trackback[name]" size="30" value="{$input.trackback.name}" /></dd>
+					<dt>URL</dt>
+						<dd><input type="text" name="trackback[url]" size="30" value="{$input.trackback.url}" /></dd>
+					<dt>タイトル</dt>
+						<dd><input type="text" name="trackback[title]" size="30" value="{$input.trackback.title}" /></dd>
+					<dt>本文</dt>
+						<dd><textarea name="trackback[text]" cols="50" rows="10">{$input.trackback.text}</textarea></dd>
+				</dl>
+				<p>
+					<input type="submit" name="preview" value="確認する" />
+					<input type="submit" value="登録する" />
+				</p>
+			</fieldset>
+		</form>
+		<!--{if $freo.query.id}-->
+		<!--{if $input.trackback.approved == 'no'}-->
+		<h2>No.{$freo.query.id}のトラックバックを承認</h2>
+		<ul>
+			<li>このトラックバックは<em>未承認</em>です。</li>
+			<li>このトラックバックを承認するには、<em>承認ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/trackback_approve" method="get" class="approve">
+			<fieldset>
+				<legend>トラックバック承認フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="id" value="{$freo.query.id}" />
+				<p><input type="submit" value="承認する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+		<h2>No.{$freo.query.id}のトラックバックを削除</h2>
+		<ul>
+			<li>このトラックバックを削除するには、<em>削除ボタン</em>を押してください。</li>
+		</ul>
+		<form action="{$freo.core.http_file}/admin/trackback_delete" method="get" class="delete">
+			<fieldset>
+				<legend>トラックバック削除フォーム</legend>
+				<input type="hidden" name="freo[token]" value="{$token}" />
+				<input type="hidden" name="id" value="{$freo.query.id}" />
+				<p><input type="submit" value="削除する" /></p>
+			</fieldset>
+		</form>
+		<!--{/if}-->
+	</div>
+{include file='internals/admin/footer.html'}

@@ -1,0 +1,17 @@
+{include file='mobiles/header.html'}
+
+▲<a href="{$freo.core.http_file}">戻る</a>
+
+<br />
+<div style="text-align:center;background-color:#666666;"><span style="color:#FFFFFF;">{$smarty.get.path|basename|default:'メディア'}</span></div>
+
+<!--{if $restriction}-->
+<div style="color:#FF0000;">このﾃﾞｨﾚｸﾄﾘには、閲覧制限が設定されています。</div>
+<!--{/if}-->
+
+<br />
+<!--{foreach from=$medias|smarty:nodefaults item='media'}-->
+▼<a href="{$freo.core.http_file}/file/media/{$freo.query.path}{$media.name}">{$media.memo|default:$media.name}</a><br />
+<!--{/foreach}-->
+
+{include file='mobiles/footer.html'}

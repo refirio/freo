@@ -1,0 +1,104 @@
+{include file='internals/admin/header.html'}
+	<div id="content">
+		<h2>トラックバック管理</h2>
+		<!--{if $freo.query.error}-->
+		<ul class="attention">
+			<li>不正なアクセスです。</li>
+		</ul>
+		<!--{elseif $freo.query.exec}-->
+		<ul class="complete">
+			<!--{if $freo.query.exec == 'approve'}-->
+			<li>No.{$freo.query.id}のトラックバックを承認しました。</li>
+			<!--{elseif $freo.query.exec == 'update'}-->
+			<li>No.{$freo.query.id}のトラックバックを編集しました。</li>
+			<!--{elseif $freo.query.exec == 'delete'}-->
+			<li>No.{$freo.query.id}のトラックバックを削除しました。</li>
+			<!--{/if}-->
+		</ul>
+		<!--{/if}-->
+		<ul>
+			<!--{if $smarty.get.word or $smarty.get.user or $smarty.get.approved or $smarty.get.date}-->
+			<!--{if $smarty.get.word}--><li>キーワード「{$smarty.get.word}」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.user}--><li>ユーザー「{$smarty.get.user}」の検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.approved}--><li><!--{if $smarty.get.approved == 'yes'}-->承認済み<!--{elseif $smarty.get.approved == 'no'}-->未承認<!--{/if}-->トラックバックの検索結果は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 4}--><li>{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 6}--><li>{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{if $smarty.get.date|count_characters == 8}--><li>{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。</li><!--{/if}-->
+			<!--{else}-->
+			<li>登録されたトラックバックは以下のとおりです。</li>
+			<!--{/if}-->
+		</ul>
+		<div id="search">
+			<form action="{$freo.core.http_file}/admin/trackback" method="get">
+				<fieldset>
+					<legend>トラックバック検索フォーム</legend>
+					<dl>
+						<dt>キーワード</dt>
+							<dd><input type="text" name="word" size="50" value="{$smarty.get.word}" /></dd>
+						<!--{if $freo.config.trackback.approve == 'no'}-->
+						<dt>状態</dt>
+							<dd>
+								<input type="checkbox" name="approved" id="label_approved_no" value="no"{if $freo.query.approved == 'no'} checked="checked"{/if} /> <label for="label_approved_no">未承認のみ</label>
+							</dd>
+						<!--{/if}-->
+					</dl>
+					<p><input type="submit" value="検索する" /></p>
+				</fieldset>
+			</form>
+		</div>
+		<ul>
+			<li><em>{$trackback_count}</em>件のトラックバック。全<em>{$trackback_page}</em>ページ中<em>{$freo.query.page}</em>ページ目を表示しています。</li>
+		</ul>
+		<table summary="トラックバック">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>日時</th>
+					<th>名前</th>
+					<th>IPアドレス</th>
+					<th>状態</th>
+					<th>作業</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<th>No</th>
+					<th>日時</th>
+					<th>名前</th>
+					<th>IPアドレス</th>
+					<th>状態</th>
+					<th>作業</th>
+				</tr>
+			</tfoot>
+			<tbody>
+				<!--{foreach from=$trackbacks|smarty:nodefaults item='trackback'}-->
+				<tr>
+					<td>{$trackback.id}</td>
+					<td><!--{if $trackback.created|date_format:'%Y%m%d' == $smarty.now|date_format:'%Y%m%d'}-->{$trackback.created|date_format:'%H:%M:%S'}<!--{else}-->{$trackback.created|date_format:'%Y/%m/%d'}<!--{/if}--></td>
+					<td>{$trackback.name}</td>
+					<td>{$trackback.ip}</td>
+					<td><!--{if $trackback.approved == 'no'}-->未承認<!--{else}-->公開<!--{/if}--></td>
+					<td>
+						<a href="{$freo.core.http_file}/{if $trackback.entry_id}view/{$trackback.entry_id}{elseif $trackback.page_id}page/{$trackback.page_id}{/if}">確認</a>
+						<a href="{$freo.core.http_file}/admin/trackback_form?id={$trackback.id}">編集</a>
+						<a href="{$freo.core.http_file}/admin/trackback_delete?freo%5Btoken%5D={$token}&amp;id={$trackback.id}" class="delete">削除</a>
+					</td>
+				</tr>
+				<!--{/foreach}-->
+			</tbody>
+		</table>
+		<div id="page">
+			<h2>ページ移動</h2>
+			<ul class="order">
+				<li><!--{if $freo.query.page > 1}--><a href="{$freo.core.http_file}/admin/trackback?page={$freo.query.page-1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.approved}&amp;approved={$smarty.get.approved}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">前のページ</a><!--{else}-->前のページ<!--{/if}--></li>
+				<li><!--{if $trackback_page > $freo.query.page}--><a href="{$freo.core.http_file}/admin/trackback?page={$freo.query.page+1}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.approved}&amp;approved={$smarty.get.approved}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">次のページ</a><!--{else}-->次のページ<!--{/if}--></li>
+			</ul>
+			<ul class="direct">
+				<li>ページ</li>
+				<!--{section name='loop' loop=$trackback_page}-->
+				<li><!--{if $smarty.section.loop.iteration != $freo.query.page}--><a href="{$freo.core.http_file}/admin/trackback?page={$smarty.section.loop.iteration}{if $smarty.get.word}&amp;word={$smarty.get.word|smarty:nodefaults|escape:'url'}{/if}{if $smarty.get.approved}&amp;approved={$smarty.get.approved}{/if}{if $smarty.get.date}&amp;date={$smarty.get.date}{/if}">{$smarty.section.loop.iteration}</a><!--{else}-->{$smarty.section.loop.iteration}<!--{/if}--></li>
+				<!--{/section}-->
+			</ul>
+		</div>
+	</div>
+{include file='internals/admin/footer.html'}

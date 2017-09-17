@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns="http://purl.org/rss/1.0/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:cc="http://web.resource.org/cc/"
+	xml:lang="ja">
+	<channel rdf:about="{$info.http_url}/rss">
+		<title>{$freo.config.basis.title}</title>
+		<link>{$freo.core.http_url}</link>
+		<description>{$freo.config.basis.description}</description>
+		<dc:language>ja</dc:language>
+		<dc:date>{$entry_update|date_format:'%Y-%m-%dT%H:%M:%S+09:00'}</dc:date>
+		<items>
+			<rdf:Seq>
+				<!--{foreach from=$entries|smarty:nodefaults item='entry'}-->
+				<rdf:li rdf:resource="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}" />
+				<!--{/foreach}-->
+			</rdf:Seq>
+		</items>
+	</channel>
+	<!--{foreach from=$entries|smarty:nodefaults item='entry'}-->
+	<item rdf:about="{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}">
+		<title>{$entry.title}</title>
+		<link>{$freo.core.http_file}/view/{if $entry.code}{$entry.code}{else}{$entry.id}{/if}</link>
+		<description>{if $entry_texts[$entry.id].excerpt}{$entry_texts[$entry.id].excerpt|smarty:nodefaults|strip_tags|mb_truncate:200:'...'|escape}{/if}</description>
+		<dc:date>{$entry.datetime|date_format:'%Y-%m-%dT%H:%M:%S+09:00'}</dc:date>
+	</item>
+	<!--{/foreach}-->
+</rdf:RDF>
