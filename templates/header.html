@@ -6,6 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Content-Style-Type" content="text/css" />
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+	<meta name="viewport" content="width=device-width" />
 	<title>{if $entry.title}{$entry.title} | {elseif $page.title}{$page.title} | {/if}{$freo.config.basis.title}</title>
 	<link rel="alternate" href="{$freo.core.http_file}/feed" type="application/rss+xml" title="RSS" />
 	<link rel="stylesheet" href="{$freo.core.http_url}{$smarty.const.FREO_CSS_DIR}common.css" type="text/css" media="all" />
@@ -28,8 +29,5 @@
 		<ul>
 			<li><a href="{$freo.core.http_file}">トップページ</a></li>
 			<li><a href="{$freo.core.https_file}/login">ログイン</a></li>
-			<!--{if isset($smarty.session.freo.agent.type|smarty:nodefaults)}-->
-			<li><a href="{$smarty.server.PHP_SELF}?freo%5Bagent%5D%5Btype%5D=iphone">iPhone版</a></li>
-			<!--{/if}-->
 		</ul>
 	</div>
