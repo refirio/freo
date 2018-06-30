@@ -106,8 +106,8 @@
 						<dd>
 							<select name="page[pid]">
 								<option value="">なし</option>
-								<!--{foreach from=$pages|smarty:nodefaults item='page'}-->
-								<option value="{$page.id}"{if $input.page.pid == $page.id} selected="selected"{/if} >{$page.id}</option>
+								<!--{foreach from=$parent_pages|smarty:nodefaults item='parent_page'}-->
+								<option value="{$parent_page.id}"{if $input.page.pid == $parent_page.id} selected="selected"{/if}>{$parent_page.id}</option>
 								<!--{/foreach}-->
 							</select>
 						</dd>
