@@ -471,7 +471,40 @@ function freo_main()
 		$pages[$data['id']] = $data;
 	}
 
-	//オプション取得
+	//親ページID変更｜32877
+	$stmt = $freo->pdo->query('SELECT id, pid FROM ' . FREO_DATABASE_PREFIX . 'pages ORDER BY id');
+	if (!$stmt) {
+		freo_error($freo->pdo->errorInfo());
+	}
+	$parent_pages = array();
+	while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
+		$parent_pages[$data['id']] = $data;
+	}
+	// ページ編集時は子ページ階層以下のページを除外｜32877
+	if ($_GET['id']) {
+		$target_id  = $_GET['id'];
+		$delete_pages = array();
+		do {
+			$loop_count = 0;
+			foreach ($parent_pages as $parent_page) {
+				if ($parent_page['id'] == $target_id){
+					unset($parent_pages[$parent_page['id']]);
+					$delete_pages[] = $parent_page['id'];
+					$loop_count = 1;
+				} elseif ($parent_page['pid'] == $target_id) {
+					unset($parent_pages[$parent_page['id']]);
+					$delete_pages[] = $parent_page['id'];
+					$loop_count = 1;
+				} elseif (in_array($parent_page['pid'], $delete_pages)) {
+					unset($parent_pages[$parent_page['id']]);
+					$delete_pages[] = $parent_page['id'];
+					$loop_count = 1;
+				}
+			}
+		} while ($loop_count == 1);
+	}
+
+//オプション取得
 	$stmt = $freo->pdo->query('SELECT * FROM ' . FREO_DATABASE_PREFIX . 'options WHERE target IS NULL OR target = \'page\' ORDER BY sort, id');
 	if (!$stmt) {
 		freo_error($freo->pdo->errorInfo());
@@ -504,6 +537,7 @@ function freo_main()
 	$freo->smarty->assign(array(
 		'token'        => freo_token('create'),
 		'pages'        => $pages,
+		'parent_pages' => $parent_pages,		//32877追加
 		'options'      => $options,
 		'option_texts' => $option_texts,
 		'input'        => array(
