@@ -504,7 +504,7 @@ function freo_main()
 		} while ($loop_count == 1);
 	}
 
-//オプション取得
+	//オプション取得
 	$stmt = $freo->pdo->query('SELECT * FROM ' . FREO_DATABASE_PREFIX . 'options WHERE target IS NULL OR target = \'page\' ORDER BY sort, id');
 	if (!$stmt) {
 		freo_error($freo->pdo->errorInfo());
