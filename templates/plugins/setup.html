@@ -36,6 +36,7 @@
 			<li>{$plugin_name}プラグインのセットアップが完了しました。</li>
 		</ul>
 		<!--{/if}-->
+		<!--{if !$freo.query.exec == 'setup'}-->
 		<form action="{$freo.core.http_file}/{$plugin_id}/setup" method="post">
 			<fieldset>
 				<legend>セットアップ実行フォーム</legend>
@@ -43,6 +44,7 @@
 				<p><input type="submit" value="セットアップ実行" /></p>
 			</fieldset>
 		</form>
+		<!--{/if}-->
 		<ul>
 			<li><a href="{$freo.core.http_file}">記事一覧画面を表示</a></li>
 			<li><a href="{if $freo.core.https_file}{$freo.core.https_file}{else}{$freo.core.http_file}{/if}/login">管理画面にログイン</a></li>
