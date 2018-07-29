@@ -9,6 +9,8 @@
 		<ul class="complete">
 			<!--{if $freo.query.exec == 'insert'}-->
 			<li>ページを新規に登録しました。</li>
+			<!--{elseif $freo.query.exec == 'approve'}-->
+			<li>ID.{$freo.query.id}のページを承認しました。</li>
 			<!--{elseif $freo.query.exec == 'update'}-->
 			<li>ID.{$freo.query.id}のページを編集しました。</li>
 			<!--{elseif $freo.query.exec == 'delete'}-->
