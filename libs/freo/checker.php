@@ -40,7 +40,7 @@ if (file_exists(FREO_CSS_DIR . 'common.css')) {
 	echo "<link rel=\"stylesheet\" href=\"" . FREO_CSS_DIR . "common.css\" type=\"text/css\" media=\"all\" />\n";
 }
 
-echo "<style tyle=\"text/css\">\n";
+echo "<style type=\"text/css\">\n";
 echo "em {\n";
 echo "color: #FF0000;\n";
 echo "}\n";
