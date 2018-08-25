@@ -20,7 +20,6 @@
 	</div>
 	<div id="content">
 		<h2>{$plugin_name}プラグインのセットアップ</h2>
-		<p>{$plugin_name}プラグインのセットアップを実行します。</p>
 		<!--{if $freo.query.error}-->
 		<ul class="attention">
 			<li>不正なアクセスです。</li>
@@ -35,6 +34,8 @@
 		<ul class="complete">
 			<li>{$plugin_name}プラグインのセットアップが完了しました。</li>
 		</ul>
+		<!--{else}-->
+		<p>{$plugin_name}プラグインのセットアップを実行します。</p>
 		<!--{/if}-->
 		<!--{if !$freo.query.exec == 'setup'}-->
 		<form action="{$freo.core.http_file}/{$plugin_id}/setup" method="post">
