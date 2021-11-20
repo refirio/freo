@@ -211,7 +211,7 @@
 	<!--{if $smarty.get.user}--><p>ユーザー「{$smarty.get.user}」の検索結果は以下のとおりです。</p><!--{/if}-->
 	<!--{if $smarty.get.tag}--><p>タグ「{$smarty.get.tag}」の検索結果は以下のとおりです。</p><!--{/if}-->
 	<!--{if $smarty.get.date|count_characters == 4}--><p>{$smarty.get.date|cat:'0101000000'|date_format:'%Y&#x5E74;'}の記事は以下のとおりです。</p><!--{/if}-->
-	<!--{if $smarty.get.date|count_characters == 6}--><p>{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708'}の記事は以下のとおりです。</p><!--{/if}-->
+	<!--{if $smarty.get.date|count_characters == 6}--><p>{$smarty.get.date|cat:'01000000'|date_format:'%Y&#x5E74;%m&#x6708;'}の記事は以下のとおりです。</p><!--{/if}-->
 	<!--{if $smarty.get.date|count_characters == 8}--><p>{$smarty.get.date|cat:'000000'|date_format:'%Y&#x5E74;%m&#x6708;%d&#x65E5;'}の記事は以下のとおりです。</p><!--{/if}-->
 	<!--{foreach from=$pages|smarty:nodefaults item='page'}-->
 	<h3><a href="{$freo.core.http_file}/page/{$page.id}">{$page.title}</a></h3>
