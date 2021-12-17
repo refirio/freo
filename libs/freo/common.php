@@ -50,6 +50,9 @@ function freo_smarty()
 	$freo->smarty->compile_dir       = FREO_TEMPLATE_COMPILE_DIR;
 	$freo->smarty->default_modifiers = array('escape');
 
+	//Smartyに関してだけphpのerror_reportingを非表示にする（空白の変数対策） | holydragoonjp
+	$freo->smarty->error_reporting   = 0;
+
 	return;
 }
 
@@ -279,7 +282,7 @@ function freo_normalize()
 	);
 
 	//接続環境上書き
-	if (preg_match('/^[\w\-]+$/', $_REQUEST['freo']['type'])) {
+	if ($_REQUEST['freo']['type'] && preg_match('/^[\w\-]+$/', $_REQUEST['freo']['type'])) {	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
 		$freo->agent['type'] = $_REQUEST['freo']['type'];
 	}
 
@@ -1076,11 +1079,16 @@ function freo_output($template = null, $id = null, $cache = null, $error = null)
 				ksort($queries);
 
 				foreach ($queries as $key => $value) {
-					if (is_array($value)) {
-						$value = serialize($value);
+					//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
+					if ($value) {
+						if (is_array($value)) {
+							$value = serialize($value);
+						}
+
+						$value = urlencode($value);
 					}
 
-					$id .= '|' . urlencode($key) . '=' . urlencode($value);
+					$id .= '|' . urlencode($key) . '=' . $value;
 				}
 			}
 		}
@@ -1118,7 +1126,12 @@ function freo_output($template = null, $id = null, $cache = null, $error = null)
 		}
 	}
 
-	if (preg_match('/^' . preg_quote($target, '/') . 'internals\/(.+)$/', $template, $matches)) {
+	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
+	$quote_target = null;
+	if ($target) {
+		$quote_target = preg_quote($target, '/');
+	}
+	if (preg_match('/^' . $quote_target . 'internals\/(.+)$/', $template, $matches)) {
 		$freo->core['template'] = $matches[1];
 	}
 
@@ -1371,7 +1384,7 @@ function freo_unify($data)
 }
 
 /* 文字コード変換 */
-function freo_convert($data, $to_encoding = 'UTF-8', $from_encoding = 'UTF-8,SJIS-WIN')
+function freo_convert($data, $to_encoding = 'UTF-8', $from_encoding = 'SJIS-WIN')	//php5.6.30以上、php7.0.16以上、php7.1.1以上でDoCoMoやauの携帯電話（フューチャーホン）でCannot handle recursive references in エラーが出るのに対応 | holydragoonjp
 {
 	global $freo;
 
@@ -1387,11 +1400,16 @@ function freo_query($data)
 {
 	global $freo;
 
-	if (is_array($data)) {
-		return array_map('freo_query', $data);
+	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
+	if ($data) {
+		if (is_array($data)) {
+			return array_map('freo_query', $data);
+		}
+
+		$data = preg_replace('/[^\w\-\+\/\%]/', '', $data);
 	}
 
-	return preg_replace('/[^\w\-\+\/\%]/', '', $data);
+	return $data;
 }
 
 /* オプション割り当て */
