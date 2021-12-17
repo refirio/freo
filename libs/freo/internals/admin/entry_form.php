@@ -79,10 +79,10 @@ function freo_main()
 
 		//アップロードデータ初期化
 		if (!isset($_FILES['entry']['tmp_name']['file'])) {
-			$_FILES['entry']['tmp_name']['file'] = null;
+			$_FILES['entry']['tmp_name']['file'] = '';	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
 		}
 		if (!isset($_FILES['entry']['tmp_name']['image'])) {
-			$_FILES['entry']['tmp_name']['image'] = null;
+			$_FILES['entry']['tmp_name']['image'] = '';	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
 		}
 
 		$stmt = $freo->pdo->query('SELECT * FROM ' . FREO_DATABASE_PREFIX . 'options WHERE (target IS NULL OR target = \'entry\') AND type = \'file\' ORDER BY sort, id');
