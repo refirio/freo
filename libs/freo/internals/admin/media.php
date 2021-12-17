@@ -36,32 +36,33 @@ function freo_main()
 	//親ディレクトリ取得
 	$path = $_GET['path'];
 
-	if (preg_match('/(.+)\/$/', $path, $matches)) {
-		$path = $matches[1];
-	}
-	$pos = strrpos($path, '/');
-
-	if ($pos > 0) {
-		$parent = substr($path, 0, $pos) . '/';
-	} else {
-		$parent = '';
-	}
-
-	//閲覧制限確認
+	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
 	$restriction = false;
+	$parent      = '';
+	if ($path) {
+		if (preg_match('/(.+)\/$/', $path, $matches)) {
+			$path = $matches[1];
+		}
+		$pos = strrpos($path, '/');
 
-	$paths = explode('/', $path);
-
-	while (!empty($paths)) {
-		$path = implode('/', $paths);
-
-		if (file_exists(FREO_FILE_DIR . 'media_restrictions/' . $path . '.txt')) {
-			$restriction = true;
-
-			break;
+		if ($pos > 0) {
+			$parent = substr($path, 0, $pos) . '/';
 		}
 
-		array_pop($paths);
+		//閲覧制限確認
+		$paths = explode('/', $path);
+
+		while (!empty($paths)) {
+			$path = implode('/', $paths);
+
+			if (file_exists(FREO_FILE_DIR . 'media_restrictions/' . $path . '.txt')) {
+				$restriction = true;
+
+				break;
+			}
+
+			array_pop($paths);
+		}
 	}
 
 	//メディア取得
