@@ -392,7 +392,7 @@ function freo_main()
 		} elseif (file_exists(FREO_FILE_DIR . 'medias/' . $_GET['path'])) {
 			$filename = FREO_FILE_DIR . 'medias/' . $_GET['path'];
 		} else {
-			$filename = null;
+			$filename = '';	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
 		}
 	}
 
