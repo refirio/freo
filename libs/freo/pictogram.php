@@ -27,7 +27,11 @@ function freo_pictogram_unify($data)
 			$translations = array_flip($translations);
 		}
 
-		$data = preg_replace('/\[e:([^\]]+)\]/e', '$translations[pack("H*","$1")]', $data);
+		$data = preg_replace_callback('/\[e:([^\]]+)\]/',
+			function ($m) {
+				return '$translations[pack("H*", "' . $m[1] . '")]';
+			},
+			$data);	//php7.0 e修飾子削除 対応 | holydragoonjp
 	}
 
 	return $data;
@@ -52,8 +56,16 @@ function freo_pictogram_convert($data)
 
 		$data = freo_pictogram_escape($data);
 		$data = str_replace('$', $temporary, $data);
-		$data = preg_replace('/(value="([^"\\\\]|\\\\.)*")/e', 'freo_pictogram_unescape("$1","text")', $data);
-		$data = preg_replace('/(<textarea [^>]+>[^<]+<\/textarea>)/e', 'freo_pictogram_unescape("$1","text")', $data);
+		$data = preg_replace_callback('/(value="([^"\\\\]|\\\\.)*")/',
+			function ($m) {
+				return freo_pictogram_unescape($m[1], "text");
+			},
+			$data);	//php7.0 e修飾子削除 対応 | holydragoonjp
+		$data = preg_replace_callback('/(<textarea [^>]+>[^<]+<\/textarea>)/',
+			function ($m) {
+				return freo_pictogram_unescape($m[1], "text");
+			},
+			$data);
 		$data = str_replace($temporary, '$', $data);
 		$data = freo_pictogram_unescape($data);
 	}
@@ -81,7 +93,11 @@ function freo_pictogram_except($data)
 /* 絵文字をエスケープ */
 function freo_pictogram_escape($data)
 {
-	return preg_replace('/<img class="emoji" src="([^"]+)" alt="" width="12" height="12" \/>/e', '"[E:".basename("$1",".gif")."]"', $data);
+	return preg_replace_callback('/<img class="emoji" src="([^"]+)" alt="" width="12" height="12" \/>/',
+		function ($m) {
+			return '"[E:".basename("' . $m[1] . '",".gif")."]"';
+		},
+		$data);	//php7.0 e修飾子削除 対応 | holydragoonjp
 }
 
 /* 絵文字をアンエスケープ */
@@ -90,7 +106,11 @@ function freo_pictogram_unescape($data, $type = 'html')
 	if ($type == 'html') {
 		return preg_replace('/\[E:([^\]]+)\]/', '<img class="emoji" src="' . FREO_PICTOGRAM_IMAGE_URL . '$1.gif" alt="" width="12" height="12" />', $data);
 	} else {
-		return preg_replace('/\[E:([^\]]+)\]/e', '"[e:".basename("$1",".gif")."]"', $data);
+		return preg_replace_callback('/\[E:([^\]]+)\]/',
+			function ($m) {
+				return '"[e:".basename("' . $m[1] . '",".gif")."]"';
+			},
+			$data);	//php7.0 e修飾子削除 対応 | holydragoonjp
 	}
 }
 
