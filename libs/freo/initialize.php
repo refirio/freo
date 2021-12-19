@@ -8,11 +8,9 @@
 
 *********************************************************************/
 
+//php7以上で削除されたini_setを削除 | holydragoonjp
 ini_set('default_charset', 'UTF-8');
-ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('mbstring.language', 'Japanese');
-ini_set('mbstring.input_encoding', 'pass');
-ini_set('mbstring.output_encoding', 'pass');
 ini_set('mbstring.substitute_character', 'none');
 
 ini_set('session.use_trans_sid', 0);
