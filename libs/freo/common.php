@@ -560,7 +560,7 @@ function freo_user()
 				freo_error($stmt->errorInfo());
 			}
 
-			freo_setcookie('freo[session]', null);
+			freo_setcookie('freo[session]', '');	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
 		}
 
 		$freo->user = array(
