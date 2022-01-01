@@ -100,10 +100,11 @@ function freo_main()
 		freo_setcookie('comment[url]',     $comment['url'],     time() + FREO_COOKIE_EXPIRE);
 		freo_setcookie('comment[session]', $comment['session'], time() + FREO_COOKIE_EXPIRE);
 	} else {
-		freo_setcookie('comment[name]',    null);
-		freo_setcookie('comment[mail]',    null);
-		freo_setcookie('comment[url]',     null);
-		freo_setcookie('comment[session]', null);
+		//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
+		freo_setcookie('comment[name]',    '');
+		freo_setcookie('comment[mail]',    '');
+		freo_setcookie('comment[url]',     '');
+		freo_setcookie('comment[session]', '');
 	}
 
 	//入力データ破棄

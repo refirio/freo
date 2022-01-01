@@ -23,11 +23,21 @@ function freo_transfer_execute($data)
 	$temporary = md5(uniqid(rand(), true));
 
 	$data = str_replace('$', $temporary, $data);
-	$data = preg_replace('/href="(([^"\\\\]|\\\\.)*)"/e', '"href=\"".freo_transfer_link("$1")."\""', $data);
-	$data = preg_replace('/src="(([^"\\\\]|\\\\.)*)"/e', '"src=\"".freo_transfer_link("$1")."\""', $data);
-	$data = preg_replace('/(<form [^>]+>)/e', 'freo_transfer_form("$1")', $data);
-	$data = str_replace($temporary, '$', $data);
-
+	$data = preg_replace_callback('/href="(([^"\\\\]|\\\\.)*)"/',	//php7.0 e修飾子削除 対応 | holydragoonjp
+		function ($m) {
+			return 'href="' . freo_transfer_link($m[1]) . '"';
+		},
+		$data);
+	$data = preg_replace_callback('/src="(([^"\\\\]|\\\\.)*)"/',
+		function ($m) {
+			return 'src="' . freo_transfer_link($m[1]) . '"';
+		},
+		$data);
+	$data = preg_replace_callback('/(<form [^>]+>)/',
+		function ($m) {
+			return freo_transfer_form($m[1]);
+		},
+		$data);
 	return $data;
 }
 

@@ -31,51 +31,55 @@ function freo_main()
 		freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
 	}
 
-	if (empty($_GET['directory'])) {
-		//ファイル削除
-		if (!unlink(FREO_FILE_DIR . 'medias/' . $_GET['path'] . $_GET['name'])) {
-			freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
-		}
-
-		//サムネイル削除
-		if (file_exists(FREO_FILE_DIR . 'media_thumbnails/' . $_GET['path'] . $_GET['name'])) {
-			if (!unlink(FREO_FILE_DIR . 'media_thumbnails/' . $_GET['path'] . $_GET['name'])) {
+	if (isset($_GET['name'])) {	//$_GET['name']がnullで$_GET['path']までnullだとmedias/フォルダなどが削除されてしまうため、その回避策 | holydragoonjp
+		if (empty($_GET['directory'])) {
+			//ファイル削除
+			if (!unlink(FREO_FILE_DIR . 'medias/' . $_GET['path'] . $_GET['name'])) {
 				freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
 			}
-		}
 
-		//ファイルの説明削除
-		if (file_exists(FREO_FILE_DIR . 'media_memos/' . $_GET['path'] . $_GET['name'] . '.txt')) {
-			if (!unlink(FREO_FILE_DIR . 'media_memos/' . $_GET['path'] . $_GET['name'] . '.txt')) {
+			//サムネイル削除
+			if (file_exists(FREO_FILE_DIR . 'media_thumbnails/' . $_GET['path'] . $_GET['name'])) {
+				if (!unlink(FREO_FILE_DIR . 'media_thumbnails/' . $_GET['path'] . $_GET['name'])) {
+					freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
+				}
+			}
+
+			//ファイルの説明削除
+			if (file_exists(FREO_FILE_DIR . 'media_memos/' . $_GET['path'] . $_GET['name'] . '.txt')) {
+				if (!unlink(FREO_FILE_DIR . 'media_memos/' . $_GET['path'] . $_GET['name'] . '.txt')) {
+					freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
+				}
+			}
+		} else {
+			//ディレクトリ削除
+			if (!freo_rmdir(FREO_FILE_DIR . 'medias/' . $_GET['path'] . $_GET['name'])) {
+				freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
+			}
+
+			//サムネイル用ディレクトリ削除
+			if (!freo_rmdir(FREO_FILE_DIR . 'media_thumbnails/' . $_GET['path'] . $_GET['name'])) {
+				freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
+			}
+
+			//ファイルの説明用ディレクトリ削除
+			if (!freo_rmdir(FREO_FILE_DIR . 'media_memos/' . $_GET['path'] . $_GET['name'])) {
+				freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
+			}
+
+			//閲覧制限削除
+			if (file_exists(FREO_FILE_DIR . 'media_restrictions/' . $_GET['path'] . preg_replace('/\/$/', '', $_GET['name']) . '.txt')) {
+				if (!unlink(FREO_FILE_DIR . 'media_restrictions/' . $_GET['path'] . preg_replace('/\/$/', '', $_GET['name']) . '.txt')) {
+					freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
+				}
+			}
+
+			if (!freo_rmdir(FREO_FILE_DIR . 'media_restrictions/' . $_GET['path'] . $_GET['name'])) {
 				freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
 			}
 		}
 	} else {
-		//ディレクトリ削除
-		if (!freo_rmdir(FREO_FILE_DIR . 'medias/' . $_GET['path'] . $_GET['name'])) {
-			freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
-		}
-
-		//サムネイル用ディレクトリ削除
-		if (!freo_rmdir(FREO_FILE_DIR . 'media_thumbnails/' . $_GET['path'] . $_GET['name'])) {
-			freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
-		}
-
-		//ファイルの説明用ディレクトリ削除
-		if (!freo_rmdir(FREO_FILE_DIR . 'media_memos/' . $_GET['path'] . $_GET['name'])) {
-			freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
-		}
-
-		//閲覧制限削除
-		if (file_exists(FREO_FILE_DIR . 'media_restrictions/' . $_GET['path'] . preg_replace('/\/$/', '', $_GET['name']) . '.txt')) {
-			if (!unlink(FREO_FILE_DIR . 'media_restrictions/' . $_GET['path'] . preg_replace('/\/$/', '', $_GET['name']) . '.txt')) {
-				freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
-			}
-		}
-
-		if (!freo_rmdir(FREO_FILE_DIR . 'media_restrictions/' . $_GET['path'] . $_GET['name'])) {
-			freo_redirect('admin/media?error=1' . (isset($_GET['type']) ? '&type=' . $_GET['type'] : ''));
-		}
+		freo_error('不正なアクセスです。');
 	}
 
 	//ログ記録

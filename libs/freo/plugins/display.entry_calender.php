@@ -21,7 +21,7 @@ function freo_display_entry_calender()
 	if (isset($_GET['date'])) {
 		$date = $_GET['date'];
 	} else {
-		$date = null;
+		$date = date('Ymd');	//php8.1 Deprecate passing null to non-nullable arguments of internal functions 対応 | holydragoonjp
 	}
 
 	if (preg_match('/^(\d\d\d\d)$/', $date, $matches)) {
@@ -70,7 +70,7 @@ function freo_display_entry_calender()
 	}
 	$stmt->bindValue(':now1',  date('Y-m-d H:i:s'));
 	$stmt->bindValue(':now2',  date('Y-m-d H:i:s'));
-	$stmt->bindValue(':month', $year . $month);
+	$stmt->bindValue(':month', $year . sprintf('%02d', $month));	//年単位の表示（http://freoを設置したurl/index.php/entry?date=2021 等）をすると、記事へのリンクが表示されない不具合への対応 | holydragoonjp
 	$flag = $stmt->execute();
 	if (!$flag) {
 		freo_error($stmt->errorInfo());
